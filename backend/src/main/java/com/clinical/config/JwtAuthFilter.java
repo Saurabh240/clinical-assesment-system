@@ -1,4 +1,4 @@
-package com.clinicalassesment.config;
+package com.clinical.config;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -1,14 +1,14 @@
-package com.clinicalassesment.userManagement.controller;
+package com.clinical.userManagement.controller;
 
-import com.clinicalassesment.config.JwtUtil;
-import com.clinicalassesment.config.MyUserDetails;
-import com.clinicalassesment.userManagement.dto.UserLoginRequest;
-import com.clinicalassesment.userManagement.dto.UserSignupRequest;
-import com.clinicalassesment.userManagement.model.Pharmacy;
-import com.clinicalassesment.userManagement.model.Role;
-import com.clinicalassesment.userManagement.model.Users;
-import com.clinicalassesment.userManagement.repository.PharmaRepo;
-import com.clinicalassesment.userManagement.repository.UserRepo;
+import com.clinical.config.JwtUtil;
+import com.clinical.config.MyUserDetails;
+import com.clinical.userManagement.dto.UserLoginRequest;
+import com.clinical.userManagement.dto.UserSignupRequest;
+import com.clinical.userManagement.model.Pharmacy;
+import com.clinical.userManagement.model.Role;
+import com.clinical.userManagement.model.Users;
+import com.clinical.userManagement.repository.PharmaRepo;
+import com.clinical.userManagement.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;

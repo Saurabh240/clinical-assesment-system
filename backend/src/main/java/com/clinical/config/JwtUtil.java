@@ -1,4 +1,4 @@
-package com.clinicalassesment.config;
+package com.clinical.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -1,4 +1,4 @@
-package com.clinicalassesment.userManagement.dto;
+package com.clinical.userManagement.dto;
 
 import lombok.Data;
 

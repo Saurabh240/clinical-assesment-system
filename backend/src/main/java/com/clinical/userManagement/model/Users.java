@@ -1,4 +1,4 @@
-package com.clinicalassesment.userManagement.model;
+package com.clinical.userManagement.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

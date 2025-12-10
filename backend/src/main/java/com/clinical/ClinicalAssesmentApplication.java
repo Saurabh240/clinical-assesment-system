@@ -1,4 +1,4 @@
-package com.clinicalassesment;
+package com.clinical;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
