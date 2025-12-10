@@ -1,4 +1,4 @@
-package com.clinical_assesment.config;
+package com.clinical.config;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -11,7 +11,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Map;
 
 public class JwtAuthFilter extends OncePerRequestFilter {
 

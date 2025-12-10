@@ -1,4 +1,4 @@
-package com.clinical_assesment.userManagement.model;
+package com.clinical.userManagement.model;
 
 public enum SubscriptionStatus {
     ACTIVE,INACTIVE,TRIAL

@@ -1,15 +1,16 @@
-package com.clinical_assesment.userManagement.controller;
+package com.clinical.userManagement.controller;
 
-import com.clinical_assesment.config.JwtUtil;
-import com.clinical_assesment.config.MyUserDetails;
-import com.clinical_assesment.userManagement.dto.UserLoginRequest;
-import com.clinical_assesment.userManagement.dto.UserSignupRequest;
-import com.clinical_assesment.userManagement.model.Pharmacy;
-import com.clinical_assesment.userManagement.model.Role;
-import com.clinical_assesment.userManagement.model.Users;
-import com.clinical_assesment.userManagement.repository.PharmaRepo;
-import com.clinical_assesment.userManagement.repository.UserRepo;
+import com.clinical.config.JwtUtil;
+import com.clinical.config.MyUserDetails;
+import com.clinical.userManagement.dto.UserLoginRequest;
+import com.clinical.userManagement.dto.UserSignupRequest;
+import com.clinical.userManagement.model.Pharmacy;
+import com.clinical.userManagement.model.Role;
+import com.clinical.userManagement.model.Users;
+import com.clinical.userManagement.repository.PharmaRepo;
+import com.clinical.userManagement.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -119,4 +120,10 @@ public class AuthController {
         return userRepo.save(newUser);
     }
 
+
+    @PostMapping("/test")
+    @PreAuthorize("hasAnyRole('PHARMACIST')")
+    public String test(){
+        return "Test Successful";
+    }
 }

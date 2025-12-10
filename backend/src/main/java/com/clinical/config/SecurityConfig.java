@@ -1,4 +1,4 @@
-package com.clinical_assesment.config;
+package com.clinical.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

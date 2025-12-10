@@ -1,7 +1,7 @@
-package com.clinical_assesment.config;
+package com.clinical.config;
 
-import com.clinical_assesment.userManagement.model.Users;
-import com.clinical_assesment.userManagement.repository.UserRepo;
+import com.clinical.userManagement.model.Users;
+import com.clinical.userManagement.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

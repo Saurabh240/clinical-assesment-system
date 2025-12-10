@@ -1,6 +1,6 @@
-package com.clinical_assesment.userManagement.repository;
+package com.clinical.userManagement.repository;
 
-import com.clinical_assesment.userManagement.model.Pharmacy;
+import com.clinical.userManagement.model.Pharmacy;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

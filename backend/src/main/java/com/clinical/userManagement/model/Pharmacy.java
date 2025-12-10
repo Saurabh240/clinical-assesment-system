@@ -1,4 +1,4 @@
-package com.clinical_assesment.userManagement.model;
+package com.clinical.userManagement.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name="pharmacy")

@@ -1,6 +1,6 @@
-package com.clinical_assesment.config;
+package com.clinical.config;
 
-import com.clinical_assesment.userManagement.model.Users;
+import com.clinical.userManagement.model.Users;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
