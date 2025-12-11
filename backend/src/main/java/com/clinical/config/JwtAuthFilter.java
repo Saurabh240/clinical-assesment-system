@@ -1,5 +1,6 @@
 package com.clinical.config;
 
+import com.clinical.userManagement.model.Role;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 
 public class JwtAuthFilter extends OncePerRequestFilter {
 
@@ -27,13 +29,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     return;
                 }
 
-                String email = JwtUtil.getClaim(token, "sub");
-                String role = JwtUtil.getClaim(token, "role");
+                String email = (String) JwtUtil.getClaim(token, "sub");
+                List<String> role = (List<String>) JwtUtil.getClaim(token, "role");
+                List<SimpleGrantedAuthority> authorities=role.stream()
+                        .map(roles->new SimpleGrantedAuthority("ROLE_" + roles))
+                        .toList();
 
                 var auth = new UsernamePasswordAuthenticationToken(
                         email,
                         null,
-                        Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role))
+                        authorities
                 );
 
                 SecurityContextHolder.getContext().setAuthentication(auth);

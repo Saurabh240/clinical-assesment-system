@@ -52,7 +52,7 @@ public class JwtUtil {
         }
     }
 
-    public static String getClaim(String token, String claimKey) {
-        return extractClaims(token).get(claimKey, String.class);
+    public static Object getClaim(String token, String claimKey) {
+        return extractClaims(token).get(claimKey, Object.class);
     }
 }

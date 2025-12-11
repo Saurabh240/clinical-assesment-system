@@ -53,12 +53,16 @@ public class AuthController {
         MyUserDetails userDetails= (MyUserDetails) authentication.getPrincipal();
 
         if(authentication.isAuthenticated()){
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
             List<String> roles=userDetails.getAuthorities()
                     .stream()
                     .map(GrantedAuthority::getAuthority)
                     .toList();
+
             String accessToken = JwtUtil.generateAccessToken(userLoginRequest.getEmail(),roles);
+
             String refreshToken = JwtUtil.generateRefreshToken(userLoginRequest.getEmail());
 
             Map<String,String> response=new HashMap<>();
@@ -120,10 +124,4 @@ public class AuthController {
         return userRepo.save(newUser);
     }
 
-
-    @PostMapping("/test")
-    @PreAuthorize("hasAnyRole('PHARMACIST')")
-    public String test(){
-        return "Test Successful";
-    }
 }
