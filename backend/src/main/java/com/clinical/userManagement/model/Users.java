@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,17 +22,14 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="pharmacy_id",referencedColumnName = "id",nullable = false)
     private Pharmacy pharmacy;
 
     @Email
-    @NotNull
     @Column(nullable = false,unique = true)
     private String email;
 
-    @NotNull
     @Column(nullable = false)
     private String password;
 

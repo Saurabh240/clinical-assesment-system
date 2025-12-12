@@ -16,17 +16,14 @@ public class Pharmacy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     private String name;
 
-    @NotNull
     private String address;
 
-    @NotNull
     @Pattern(regexp = "^\\+?[0-9\\- ]{7,15}$",message = "Invalid phone number format")
     private String phone;
 
-    @NotNull
+
     @Pattern(regexp = "^\\+?[0-9()\\- ]{7,20}$",message = "Invalid fax number")
     private String fax;
 

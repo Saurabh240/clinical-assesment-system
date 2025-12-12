@@ -6,8 +6,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PharmaRepo extends JpaRepository<Pharmacy,Long> {
-    Boolean existsById(long id);
-    Pharmacy getById(Long id);
+
     Boolean existsByName(String name);
+
     Pharmacy getByName(String name);
+
 }

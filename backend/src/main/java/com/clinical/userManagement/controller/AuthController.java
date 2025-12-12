@@ -48,7 +48,7 @@ public class AuthController {
 
         Authentication authentication;
 
-        authentication=authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginRequest.getEmail(),userLoginRequest.getPassword()));
+        authentication=authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginRequest.email(),userLoginRequest.password()));
 
         MyUserDetails userDetails= (MyUserDetails) authentication.getPrincipal();
 
@@ -61,9 +61,9 @@ public class AuthController {
                     .map(GrantedAuthority::getAuthority)
                     .toList();
 
-            String accessToken = JwtUtil.generateAccessToken(userLoginRequest.getEmail(),roles);
+            String accessToken = JwtUtil.generateAccessToken(userLoginRequest.email(),roles);
 
-            String refreshToken = JwtUtil.generateRefreshToken(userLoginRequest.getEmail());
+            String refreshToken = JwtUtil.generateRefreshToken(userLoginRequest.email());
 
             Map<String,String> response=new HashMap<>();
             response.put("accessToken",accessToken);
@@ -98,30 +98,42 @@ public class AuthController {
     @PostMapping("/signUp")
     public Users signUp(@RequestBody UserSignupRequest userSignupRequest){
 
-        if(userRepo.existsByEmail(userSignupRequest.getEmail())){
-            throw new RuntimeException("User with this email already exists! "+userSignupRequest.getEmail());
+        if(userRepo.existsByEmail(userSignupRequest.email())){
+            throw new RuntimeException("User with this email already exists! "+userSignupRequest.email());
         }
 
         Pharmacy pharmacy;
-        if(pharmaRepo.existsByName(userSignupRequest.getPharmacy().getName())){
-            pharmacy=pharmaRepo.getByName(userSignupRequest.getPharmacy().getName());
+        if(pharmaRepo.existsByName(userSignupRequest.pharmacy().name())){
+            pharmacy=pharmaRepo.getByName(userSignupRequest.pharmacy().name());
         }else {
             pharmacy=new Pharmacy();
-            pharmacy.setName(userSignupRequest.getPharmacy().getName());
-            pharmacy.setAddress(userSignupRequest.getPharmacy().getAddress());
-            pharmacy.setPhone(userSignupRequest.getPharmacy().getPhone());
-            pharmacy.setFax(userSignupRequest.getPharmacy().getFax());
-            pharmacy.setLogoUrl(userSignupRequest.getPharmacy().getLogoUrl());
+            pharmacy.setName(userSignupRequest.pharmacy().name());
+            pharmacy.setAddress(userSignupRequest.pharmacy().address());
+            pharmacy.setPhone(userSignupRequest.pharmacy().phone());
+            pharmacy.setFax(userSignupRequest.pharmacy().fax());
+            pharmacy.setLogoUrl(userSignupRequest.pharmacy().logoUrl());
             pharmacy = pharmaRepo.save(pharmacy);
         }
 
         Users newUser=new Users();
         newUser.setPharmacy(pharmacy);
-        newUser.setEmail(userSignupRequest.getEmail());
-        newUser.setPassword(passwordEncoder.encode(userSignupRequest.getPassword()));
+        newUser.setEmail(userSignupRequest.email());
+        newUser.setPassword(passwordEncoder.encode(userSignupRequest.password()));
         newUser.setRole(Set.of(Role.PHARMACIST));
 
         return userRepo.save(newUser);
+    }
+
+    @PostMapping("/testPharmacist")
+    @PreAuthorize("hasAnyRole('PHARMACIST')")
+    public String testPharmacist(){
+        return "Test Pharmacist successful";
+    }
+
+    @PostMapping("/testAdmin")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public String testAdmin(){
+        return "Test Admin successful";
     }
 
 }
