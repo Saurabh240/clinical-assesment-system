@@ -123,17 +123,4 @@ public class AuthController {
 
         return userRepo.save(newUser);
     }
-
-    @PostMapping("/testPharmacist")
-    @PreAuthorize("hasAnyRole('PHARMACIST')")
-    public String testPharmacist(){
-        return "Test Pharmacist successful";
-    }
-
-    @PostMapping("/testAdmin")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public String testAdmin(){
-        return "Test Admin successful";
-    }
-
 }

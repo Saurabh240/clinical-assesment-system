@@ -1,4 +1,4 @@
-CREATE TABLE pharmacy (
+CREATE TABLE IF NOT EXISTS pharmacy (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(255),
     address VARCHAR(255),
