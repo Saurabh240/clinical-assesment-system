@@ -127,7 +127,7 @@ export default function Login({ onLoginSuccess, onToggleView }) {
 import { useState } from 'react';
 import { Link } from 'react-router-dom'; 
 import axios from 'axios'; 
-import { Mail, Lock, Eye, EyeOff } from 'lucide-react'; // Added Eye and EyeOff
+import { Mail, Lock, Eye, EyeOff } from 'lucide-react'; 
 import Button from '../components/ui/Button'; 
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
@@ -137,7 +137,7 @@ const BASE_URL = "http://localhost:8080";
 export default function Login({ onLoginSuccess, onToggleView }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // Added this state
+  const [showPassword, setShowPassword] = useState(false); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
