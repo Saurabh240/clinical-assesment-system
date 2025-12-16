@@ -29,10 +29,10 @@ jobs:
 
       - name: Build and push backend image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/courier-backend:latest ./backend
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/courier-backend:latest
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/clinical-management-backend:latest ./backend
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/clinical-management-backend:latest
 
       - name: Build and push frontend image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/courier-frontend:latest -f frontend/Dockerfile frontend
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/courier-frontend:latest
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/clinical-management-frontend:latest -f frontend/Dockerfile frontend
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/clinical-management-frontend:latest
