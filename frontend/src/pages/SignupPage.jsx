@@ -1,30 +1,43 @@
-// Signup.jsx
-import React, { useState } from 'react';
-import axios from 'axios'; 
-import { Link } from 'react-router-dom'; // 👈 Added Link import
-import {  Mail, Lock } from 'lucide-react';
-import Button from '../components/ui/Button'; 
+
+import { useState } from 'react';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
+import { Mail, Lock, User } from 'lucide-react'; // Import User icon
+import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
+
 // const BASE_URL = "http://localhost:8080";
 
 export default function Signup({ onSignupSuccess, onToggleView }) {
+  // 1. STATE FIX: Use camelCase for consistency and fix the state name in the setter
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState(''); // Corrected state name
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // Use useNavigate hook for programmatic navigation
+  const navigate = useNavigate();
+
   const handleSignup = async (e) => {
     e.preventDefault();
+
     setError('');
     setLoading(true);
 
     try {
-      if (!name || !email || !password) {
+      if (!name || !email || !password || !confirmPassword) { // Include confirmPassword in required check
         throw new Error('All fields are required.');
       }
       
+      // 2. ERROR FIX: Use 'Error' class
+      if(password !== confirmPassword){
+        throw new Error('Password and Confirm Password must match.'); // Corrected capitalization
+      }
+      
+      // Assuming BASE_URL is defined somewhere accessible
       const api = axios.create({ baseURL: BASE_URL }); 
 
       const response = await api.post('/api/auth/signup', {
@@ -35,15 +48,15 @@ export default function Signup({ onSignupSuccess, onToggleView }) {
 
       console.log('Signup success response:', response.data);
 
-      alert(`Account for ${name} created successfully! Please log in.`);
-      // Redirect to login page after successful signup
-      // window.location.href = "/login"; 
+      alert(`Account for ${name} created successfully! Please complete your professional profile.`);
+      
+      // 3. NAVIGATION FIX: Redirect to the next professional form step
+      navigate("/onboarding/pharmacy"); 
       
     } catch (err) {
       console.error("Signup failed:", err);
-      const errorMessage = err.response?.data?.message 
-                           || err.message 
-                           || 'Registration failed. The email might already be in use.';
+      // Ensure the error message is correctly pulled, using the client-side thrown error first
+      const errorMessage = err.message || err.response?.data?.message || 'Registration failed. Please try again.';
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -54,9 +67,7 @@ export default function Signup({ onSignupSuccess, onToggleView }) {
     <div className="flex justify-center items-center min-h-screen bg-gray-50 p-4">
       <Card shadow="xl" padding="lg" className="w-full max-w-md">
         <Card.Header className="text-center">
-         {/* <UserPlus className="w-10 h-10 mx-auto text-green-600 mb-4" />*/}
           <Card.Title>Create Account</Card.Title>
-          {/*<Card.Description>Get started with DocManager</Card.Description>*/}
         </Card.Header>
         
         {error && (
@@ -67,16 +78,16 @@ export default function Signup({ onSignupSuccess, onToggleView }) {
 
         <Card.Content>
           <form onSubmit={handleSignup} className="space-y-6">
-           {/*<Input
+           <Input // UNCOMMENTED: You need this for the 'name' state and API call
               label="Full Name"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Jane Doe"
+              placeholder="John Doe"
               leftIcon={<User className="w-5 h-5" />}
               required
               disabled={loading}
-            />*/}
+            />
             <Input
               label="Email Address"
               type="email"
@@ -98,14 +109,25 @@ export default function Signup({ onSignupSuccess, onToggleView }) {
               required
               disabled={loading}
             />
+             <Input
+              label="Confirm Password"
+              type="password"
+              // 4. CRITICAL FIX: Use 'confirmPassword' state for value and setter
+              value={confirmPassword} 
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="•••••••• (Re-enter password)"
+              helperText="Must match the password above"
+              leftIcon={<Lock className="w-5 h-5" />}
+              required
+              disabled={loading}
+            />
+           
             <Button
               type="submit"
               variant="secondary" 
               fullWidth
               loading={loading}
-              className = "cursor-pointer"
-              
-
+              className="cursor-pointer"
             >
               {loading ? 'Creating Account...' : 'Sign Up'}
             </Button>
