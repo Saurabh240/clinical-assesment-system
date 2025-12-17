@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - clinic_system_data:/var/lib/postgresql/data
 
   backend:
     image: saurabh896/clinical-management-backend:latest
@@ -30,4 +30,4 @@ services:
   #     - "${REACT_PORT}:80"
 
 volumes:
-  postgres_data:
+  clinic_system_data:
