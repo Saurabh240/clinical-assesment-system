@@ -6,6 +6,7 @@ import com.clinical.userManagement.dto.UserLoginRequest;
 import com.clinical.userManagement.dto.UserSignupRequest;
 import com.clinical.userManagement.model.Pharmacy;
 import com.clinical.userManagement.model.Role;
+import com.clinical.userManagement.model.SubscriptionStatus;
 import com.clinical.userManagement.model.Users;
 import com.clinical.userManagement.repository.PharmaRepo;
 import com.clinical.userManagement.repository.UserRepo;
@@ -18,10 +19,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,25 +101,36 @@ public class AuthController {
             throw new RuntimeException("User with this email already exists! "+userSignupRequest.email());
         }
 
-        Pharmacy pharmacy;
-        if(pharmaRepo.existsByName(userSignupRequest.pharmacy().name())){
-            pharmacy=pharmaRepo.getByName(userSignupRequest.pharmacy().name());
-        }else {
-            pharmacy=new Pharmacy();
-            pharmacy.setName(userSignupRequest.pharmacy().name());
-            pharmacy.setAddress(userSignupRequest.pharmacy().address());
-            pharmacy.setPhone(userSignupRequest.pharmacy().phone());
-            pharmacy.setFax(userSignupRequest.pharmacy().fax());
-            pharmacy.setLogoUrl(userSignupRequest.pharmacy().logoUrl());
-            pharmacy = pharmaRepo.save(pharmacy);
-        }
-
         Users newUser=new Users();
-        newUser.setPharmacy(pharmacy);
         newUser.setEmail(userSignupRequest.email());
         newUser.setPassword(passwordEncoder.encode(userSignupRequest.password()));
         newUser.setRole(Set.of(Role.PHARMACIST));
 
         return userRepo.save(newUser);
+    }
+
+    @PutMapping("/registerPharmacy")
+    public Users registerPharmacy(@RequestBody Pharmacy pharmacy,Authentication authentication) {
+        String username = authentication.getName();
+        Users user = userRepo.findByEmail(username);
+        if (user == null) {
+            throw new RuntimeException("User not found with this email ");
+        }
+        Pharmacy newPharma = null;
+        if (!pharmaRepo.existsByName(pharmacy.getName())) {
+            if(pharmacy.getSubscriptionStatus()==null){
+                pharmacy.setSubscriptionStatus(SubscriptionStatus.INACTIVE);
+            }
+            newPharma = pharmaRepo.save(pharmacy);
+        }else{
+            newPharma=pharmaRepo.getByName(pharmacy.getName());
+        }
+        user.setPharmacy(newPharma);
+        return userRepo.save(user);
+    }
+
+    @GetMapping("/getAllPharma")
+    public List<Pharmacy> getAllPharma(){
+        return pharmaRepo.findAll();
     }
 }
