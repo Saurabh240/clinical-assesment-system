@@ -22,8 +22,7 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="pharmacy_id",referencedColumnName = "id",nullable = false)
+    @ManyToOne(optional = true,fetch = FetchType.LAZY)
     private Pharmacy pharmacy;
 
     @Email
