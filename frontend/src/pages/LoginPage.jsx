@@ -1,68 +1,54 @@
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 
+import api from "../api/axios";
 
-
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff } from 'lucide-react'; 
-
-
-import api from '../api/axios'; 
-
-
-import Button from '../components/ui/Button'; 
-import Card from '../components/ui/Card';
-import Input from '../components/ui/Input';
+import Button from "../components/ui/Button";
+import Card from "../components/ui/Card";
+import Input from "../components/ui/Input";
 
 function Login() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false); 
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
- 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+  const [error, setError] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
-    //clear old token
-    localStorage.removeItem("userData");
     try {
-      
-      const response = await api.post('/auth/signIn', {
-        email,
-        password,
+      const response = await api.post("/auth/signIn", {
+        email: formData.email,
+        password: formData.password,
       });
 
-      const { token, refreshToken, companyId, username } = response.data;
+      const { accessToken } = response.data;
+      localStorage.setItem("accessToken", accessToken);
 
-      // Validation
-      if (!token || companyId == null) {
-        throw new Error('Critical user data (token/companyId) missing from server.');
-      }
-
-      // Save everything to localStorage
-      localStorage.setItem("userData", JSON.stringify({ 
-        token, 
-        refreshToken, // Interceptor uses this to stay logged in
-        companyId, 
-        username: username || email 
-      }));
-      
-      // Navigate to pharmacy list
-      navigate("/Pharmacy");
-      
+      navigate("/PharmacySelect");
     } catch (err) {
-      console.error("Login failed:", err);
-      const errorMessage = err.response?.data?.message 
-                           || err.message 
-                           || 'Authentication failed. Please check your credentials.';
-      setError(errorMessage);
+      setError(
+        err.response?.data?.message ||
+          "Login failed. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -75,9 +61,9 @@ function Login() {
           <Card.Title>Welcome Back</Card.Title>
           <Card.Description>Sign in to your account</Card.Description>
         </Card.Header>
-        
+
         {error && (
-          <div className="p-3 mb-6 text-sm text-red-700 bg-red-100 rounded-lg">
+          <div className="p-3 mb-4 text-sm text-red-700 bg-red-100 rounded-lg">
             {error}
           </div>
         )}
@@ -86,37 +72,42 @@ function Login() {
           <form onSubmit={handleLogin} className="space-y-6">
             <Input
               label="Email Address"
+              name="email"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={handleChange}
               placeholder="you@example.com"
               leftIcon={<Mail className="w-5 h-5" />}
               required
               disabled={loading}
             />
-            
+
             <Input
               label="Password"
+              name="password"
               type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formData.password}
+              onChange={handleChange}
               placeholder="••••••••"
               leftIcon={<Lock className="w-5 h-5" />}
               rightIcon={
                 <button
                   type="button"
-                  onClick={togglePasswordVisibility}
-                  className="text-gray-400 hover:text-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 rounded p-1 cursor-pointer"
-                  disabled={loading}
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="text-gray-400 hover:text-gray-600"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               }
               required
               disabled={loading}
               helperText={
-                <Link to="/forget-password"
-                className="text-sm font-medium text-teal-600 hover:text-teal-500">Forget Password?</Link>
+                <Link
+                  to="/forgot-password"
+                  className="text-sm font-medium text-teal-600 hover:text-teal-500"
+                >
+                  Forgot Password?
+                </Link>
               }
             />
 
@@ -124,18 +115,20 @@ function Login() {
               type="submit"
               fullWidth
               loading={loading}
-              variant='secondary'
-              className="cursor-pointer"
+              variant="secondary"
             >
-              {loading ? 'Signing In...' : 'Sign In'}
+              Sign In
             </Button>
           </form>
         </Card.Content>
 
         <Card.Footer className="text-center text-sm">
           <p className="text-gray-600">
-            Don't have an account?{' '}
-            <Link to="/signup" className="font-medium text-teal-600 hover:text-teal-400">
+            Don't have an account?{" "}
+            <Link
+              to="/signup"
+              className="font-medium text-teal-600 hover:text-teal-400"
+            >
               Sign up
             </Link>
           </p>

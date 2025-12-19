@@ -37,7 +37,7 @@ export default function PharmacyProfile() {
         <Card.Header>
           <Card.Title>More About You</Card.Title>
           <Card.Description>
-            Complete your professional details
+            Complete your  details
           </Card.Description>
         </Card.Header>
 
@@ -108,3 +108,4 @@ export default function PharmacyProfile() {
     </div>
   );
 }
+
