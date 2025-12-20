@@ -2,15 +2,17 @@ package com.clinical.userManagement.controller;
 
 import com.clinical.config.JwtUtil;
 import com.clinical.config.MyUserDetails;
-import com.clinical.userManagement.dto.UserLoginRequest;
-import com.clinical.userManagement.dto.UserSignupRequest;
+import com.clinical.userManagement.dto.*;
 import com.clinical.userManagement.model.Pharmacy;
 import com.clinical.userManagement.model.Role;
 import com.clinical.userManagement.model.SubscriptionStatus;
 import com.clinical.userManagement.model.Users;
 import com.clinical.userManagement.repository.PharmaRepo;
 import com.clinical.userManagement.repository.UserRepo;
+import com.clinical.userManagement.service.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,107 +32,62 @@ import java.util.Set;
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
     AuthenticationManager authenticationManager;
 
-    @Autowired
     UserRepo userRepo;
 
-    @Autowired
     PharmaRepo pharmaRepo;
 
-    @Autowired
     PasswordEncoder passwordEncoder;
 
+    AuthService authService;
+
+    public AuthController(AuthenticationManager authenticationManager, UserRepo userRepo, PharmaRepo pharmaRepo, PasswordEncoder passwordEncoder, AuthService authService) {
+        this.authenticationManager = authenticationManager;
+        this.userRepo = userRepo;
+        this.pharmaRepo = pharmaRepo;
+        this.passwordEncoder = passwordEncoder;
+        this.authService = authService;
+    }
+
     @PostMapping("/signIn")
-    public Map<String,String> signIn(@RequestBody UserLoginRequest userLoginRequest){
+    public ResponseEntity<TokenResponse> signIn(@Valid @RequestBody UserLoginRequest userLoginRequest){
 
-        Authentication authentication;
+        TokenResponse tokenResponse=authService.signIn(userLoginRequest);
 
-        authentication=authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginRequest.email(),userLoginRequest.password()));
-
-        MyUserDetails userDetails= (MyUserDetails) authentication.getPrincipal();
-
-        if(authentication.isAuthenticated()){
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            List<String> roles=userDetails.getAuthorities()
-                    .stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .toList();
-
-            String accessToken = JwtUtil.generateAccessToken(userLoginRequest.email(),roles);
-
-            String refreshToken = JwtUtil.generateRefreshToken(userLoginRequest.email());
-
-            Map<String,String> response=new HashMap<>();
-            response.put("accessToken",accessToken);
-            response.put("refreshToken",refreshToken);
-            return response;
-        }
-        return Map.of("error","Login Failed!");
+        return ResponseEntity.ok(tokenResponse);
     }
 
     @PostMapping("/refresh")
-    public Map<String,String> refresh(@RequestBody Map<String,String> request){
-        String refreshToken=request.get("refreshToken");
-        if (!JwtUtil.validateToken(refreshToken)) {
-            return Map.of("error", "Invalid refresh token");
-        }
-        String email = JwtUtil.extractClaims(refreshToken).getSubject();
-        Users user = userRepo.findByEmail(email);
-        if(user==null){
-            throw new UsernameNotFoundException("User with this email not found! -> "+email);
-        }
-        List<String> roles = user.getRole()
-                .stream()
-                .map(Role::name)
-                .toList();
-        String newAccessToken = JwtUtil.generateAccessToken(email, roles);
-        return Map.of(
-                "accessToken", newAccessToken,
-                "refreshToken", refreshToken
-        );
+    public ResponseEntity<TokenResponse> refresh(@Valid @RequestBody TokenRequest tokenRequest){
+
+        TokenResponse tokenResponse=authService.getRefreshToken(tokenRequest);
+
+        return ResponseEntity.ok(tokenResponse);
     }
 
     @PostMapping("/signUp")
-    public Users signUp(@RequestBody UserSignupRequest userSignupRequest){
+    public ResponseEntity<UserResponse > signUp(@Valid @RequestBody UserSignupRequest userSignupRequest){
 
-        if(userRepo.existsByEmail(userSignupRequest.email())){
-            throw new RuntimeException("User with this email already exists! "+userSignupRequest.email());
-        }
+        UserResponse signedUpUser=authService.signUp(userSignupRequest);
 
-        Users newUser=new Users();
-        newUser.setEmail(userSignupRequest.email());
-        newUser.setPassword(passwordEncoder.encode(userSignupRequest.password()));
-        newUser.setRole(Set.of(Role.PHARMACIST));
-
-        return userRepo.save(newUser);
+        return ResponseEntity.ok(signedUpUser);
     }
 
     @PutMapping("/registerPharmacy")
-    public Users registerPharmacy(@RequestBody Pharmacy pharmacy,Authentication authentication) {
-        String username = authentication.getName();
-        Users user = userRepo.findByEmail(username);
-        if (user == null) {
-            throw new RuntimeException("User not found with this email ");
-        }
-        Pharmacy newPharma = null;
-        if (!pharmaRepo.existsByName(pharmacy.getName())) {
-            if(pharmacy.getSubscriptionStatus()==null){
-                pharmacy.setSubscriptionStatus(SubscriptionStatus.INACTIVE);
-            }
-            newPharma = pharmaRepo.save(pharmacy);
-        }else{
-            newPharma=pharmaRepo.getByName(pharmacy.getName());
-        }
-        user.setPharmacy(newPharma);
-        return userRepo.save(user);
+    public ResponseEntity<UserResponse> registerPharmacy(@Valid @RequestBody PharmacyRequest pharmacyRequest,Authentication authentication) {
+
+        UserResponse updatedUserResponse = authService.registerPharmacy(pharmacyRequest,authentication);
+
+        return ResponseEntity.ok(updatedUserResponse);
     }
 
     @GetMapping("/getAllPharma")
-    public List<Pharmacy> getAllPharma(){
-        return pharmaRepo.findAll();
+    public ResponseEntity<List<PharmacyResponse>> getAllPharma(){
+
+        List<PharmacyResponse> allPharma = authService.getAllPharma();
+
+        return ResponseEntity.ok(allPharma);
+
     }
 }

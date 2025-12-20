@@ -3,13 +3,17 @@ package com.clinical.userManagement.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name="pharmacy")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Pharmacy {
 
     @Id
@@ -38,5 +42,15 @@ public class Pharmacy {
     @PrePersist
     protected void onCreate(){
         this.createdAt=LocalDateTime.now();
+    }
+
+    public Pharmacy(String name, String address, String phone, String fax, String logoUrl, SubscriptionStatus subscriptionStatus, LocalDateTime createdAt) {
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.fax = fax;
+        this.logoUrl = logoUrl;
+        this.subscriptionStatus = subscriptionStatus;
+        this.createdAt = createdAt;
     }
 }
