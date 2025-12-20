@@ -29,30 +29,38 @@ function Login() {
     }));
   };
 
+  
   const handleLogin = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+  e.preventDefault();
+  setError("");
+  setLoading(true);
 
-    try {
-      const response = await api.post("/auth/signIn", {
-        email: formData.email,
-        password: formData.password,
-      });
+  try {
+    const response = await api.post("/auth/signIn", {
+      email: formData.email,
+      password: formData.password,
+    });
 
-      const { accessToken } = response.data;
-      localStorage.setItem("accessToken", accessToken);
+    const { accessToken } = response.data;
+    localStorage.setItem("accessToken", accessToken);
 
-      navigate("/PharmacySelect");
-    } catch (err) {
+    navigate("/PharmacySelect");
+  } catch (err) {
+    if (!err.response) {
+      setError("Unable to connect to server. Please try again later.");
+    } else if (err.response.status === 401) {
+      setError("Invalid email or password.");
+    } else {
       setError(
-        err.response?.data?.message ||
+        err.response.data?.message ||
           "Login failed. Please try again."
       );
-    } finally {
-      setLoading(false);
     }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50 p-4">

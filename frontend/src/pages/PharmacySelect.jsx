@@ -32,7 +32,7 @@ export default function PharmacySelect() {
   const handleNext = () => {
     if (!selectedPharmacy) return;
 
-    // later you can store this in context / redux / backend
+   
     navigate("/pharmacy-profile"); // next page
   };
 
