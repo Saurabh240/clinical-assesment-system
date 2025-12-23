@@ -17,11 +17,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleRuntime(RuntimeException ex, HttpServletRequest request){
 
         ErrorResponseDTO err=new ErrorResponseDTO(
-                LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
-                ex.getMessage(),
-                request.getRequestURI()
+                ex.getMessage()
         );
 
         return new ResponseEntity<>(err,HttpStatus.BAD_REQUEST);
@@ -31,11 +28,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleInvalidJwtToken(InvalidJwtTokenException ex, HttpServletRequest request){
 
         ErrorResponseDTO err=new ErrorResponseDTO(
-                LocalDateTime.now(),
-                HttpStatus.UNAUTHORIZED.value(),
                 HttpStatus.UNAUTHORIZED.getReasonPhrase(),
-                ex.getMessage(),
-                request.getRequestURI()
+                ex.getMessage()
         );
 
         return new ResponseEntity<>(err,HttpStatus.UNAUTHORIZED);
@@ -45,11 +39,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleUsernameNotFound(UsernameNotFoundException ex, HttpServletRequest request){
 
         ErrorResponseDTO err=new ErrorResponseDTO(
-                LocalDateTime.now(),
-                HttpStatus.NOT_FOUND.value(),
                 HttpStatus.NOT_FOUND.getReasonPhrase(),
-                ex.getMessage(),
-                request.getRequestURI()
+                ex.getMessage()
         );
 
         return new ResponseEntity<>(err,HttpStatus.NOT_FOUND);
@@ -59,11 +50,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleGeneralException(RuntimeException ex, HttpServletRequest request){
 
         ErrorResponseDTO err=new ErrorResponseDTO(
-                LocalDateTime.now(),
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
-                ex.getMessage(),
-                request.getRequestURI()
+                ex.getMessage()
         );
 
         return new ResponseEntity<>(err,HttpStatus.INTERNAL_SERVER_ERROR);

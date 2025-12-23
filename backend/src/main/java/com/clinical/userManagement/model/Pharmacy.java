@@ -36,6 +36,9 @@ public class Pharmacy {
     @Enumerated(EnumType.STRING)
     private SubscriptionStatus subscriptionStatus;
 
+    @Embedded
+    private SubscriptionDuration subscriptionDuration;
+
     @Column(nullable = false,updatable = false)
     private LocalDateTime createdAt;
 
@@ -44,13 +47,14 @@ public class Pharmacy {
         this.createdAt=LocalDateTime.now();
     }
 
-    public Pharmacy(String name, String address, String phone, String fax, String logoUrl, SubscriptionStatus subscriptionStatus, LocalDateTime createdAt) {
+    public Pharmacy(String name, String address, String phone, String fax, String logoUrl, SubscriptionStatus subscriptionStatus,SubscriptionDuration subscriptionDuration, LocalDateTime createdAt) {
         this.name = name;
         this.address = address;
         this.phone = phone;
         this.fax = fax;
         this.logoUrl = logoUrl;
         this.subscriptionStatus = subscriptionStatus;
+        this.subscriptionDuration = subscriptionDuration;
         this.createdAt = createdAt;
     }
 }

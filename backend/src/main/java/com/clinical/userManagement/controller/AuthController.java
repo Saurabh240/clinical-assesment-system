@@ -74,20 +74,5 @@ public class AuthController {
         return ResponseEntity.ok(signedUpUser);
     }
 
-    @PutMapping("/registerPharmacy")
-    public ResponseEntity<UserResponse> registerPharmacy(@Valid @RequestBody PharmacyRequest pharmacyRequest,Authentication authentication) {
 
-        UserResponse updatedUserResponse = authService.registerPharmacy(pharmacyRequest,authentication);
-
-        return ResponseEntity.ok(updatedUserResponse);
-    }
-
-    @GetMapping("/getAllPharma")
-    public ResponseEntity<List<PharmacyResponse>> getAllPharma(){
-
-        List<PharmacyResponse> allPharma = authService.getAllPharma();
-
-        return ResponseEntity.ok(allPharma);
-
-    }
 }

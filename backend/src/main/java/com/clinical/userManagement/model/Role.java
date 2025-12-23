@@ -1,5 +1,5 @@
 package com.clinical.userManagement.model;
 
 public enum Role {
-    ADMIN,PHARMACIST
+    PHARMACY_ADMIN,PHARMACIST
 }
