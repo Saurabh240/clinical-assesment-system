@@ -1,9 +1,7 @@
 package com.clinical.userManagement.dto;
 
-import lombok.Data;
 
-
-public record PharmacyRequest(
+public record CreatePharmacyRequest(
         String name,
         String address,
         String phone,
