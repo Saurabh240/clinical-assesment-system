@@ -1,94 +1,81 @@
 package com.clinical.userManagement.service;
 
 import com.clinical.config.JwtUtil;
-import com.clinical.config.MyUserDetails;
 import com.clinical.userManagement.dto.*;
-import com.clinical.userManagement.exception.InvalidCredentialsException;
-import com.clinical.userManagement.exception.InvalidJwtTokenException;
 import com.clinical.userManagement.model.*;
-import com.clinical.userManagement.repository.PharmaRepo;
-import com.clinical.userManagement.repository.UserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import com.clinical.userManagement.repository.UserRepository;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.Optional;
 
 @Service
+@Transactional
 public class AuthService {
 
-    private UserRepo userRepo;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
-    private PasswordEncoder passwordEncoder;
-
-    private AuthenticationManager authenticationManager;
-
-    private PharmaRepo pharmaRepo;
-
-    public AuthService(UserRepo userRepo, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, PharmaRepo pharmaRepo) {
-        this.userRepo = userRepo;
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
-        this.pharmaRepo = pharmaRepo;
+        this.jwtUtil = jwtUtil;
     }
 
-    public UserResponse signUp(UserSignupRequest userSignupRequest){
+    public SignupResponse signUp(SignupRequest signupRequest){
 
-        if(userRepo.existsByEmail(userSignupRequest.email())){
-            throw new RuntimeException("User with this email already exists! "+userSignupRequest.email());
+        if(userRepository.existsByEmail(signupRequest.email())){
+            throw new RuntimeException("User with this email already exists! "+ signupRequest.email());
         }
 
-        Users newUser=new Users();
-        newUser.setEmail(userSignupRequest.email());
-        newUser.setPassword(passwordEncoder.encode(userSignupRequest.password()));
-        newUser.setRole(Set.of(Role.PHARMACIST));
+        User newUser = new User();
+        newUser.setEmail(signupRequest.email());
+        newUser.setPassword(passwordEncoder.encode(signupRequest.password()));
+        newUser.setRole(Role.PHARMACIST);
+        newUser.setStatus(UserStatus.PENDING);
 
-        userRepo.save(newUser);
+        userRepository.save(newUser);
 
-        UserResponse userResponse=new UserResponse(
+        return new SignupResponse(
                 newUser.getId(),
-                newUser.getPharmacy(),
-                newUser.getEmail(),
-                newUser.getPassword(),
-                newUser.getRole(),
-                newUser.getCreatedAt());
-
-        return userResponse;
+                newUser.getStatus(),
+                "PHARMACY_SELECTION"
+        );
     }
 
-    public TokenResponse signIn(UserLoginRequest userLoginRequest){
+    public LoginResponse login(LoginRequest loginRequest, HttpServletResponse response){
 
-        Authentication authentication;
+        User user = userRepository.findByEmail(loginRequest.email())
+                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
 
-        authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginRequest.email(),userLoginRequest.password()));
-
-        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
-
-        if(authentication.isAuthenticated()){
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            List<String> roles=userDetails.getAuthorities()
-                    .stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .toList();
-
-            String accessToken = JwtUtil.generateAccessToken(userLoginRequest.email(),roles);
-
-            String refreshToken = JwtUtil.generateRefreshToken(userLoginRequest.email());
-
-            return new TokenResponse(accessToken,refreshToken);
+        if (!passwordEncoder.matches(loginRequest.password(), user.getPassword())) {
+            throw new RuntimeException("Invalid credentials");
         }
-        throw new InvalidCredentialsException("Credentials aren't valid");
+
+        String token = jwtUtil.generateAccessToken(user.getEmail(), user.getRole());
+
+        ResponseCookie cookie = ResponseCookie.from("access_token", token)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .sameSite("Strict")
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
+        return new LoginResponse(
+                user.getId(),
+                user.getStatus(),
+                resolveNextStep(user)
+        );
     }
 
 
@@ -96,27 +83,31 @@ public class AuthService {
 
         String refreshToken = tokenRequest.refreshToken();
 
-        if (!JwtUtil.validateToken(refreshToken)) {
-            throw new InvalidJwtTokenException("JWT refresh token is invalid!");
-        }
+        String email = jwtUtil.extractClaims(refreshToken).getSubject();
 
-        String email = JwtUtil.extractClaims(refreshToken).getSubject();
+        Optional<User> optionalUser = userRepository.findByEmail(email);
 
-        Users user = userRepo.findByEmail(email);
-
-        if(user==null){
+        if(optionalUser.isEmpty()){
             throw new UsernameNotFoundException("User with this email not found! -> "+email);
         }
 
-        List<String> roles = user.getRole()
-                .stream()
-                .map(Role::name)
-                .toList();
-
-        String newAccessToken = JwtUtil.generateAccessToken(email, roles);
+        String newAccessToken = jwtUtil.generateAccessToken(email, optionalUser.get().getRole());
 
         return new TokenResponse(newAccessToken,refreshToken);
 
     }
 
+    public UserContextResponse getCurrentUser(Authentication auth) {
+        AuthUser authUser = (AuthUser) auth.getPrincipal();
+        User user = userRepository
+                .findByEmail(authUser.email())
+                .orElseThrow();
+        return UserContextResponse.from(user);
+    }
+
+    private String resolveNextStep(User user) {
+        if (user.getPharmacy() == null) return "PHARMACY_SELECTION";
+        if (user.getPharmacy().getSubscription() == null) return "SUBSCRIPTION";
+        return "DASHBOARD";
+    }
 }

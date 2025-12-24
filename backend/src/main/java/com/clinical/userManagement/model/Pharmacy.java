@@ -6,14 +6,16 @@ import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+//Todo: There is no relation with Users for now | Subscription is also not mapped
 @Entity
 @Table(name="pharmacy")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class Pharmacy {
 
     @Id
@@ -33,28 +35,19 @@ public class Pharmacy {
 
     private String logoUrl;
 
-    @Enumerated(EnumType.STRING)
-    private SubscriptionStatus subscriptionStatus;
-
-    @Embedded
-    private SubscriptionDuration subscriptionDuration;
-
     @Column(nullable = false,updatable = false)
     private LocalDateTime createdAt;
+
+    private String stripeCustomerId;
+
+    @OneToMany(mappedBy = "pharmacy")
+    private List<User> users;
+
+    @OneToOne(mappedBy = "pharmacy")
+    private Subscription subscription;
 
     @PrePersist
     protected void onCreate(){
         this.createdAt=LocalDateTime.now();
-    }
-
-    public Pharmacy(String name, String address, String phone, String fax, String logoUrl, SubscriptionStatus subscriptionStatus,SubscriptionDuration subscriptionDuration, LocalDateTime createdAt) {
-        this.name = name;
-        this.address = address;
-        this.phone = phone;
-        this.fax = fax;
-        this.logoUrl = logoUrl;
-        this.subscriptionStatus = subscriptionStatus;
-        this.subscriptionDuration = subscriptionDuration;
-        this.createdAt = createdAt;
     }
 }

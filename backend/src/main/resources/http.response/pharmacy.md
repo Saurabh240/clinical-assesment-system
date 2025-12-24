@@ -1,54 +1,56 @@
-## 🔄 Endpoint: "pharma/registerPharmacy"
+## 🔄 Endpoint: "/pharmacies"
 
 ### ✅ Request Details
 
-- **Type**: PUT
-- **URL**: http://localhost:8080/pharma/registerPharmacy
+- **Type**: POST
+- **URL**: http://localhost:8080/pharmacies
 - **Request Name**: Register Pharmacy
   ### 📤 Request Body (JSON)
 ```json
 {
-  "name":"sauravPharma",
-  "address":"234 Rose street",
-  "phone":"8973648339",
-  "fax":"27833456",
-  "logoUrl":"sauravPharmaPic.png"
+  "name": "testPharma",
+  "address": "test address",
+  "phone": "1234567890",
+  "fax": "123456",
+  "logoUrl": "testLogo"
 }
 ```
 ### 📤 Response Body (JSON)
 ```json
 {
-  "id": 1,
-  "pharmacy": {
-    "id": 1,
-    "name": "sauravPharma",
-    "address": "234 Rose street",
-    "phone": "8973648339",
-    "fax": "27833456",
-    "logoUrl": "sauravPharmaPic.png",
-    "subscriptionStatus": "TRIAL",
-    "subscriptionDuration": {
-      "startedAt": "2025-12-23T09:34:10.9546268",
-      "expireAt": "2026-01-06T09:34:10.9546268"
-    },
-    "createdAt": "2025-12-23T09:34:10.9595612"
-  },
-  "email": "saurav@mail.com",
-  "password": "$2a$12$SuKn/7DAhDSOJGnIsIiyouQtT0.uq7B2kloISdna.8YRpePP1cHeO",
-  "role": [
-    "PHARMACIST"
-  ],
-  "createdAt": "2025-12-23T09:33:39.814573"
+  "nextStep": "SUBSCRIPTION"
 }
 ```
 - **Response Status**: 200 OK
 - ----
-## 🔄 Endpoint: "pharma/getAllPharma"
+## 🔄 Endpoint: "/pharmacies/join"
+
+### ✅ Request Details
+
+- **Type**: POST
+- **URL**: http://localhost:8080/pharmacies/join
+- **Request Name**: Register Pharmacy
+  ### 📤 Request Body (JSON)
+```json
+{
+  "pharmacyId": 1
+}
+```
+### 📤 Response Body (JSON)
+```json
+{
+  "nextStep": "SUBSCRIPTION"
+}
+```
+- **Response Status**: 200 OK
+
+- ----
+## 🔄 Endpoint: "/pharmacies/list"
 
 ### ✅ Request Details
 
 - **Type**: GET
-- **URL**: http://localhost:8080/pharma/getAllPharma
+- **URL**: http://localhost:8080/pharmacies/list
 - **Request Name**: Register Pharmacy
 
 ### 📤 Response Body (JSON)
@@ -56,23 +58,12 @@
 [
   {
     "id": 1,
-    "name": "sauravPharma",
-    "address": "234 Rose street",
-    "phone": "8973648339",
-    "fax": "27833456",
-    "logoUrl": "sauravPharmaPic.png",
-    "subscriptionStatus": "TRIAL",
-    "createdAt": "2025-12-23T09:34:10.959561"
-  },
-  {
-    "id": 2,
-    "name": "singhPharma",
-    "address": "34 Rose street",
-    "phone": "8739736832",
-    "fax": "27876728",
-    "logoUrl": "singhPharmaPic.png",
-    "subscriptionStatus": "TRIAL",
-    "createdAt": "2025-12-23T09:41:54.554426"
+    "name": "testPharma",
+    "address": "test address",
+    "phone": "1234567890",
+    "fax": "123456",
+    "logoUrl": null,
+    "createdAt": "2025-12-24T21:55:14.6818"
   }
 ]
 ```

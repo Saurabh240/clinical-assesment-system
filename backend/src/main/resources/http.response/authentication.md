@@ -11,22 +11,17 @@
 ### 📤 Request Body (JSON)
 ```json
 {
-  "email":"saurav@mail.com",
-  "password":"saurav123"
+  "email":"test@gmail.com",
+  "password":"Test@123"
 }
 ```
 
 ### 📤 Response Body (JSON) 
 ```json
 {
-  "id": 1,
-  "pharmacy": null,
-  "email": "saurav@mail.com",
-  "password": "$2a$12$SuKn/7DAhDSOJGnIsIiyouQtT0.uq7B2kloISdna.8YRpePP1cHeO",
-  "role": [
-    "PHARMACIST"
-  ],
-  "createdAt": "2025-12-23T09:33:39.814573"
+  "userId": 1,
+  "status": "PENDING",
+  "nextStep": "PHARMACY_SELECTION"
 }
 ```
 - **Response Status**: 200 OK
@@ -42,15 +37,16 @@
 ### 📤 Request Body (JSON)
 ```json
 {
-  "email":"saurav@mail.com",
-  "password":"saurav123"
+  "email":"test@gmail.com",
+  "password":"Test@123"
 }
 ```
   ### 📤 Response Body (JSON) 
 ```json
 {
-  "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYXVyYXZAbWFpbC5jb20iLCJyb2xlIjpbIlBIQVJNQUNJU1QiXSwiaWF0IjoxNzY2NDYyODc3LCJleHAiOjE3NjY1NDkyNzd9.NWZtvMuJ5Wq01pZjMayzyFuxx7V1vj6qtrwjVc4lGnk",
-  "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYXVyYXZAbWFpbC5jb20iLCJpYXQiOjE3NjY0NjI4NzcsImV4cCI6MTc2NzA2NzY3N30.DrjEEXqz-UO8uUfeuhTPOY9EHHM-MHZ2ipZIvc_xQD8"
+  "userId": 2,
+  "status": "PENDING",
+  "nextStep": "PHARMACY_SELECTION"
 }
 ```
 - **Response Status**: 200 OK
