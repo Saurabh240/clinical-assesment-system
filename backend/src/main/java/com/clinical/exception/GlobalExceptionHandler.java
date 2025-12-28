@@ -49,6 +49,14 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse("Validation Error", msg));
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponse> handleRuntimeException(
+            RuntimeException ex) {
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse("Runtime Exception", ex.getMessage()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneral(Exception ex) {
 

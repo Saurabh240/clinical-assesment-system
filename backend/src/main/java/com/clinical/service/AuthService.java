@@ -105,7 +105,7 @@ public class AuthService {
         Claims claims = jwtUtil.parseRefreshToken(refreshToken);
         Long userId = Long.valueOf(claims.getSubject());
 
-        String hash = Arrays.toString(sha256(refreshToken));
+        String hash = sha256Hex(refreshToken);
 
         RefreshToken stored = refreshTokenRepository
                 .findByTokenHashAndRevokedFalse(hash)

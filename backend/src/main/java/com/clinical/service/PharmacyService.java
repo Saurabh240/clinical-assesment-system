@@ -59,6 +59,7 @@ public class PharmacyService {
         pharmacy.setAddress(request.address());
         pharmacy.setPhone(request.phone());
         pharmacy.setFax(request.fax());
+        pharmacy.setLogoUrl(request.logoUrl());
 
         pharmacyRepository.save(pharmacy);
 
