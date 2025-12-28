@@ -1,6 +1,7 @@
+/*
 package com.clinical.config;
 
-import com.clinical.userManagement.model.Users;
+import com.clinical.userManagement.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,12 +21,9 @@ public class MyUserDetails implements UserDetails {
         this.authorities=authorities;
     }
 
-    public static MyUserDetails build(Users user){
+    public static MyUserDetails build(User user){
 
-        List<SimpleGrantedAuthority> authorities = user.getRole()
-                .stream()
-                .map(role -> new SimpleGrantedAuthority(role.name()))
-                .toList();
+        List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getRole().name()));
 
         return new MyUserDetails(
                 user.getEmail(),
@@ -70,3 +68,4 @@ public class MyUserDetails implements UserDetails {
         return true;
     }
 }
+*/

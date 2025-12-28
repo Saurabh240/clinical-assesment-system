@@ -3,13 +3,19 @@ package com.clinical.userManagement.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+//Todo: There is no relation with Users for now | Subscription is also not mapped
 @Entity
 @Table(name="pharmacy")
 @Data
+@RequiredArgsConstructor
 public class Pharmacy {
 
     @Id
@@ -29,11 +35,16 @@ public class Pharmacy {
 
     private String logoUrl;
 
-    @Enumerated(EnumType.STRING)
-    private SubscriptionStatus subscriptionStatus;
-
     @Column(nullable = false,updatable = false)
     private LocalDateTime createdAt;
+
+    private String stripeCustomerId;
+
+    @OneToMany(mappedBy = "pharmacy")
+    private List<User> users;
+
+    @OneToOne(mappedBy = "pharmacy")
+    private Subscription subscription;
 
     @PrePersist
     protected void onCreate(){
