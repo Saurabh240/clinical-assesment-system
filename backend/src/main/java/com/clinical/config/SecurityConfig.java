@@ -39,7 +39,9 @@ public class SecurityConfig {
                                 "/auth/signUp",
                                 "/auth/refresh",
                                 "/v3/api-docs/**",
-                                "/swagger-ui/**"
+                                "/swagger-ui/**",
+                                "/assessments/**",
+                                "/pdfs/**"
                         ).permitAll()
                         .requestMatchers("/auth/logout").authenticated()
                         .anyRequest().authenticated()
