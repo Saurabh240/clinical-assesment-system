@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        body { font-family: Arial; font-size: 11px; margin: 20mm; }
+        .section { border: 1px solid #000; padding: 6px; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+
+<h2 style="text-align:center">
+    Oseltamivir Pharmacy Assessment and Prescription
+</h2>
+
+<div class="section">
+    <b>Patient</b><br/>
+    Name: <span th:text="${patient.firstName}"></span>
+    <span th:text="${patient.lastName}"></span><br/>
+    Gender: <span th:text="${patient.gender}"></span>
+</div>
+
+<div class="section">
+    <b>Symptoms</b><br/>
+    Fever: <span th:text="${symptoms.fever ? '☑' : '☐'}"></span><br/>
+    Cough: <span th:text="${symptoms.cough ? '☑' : '☐'}"></span><br/>
+    Headache: <span th:text="${symptoms.headache ? '☑' : '☐'}"></span>
+</div>
+
+<div class="section">
+    <b>Care Plan</b><br/>
+    Rx Issued: <span th:text="${carePlan.rxIssued ? '☑' : '☐'}"></span>
+</div>
+
+</body>
+</html>
