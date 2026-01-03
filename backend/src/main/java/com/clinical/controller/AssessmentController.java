@@ -43,7 +43,7 @@ public class AssessmentController {
         return Map.of(
                 "id", a.getId(),
                 "data", a.getAssessmentData(),
-                "pdfUrl", a.getPdfUrl()
+                "pdfUrl", a.getPdfUrl()!=null ? a.getPdfUrl() : ""
         );
     }
 
