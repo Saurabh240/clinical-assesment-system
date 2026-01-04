@@ -7,7 +7,7 @@ import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 
-const BASE_URL = "http://localhost:8080";
+const BASE_URL =  import.meta.env.VITE_API_BASE_URL;
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');

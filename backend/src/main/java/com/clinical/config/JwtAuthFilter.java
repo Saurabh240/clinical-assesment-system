@@ -1,53 +1,77 @@
 package com.clinical.config;
 
-import com.clinical.userManagement.model.Role;
+import com.clinical.dto.AuthUser;
+import com.clinical.model.Role;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
+@Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
+    private final JwtUtil jwtUtil;
+
+    public JwtAuthFilter(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
+
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain) throws ServletException, IOException {
 
-        String authHeader = request.getHeader("Authorization");
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+        String token = resolveToken(request);
+
+        if (token != null) {
             try {
-                String token = authHeader.substring(7);
-                if (!JwtUtil.validateToken(token)) {
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    return;
-                }
+                Claims claims = jwtUtil.parseAccessToken(token);
 
-                String email = (String) JwtUtil.getClaim(token, "sub");
-                List<String> role = (List<String>) JwtUtil.getClaim(token, "role");
-                List<SimpleGrantedAuthority> authorities=role.stream()
-                        .map(roles->new SimpleGrantedAuthority("ROLE_" + roles))
-                        .toList();
+                Long userId = Long.valueOf(claims.getSubject());
+                String role = claims.get("role", String.class);
+                String email = claims.get("email", String.class);
 
-                var auth = new UsernamePasswordAuthenticationToken(
-                        email,
-                        null,
-                        authorities
-                );
+                AuthUser principal = new AuthUser(userId, email, Role.valueOf(role));
 
-                SecurityContextHolder.getContext().setAuthentication(auth);
-            } catch (Exception e) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(
+                                principal,
+                                null,
+                                List.of(new SimpleGrantedAuthority("ROLE_" + role))
+                        );
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            } catch (Exception ex) {
+                SecurityContextHolder.clearContext();
             }
         }
 
         filterChain.doFilter(request, response);
     }
+
+    private String resolveToken(HttpServletRequest request) {
+        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (header != null && header.startsWith("Bearer ")) {
+            return header.substring(7);
+        }
+        return null;
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return request.getMethod().equalsIgnoreCase("OPTIONS");
+    }
 }
+
