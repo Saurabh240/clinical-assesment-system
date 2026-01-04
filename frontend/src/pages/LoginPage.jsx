@@ -29,22 +29,31 @@ function Login() {
     }));
   };
 
-  
   const handleLogin = async (e) => {
   e.preventDefault();
   setError("");
   setLoading(true);
 
   try {
-    const response = await api.post("/auth/signIn", {
+    const res = await api.post("/auth/signIn", {
       email: formData.email,
       password: formData.password,
     });
 
-    const { accessToken } = response.data;
+    // ✅ VERY IMPORTANT
+    const { accessToken, user } = res.data;
+
+    if (!accessToken) {
+      throw new Error("Access token not received");
+    }
+
+    // store access token
     localStorage.setItem("accessToken", accessToken);
 
-    navigate("/PharmacySelect");
+    // optional: store user info
+    localStorage.setItem("user", JSON.stringify(user));
+
+    navigate("/pharmacy-select");
   } catch (err) {
     if (!err.response) {
       setError("Unable to connect to server. Please try again later.");
@@ -52,8 +61,7 @@ function Login() {
       setError("Invalid email or password.");
     } else {
       setError(
-        err.response.data?.message ||
-          "Login failed. Please try again."
+        err.response.data?.message || "Login failed. Please try again."
       );
     }
   } finally {
