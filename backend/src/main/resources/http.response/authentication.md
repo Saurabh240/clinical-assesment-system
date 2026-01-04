@@ -44,9 +44,10 @@
   ### 📤 Response Body (JSON) 
 ```json
 {
-  "userId": 2,
+  "userId": 3,
   "status": "PENDING",
-  "nextStep": "PHARMACY_SELECTION"
+  "nextStep": "PHARMACY_SELECTION",
+  "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJ0ZXN0MUBnbWFpbC5jb20iLCJyb2xlIjoiUEhBUk1BQ0lTVCIsInR5cGUiOiJBQ0NFU1MiLCJpYXQiOjE3NjY4Mjk2MzQsImV4cCI6MTc2NjgzMDUzNH0.u0WabU4er32Rmc7vaOrg9RTlgvhVmjLBxIJGicY1F58"
 }
 ```
 - **Response Status**: 200 OK
