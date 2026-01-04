@@ -33,7 +33,14 @@ public class PdfHtmlService {
 
         context.setVariable("patient", model.get("patient"));
         context.setVariable("symptoms", model.get("symptoms"));
+        context.setVariable("prescriber", model.get("prescriber"));
+        context.setVariable("eligibility", model.get("eligibility"));
         context.setVariable("carePlan", model.get("carePlan"));
+        context.setVariable("consent", model.get("consent"));
+        context.setVariable("assessment", model.get("assessment"));
+        context.setVariable("medication", model.get("medication"));
+        context.setVariable("signature", model.get("signature"));
+        context.setVariable("followUp", model.get("followUp"));
 
         return templateEngine.process("pdf/tamiflu", context);
     }
