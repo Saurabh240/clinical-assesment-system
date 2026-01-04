@@ -8,6 +8,7 @@ import com.clinical.service.PdfClient;
 import com.clinical.service.PdfHtmlService;
 import com.clinical.service.S3Service;
 import com.clinical.service.SubscriptionService;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -50,7 +51,12 @@ public class AssessmentController {
     @PostMapping("/{id}/pdf")
     public Map<String, String> generatePdf(@PathVariable Long id) {
         Assessment a = repo.findById(id).orElseThrow();
-        String html = htmlBuilder.renderTamiflu(a.getAssessmentData());
+
+        Map<String, Object> model = mapper.convertValue(a.getAssessmentData(),
+                new TypeReference<>() {
+                });
+
+        String html = htmlBuilder.renderTamiflu(model);
         byte[] pdf = pdfClient.generate(html);
         String url = s3.upload(pdf, "tamiflu-" + id + ".pdf");
         a.setPdfUrl(url);
