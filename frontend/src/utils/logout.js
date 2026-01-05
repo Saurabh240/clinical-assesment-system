@@ -6,7 +6,7 @@ export const logoutUser = async () => {
     // invalidate backend session / refresh token
     await api.post("/auth/logout");
   } catch (err) {
-    console.error("Logout failed:", error);
+    console.error("Logout failed:", err);
     // ignore backend errors (user might already be logged out)
   } finally {
     // clear frontend auth state
