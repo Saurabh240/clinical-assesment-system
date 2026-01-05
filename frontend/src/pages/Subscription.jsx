@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
+import { logoutUser } from "../utils/logout";
 import { activateTrial, createCheckoutSession } from "../api/subscriptionApi";
 
 export default function Subscription() {
@@ -170,13 +171,14 @@ export default function Subscription() {
               Subscribe
             </Button>
 
-            <Button
-              variant="outline"
-              fullWidth
-              onClick={() => navigate("/logout")}
-            >
-              Logout
-            </Button>
+          <Button
+  variant="outline"
+  fullWidth
+  onClick={logoutUser}
+>
+  Logout
+</Button>
+
           </div>
         </Card.Footer>
       </Card>
