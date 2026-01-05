@@ -1,99 +1,5 @@
 
 
-/*import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import api from "../api/axios";
-
-import Button from "../components/ui/Button";
-import Card from "../components/ui/Card";
-import Select from "../components/ui/Select";
-import { logoutUser } from "../utils/logout";
-
-export default function PharmacySelect() {
-  const navigate = useNavigate();
-
-  const [pharmacies, setPharmacies] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedPharmacy, setSelectedPharmacy] = useState("");
-
-  //  prevents double call in React 18 dev
-  const hasFetched = useRef(false);
-
-  useEffect(() => {
-    if (hasFetched.current) return; // stop second call
-    hasFetched.current = true;
-
-    const fetchPharmacies = async () => {
-      try {
-        setLoading(true);
-
-        const token = localStorage.getItem("accessToken");
-
-        const res = await api.get("/pharmacies/list", {
-          headers: token
-            ? { Authorization: `Bearer ${token}` }
-            : {},
-          withCredentials: true,
-        });
-
-        setPharmacies(res.data);
-      } catch (error) {
-        console.error("Failed to fetch pharmacies:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPharmacies();
-  }, []);
-
-  const pharmacyOptions = pharmacies.map((p) => ({
-    label: p.name,
-    value: p.id,
-  }));
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-      <Card className="w-full max-w-xl" shadow="lg">
-        <Card.Header>
-          <Card.Title>Select Your Pharmacy</Card.Title>
-          <Card.Description>
-            Choose a pharmacy from the list below
-          </Card.Description>
-        </Card.Header>
-
-        <Card.Content className="space-y-6">
-          <Select
-            label="Pharmacy"
-            value={selectedPharmacy}
-            options={pharmacyOptions}
-            placeholder={loading ? "Loading pharmacies..." : "Select pharmacy"}
-            onChange={(value) => setSelectedPharmacy(value)}
-            required
-            disabled={loading}
-          />
-        </Card.Content>
-
-        <Card.Footer className="flex gap-4">
-         <Button variant="outline" fullWidth onClick={logoutUser}>
-               Logout
-            </Button>
-
-
-          <Button
-            variant="secondary"
-            fullWidth
-            disabled={!selectedPharmacy}
-            onClick={() => navigate("/pharmacy-profile")}
-          >
-            Next
-          </Button>
-        </Card.Footer>
-      </Card>
-    </div>
-  );
-}
-*/
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
@@ -114,9 +20,9 @@ export default function PharmacySelect() {
 
   const hasFetched = useRef(false);
 
-  /* ----------------------------------
+  /* 
      FETCH PHARMACY LIST
-  ---------------------------------- */
+    */
   useEffect(() => {
     if (hasFetched.current) return;
     hasFetched.current = true;
@@ -125,16 +31,9 @@ export default function PharmacySelect() {
       try {
         setLoading(true);
 
-        const token = localStorage.getItem("accessToken");
+        const res = await api.get("/pharmacies/list");
 
-        const res = await api.get("/pharmacies/list", {
-          headers: token
-            ? { Authorization: `Bearer ${token}` }
-            : {},
-          withCredentials: true,
-        });
-
-        // Safe assignment
+        // API-safe assignment
         setPharmacies(res.data?.data || res.data || []);
       } catch (error) {
         console.error(
@@ -149,13 +48,11 @@ export default function PharmacySelect() {
     fetchPharmacies();
   }, []);
 
-  /* ----------------------------------
-     DROPDOWN OPTIONS
-  ---------------------------------- */
+  /* DROPDOWN OPTION*/
   const pharmacyOptions = [
     ...pharmacies.map((p) => ({
       label: p.name,
-      value: String(p.id), // ensure string for Select
+      value: String(p.id),
     })),
     {
       label: "+ Add Pharmacy",
@@ -163,9 +60,7 @@ export default function PharmacySelect() {
     },
   ];
 
-  /* ----------------------------------
-     HANDLE SELECT CHANGE
-  ---------------------------------- */
+  /* HANDLE SELECT*/
   const handlePharmacyChange = (value) => {
     if (value === ADD_PHARMACY_VALUE) {
       navigate("/pharmacy-profile", {
@@ -180,31 +75,14 @@ export default function PharmacySelect() {
   const isAddPharmacySelected =
     selectedPharmacy === ADD_PHARMACY_VALUE;
 
-  /* ----------------------------------
-     JOIN PHARMACY
-  ---------------------------------- */
+  /*JOIN PHARMACY*/
   const handleNext = async () => {
     if (!selectedPharmacy) return;
 
-    const token = localStorage.getItem("accessToken");
-
-    if (!token) {
-      logoutUser();
-      return;
-    }
-
     try {
-      await api.post(
-        "/pharmacies/join",
-        {
-          pharmacyId: Number(selectedPharmacy), // ✅ FIXED
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await api.post("/pharmacies/join", {
+        pharmacyId: Number(selectedPharmacy),
+      });
 
       navigate("/subscription");
     } catch (error) {
@@ -216,9 +94,7 @@ export default function PharmacySelect() {
     }
   };
 
-  /* ----------------------------------
-     UI
-  ---------------------------------- */
+  /* UI*/
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
       <Card className="w-full max-w-xl" shadow="lg">
@@ -251,9 +127,7 @@ export default function PharmacySelect() {
           <Button
             variant="secondary"
             fullWidth
-            disabled={
-              !selectedPharmacy || isAddPharmacySelected
-            }
+            disabled={!selectedPharmacy || isAddPharmacySelected}
             onClick={handleNext}
           >
             Next
