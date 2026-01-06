@@ -1,124 +1,133 @@
-import { useState } from "react";
+
+
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from '../components/ui/Button'; 
-import Card from '../components/ui/Card';
-import Input from '../components/ui/Input';
+import api from "../api/axios";
+
+import Button from "../components/ui/Button";
+import Card from "../components/ui/Card";
+import Select from "../components/ui/Select";
+import { logoutUser } from "../utils/logout";
+
+const ADD_PHARMACY_VALUE = "__ADD_PHARMACY__";
 
 export default function PharmacySelect() {
   const navigate = useNavigate();
 
+  const [pharmacies, setPharmacies] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedPharmacy, setSelectedPharmacy] = useState("");
-  const [showAddNew, setShowAddNew] = useState(false);
 
-  const [newPharmacy, setNewPharmacy] = useState({
-    name: "",
-    address: "",
-  });
+  const hasFetched = useRef(false);
 
-  const pharmacies = [
-    "Pharmacy 1",
-    "Pharmacy 2",
-    "Pharmacy 3",
-    "Pharmacy 4",
-    "Pharmacy 5",
+  /* 
+     FETCH PHARMACY LIST
+    */
+  useEffect(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
+
+    const fetchPharmacies = async () => {
+      try {
+        setLoading(true);
+
+        const res = await api.get("/pharmacies/list");
+
+        // API-safe assignment
+        setPharmacies(res.data?.data || res.data || []);
+      } catch (error) {
+        console.error(
+          "Failed to fetch pharmacies:",
+          error.response?.data || error.message
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPharmacies();
+  }, []);
+
+  /* DROPDOWN OPTION*/
+  const pharmacyOptions = [
+    ...pharmacies.map((p) => ({
+      label: p.name,
+      value: String(p.id),
+    })),
+    {
+      label: "+ Add Pharmacy",
+      value: ADD_PHARMACY_VALUE,
+    },
   ];
 
-  const handlePharmacyChange = (e) => {
-    const value = e.target.value;
+  /* HANDLE SELECT*/
+  const handlePharmacyChange = (value) => {
+    if (value === ADD_PHARMACY_VALUE) {
+      navigate("/pharmacy-profile", {
+        state: { mode: "create" },
+      });
+      return;
+    }
+
     setSelectedPharmacy(value);
-    setShowAddNew(value === "add_new");
   };
 
-  const handleNext = () => {
+  const isAddPharmacySelected =
+    selectedPharmacy === ADD_PHARMACY_VALUE;
+
+  /*JOIN PHARMACY*/
+  const handleNext = async () => {
     if (!selectedPharmacy) return;
 
-   
-    navigate("/pharmacy-profile"); // next page
+    try {
+      await api.post("/pharmacies/join", {
+        pharmacyId: Number(selectedPharmacy),
+      });
+
+      navigate("/subscription");
+    } catch (error) {
+      console.error(
+        "Join pharmacy failed:",
+        error.response?.data || error.message
+      );
+      alert("Unable to join pharmacy. Please try again.");
+    }
   };
 
+  /* UI*/
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
       <Card className="w-full max-w-xl" shadow="lg">
         <Card.Header>
           <Card.Title>Select Your Pharmacy</Card.Title>
           <Card.Description>
-            Choose an existing pharmacy or add a new one
+            Choose a pharmacy from the list below
           </Card.Description>
         </Card.Header>
 
         <Card.Content className="space-y-6">
-          {/* Pharmacy Dropdown */}
-          <div>
-            <label className="block mb-2 text-sm font-medium text-gray-900">
-              Pharmacy <span className="text-red-500">*</span>
-            </label>
-
-            <select
-              value={selectedPharmacy}
-              onChange={handlePharmacyChange}
-              className="block w-full px-4 py-3 rounded-lg border border-gray-300 bg-white
-                         focus:outline-none focus:ring-1 focus:ring-teal-400"
-              required
-            >
-              <option value="" disabled>
-                Select pharmacy
-              </option>
-
-              {pharmacies.map((p) => (
-                <option key={p} value={p}>
-                  {p}
-                </option>
-              ))}
-
-              <option value="add_new">➕ Add New Pharmacy</option>
-            </select>
-          </div>
-
-          {/* Add New Pharmacy Form */}
-          {showAddNew && (
-            <Card variant="filled" padding="md" className="border-dashed border-2">
-              <h4 className="text-lg font-semibold mb-4">Add New Pharmacy</h4>
-
-              <div className="space-y-4">
-                <Input
-                  label="Pharmacy Name"
-                  placeholder="Enter pharmacy name"
-                  required
-                  value={newPharmacy.name}
-                  onChange={(e) =>
-                    setNewPharmacy({ ...newPharmacy, name: e.target.value })
-                  }
-                />
-
-                <Input
-                  label="Address"
-                  placeholder="Street, City, Postal Code"
-                  value={newPharmacy.address}
-                  onChange={(e) =>
-                    setNewPharmacy({
-                      ...newPharmacy,
-                      address: e.target.value,
-                    })
-                  }
-                />
-              </div>
-            </Card>
-          )}
+          <Select
+            label="Pharmacy"
+            value={selectedPharmacy}
+            options={pharmacyOptions}
+            placeholder={
+              loading ? "Loading pharmacies..." : "Select pharmacy"
+            }
+            onChange={handlePharmacyChange}
+            disabled={loading}
+            required
+          />
         </Card.Content>
 
         <Card.Footer className="flex gap-4">
-          <Button
-            variant="outline"
-            fullWidth
-            onClick={() => navigate("/login")}
-          >
+          <Button variant="outline" fullWidth onClick={logoutUser}>
             Logout
           </Button>
 
           <Button
-            variant="primary"
+            variant="secondary"
             fullWidth
-            disabled={!selectedPharmacy}
+            disabled={!selectedPharmacy || isAddPharmacySelected}
             onClick={handleNext}
           >
             Next
