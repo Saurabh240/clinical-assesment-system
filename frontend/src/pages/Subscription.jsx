@@ -77,7 +77,7 @@ export default function Subscription() {
       }
     } catch (err) {
       console.error("Subscription error:", err);
-      alert("Unable to process subscription. Please try again.");
+      alert("Subscription already exists.");
     }
   };
 

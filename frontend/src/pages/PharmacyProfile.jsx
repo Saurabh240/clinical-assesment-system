@@ -35,9 +35,7 @@ export default function PharmacyProfile() {
     });
   };
 
-  /* ----------------------------------
-     CREATE PHARMACY
-  ---------------------------------- */
+  /* CREATE PHARMACY*/
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -74,14 +72,14 @@ export default function PharmacyProfile() {
 );
 
 
-      // ✅ Go to subscription after successful creation
+      // Go to subscription after successful creation
       navigate("/subscription");
     } catch (error) {
       console.error(
         "Create pharmacy failed:",
         error.response?.data || error.message
       );
-      alert("Unable to create pharmacy. Please try again.");
+      alert("User already linked to pharmacy.");
     } finally {
       setLoading(false);
     }
