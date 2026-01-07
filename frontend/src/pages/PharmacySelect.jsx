@@ -90,7 +90,7 @@ export default function PharmacySelect() {
         "Join pharmacy failed:",
         error.response?.data || error.message
       );
-      alert("Unable to join pharmacy. Please try again.");
+      alert("User is already linked to a pharmacy.");
     }
   };
 
