@@ -1,18 +1,20 @@
-import api from "../api/axios";
+
+import api from "../api/axios"; 
 
 export const logoutUser = async () => {
   try {
-    console.log("Calling logout API");
-    // invalidate backend session / refresh token
-    await api.post("/auth/logout");
+    
+    await api.post("/auth/logout"); 
   } catch (err) {
-    console.error("Logout failed:", err);
-    // ignore backend errors (user might already be logged out)
+    // If it's 403, the server doesn't recognize your session/token
+    console.error("Server denied logout:", err.response?.status);
   } finally {
-    // clear frontend auth state
-    localStorage.clear();
-     sessionStorage.clear();
-    // hard redirect to reset app state
+    localStorage.removeItem("accessToken");
+    sessionStorage.clear();
     window.location.replace("/login");
   }
 };
+
+
+
+
