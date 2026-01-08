@@ -6,8 +6,6 @@ CREATE TABLE IF NOT EXISTS pharmacy (
     fax VARCHAR(255),
     logo_url VARCHAR(255),
     subscription_status VARCHAR(255),
-    subscription_duration_started_at TIMESTAMP,
-    subscription_duration_expire_at TIMESTAMP,
     created_at TIMESTAMP NOT NULL
 );
 
