@@ -5,9 +5,10 @@ import com.clinical.dto.TrialResponse;
 import com.clinical.model.Assessment;
 import com.clinical.repository.AssessmentRepository;
 import com.clinical.service.PdfClient;
+import com.clinical.service.PdfHtmlService;
 import com.clinical.service.S3Service;
 import com.clinical.service.SubscriptionService;
-import com.clinical.service.TamifluHtmlBuilder;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -23,7 +24,7 @@ public class AssessmentController {
 
     private final AssessmentRepository repo;
     private final ObjectMapper mapper;
-    private final TamifluHtmlBuilder htmlBuilder;
+    private final PdfHtmlService htmlBuilder;
     private final PdfClient pdfClient;
     private final S3Service s3;
 
@@ -43,14 +44,19 @@ public class AssessmentController {
         return Map.of(
                 "id", a.getId(),
                 "data", a.getAssessmentData(),
-                "pdfUrl", a.getPdfUrl()
+                "pdfUrl", a.getPdfUrl()!=null ? a.getPdfUrl() : ""
         );
     }
 
     @PostMapping("/{id}/pdf")
     public Map<String, String> generatePdf(@PathVariable Long id) {
         Assessment a = repo.findById(id).orElseThrow();
-        String html = htmlBuilder.build(a.getAssessmentData());
+
+        Map<String, Object> model = mapper.convertValue(a.getAssessmentData(),
+                new TypeReference<>() {
+                });
+
+        String html = htmlBuilder.renderTamiflu(model);
         byte[] pdf = pdfClient.generate(html);
         String url = s3.upload(pdf, "tamiflu-" + id + ".pdf");
         a.setPdfUrl(url);
