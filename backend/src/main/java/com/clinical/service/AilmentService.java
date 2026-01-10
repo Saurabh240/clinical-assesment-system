@@ -20,6 +20,17 @@ public class AilmentService{
         return ailmentRepository.findAll();
     }
 
+    public AilmentResponse getAilment(String code){
+
+        Optional<Ailment> ailment = ailmentRepository.findByCode(code);
+
+        if(ailment.isEmpty()){
+            throw new RuntimeException("Ailment doesn't exist!");
+        }
+
+        return toAilmentResponse(ailment.get());
+    }
+
     public AilmentResponse createOrUpdateAilment(AilmentRequest ailmentRequest){
 
         Optional<Ailment> optionalAilment = ailmentRepository.findByCode(ailmentRequest.code());
