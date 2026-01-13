@@ -8,7 +8,7 @@ import java.util.Map;
 @Component
 public class PdfClient {
 
-    private final WebClient client = WebClient.create("http://localhost:3001");
+    private final WebClient client = WebClient.create("http://host.docker.internal:3001");;
 
     public byte[] generate(String html) {
         return client.post()
