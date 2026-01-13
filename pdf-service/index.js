@@ -15,4 +15,6 @@ app.post("/generate-pdf", async (req, res) => {
   res.send(pdf);
 });
 
-app.listen(3001, () => console.log("PDF service running"));
+app.listen(3001, "0.0.0.0", () => {
+  console.log("PDF service running on port 3001");
+});
