@@ -1,17 +1,18 @@
 package com.clinical.controller;
 
+import com.clinical.dto.AssessmentFilterRequest;
 import com.clinical.dto.AssessmentRequest;
-import com.clinical.dto.TrialResponse;
 import com.clinical.model.Assessment;
 import com.clinical.repository.AssessmentRepository;
+import com.clinical.service.AssessmentService;
 import com.clinical.service.PdfClient;
 import com.clinical.service.PdfHtmlService;
 import com.clinical.service.S3Service;
-import com.clinical.service.SubscriptionService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
@@ -23,6 +24,7 @@ import java.util.Map;
 public class AssessmentController {
 
     private final AssessmentRepository repo;
+    private final AssessmentService service;
     private final ObjectMapper mapper;
     private final PdfHtmlService htmlBuilder;
     private final PdfClient pdfClient;
@@ -62,5 +64,14 @@ public class AssessmentController {
         a.setPdfUrl(url);
         repo.save(a);
         return Map.of("url", url);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<Assessment>> getAssessments(
+            AssessmentFilterRequest request) {
+
+        return ResponseEntity.ok(
+                service.getAssessments(request)
+        );
     }
 }
