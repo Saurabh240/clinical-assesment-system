@@ -1,22 +1,25 @@
 package com.clinical.dto;
 
+import com.clinical.model.FollowupStatus;
 import lombok.Data;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Data
 public class AssessmentFilterRequest {
 
-    private String patientName;
     private String ailmentCode;
-    private String status;
+    private FollowupStatus followupStatus;
 
-    private LocalDate dateFrom;
-    private LocalDate dateTo;
+    private String patientName;
+
+    private Instant dateFrom;
+    private Instant dateTo;
 
     private int page = 0;
-    private int size = 20;
+    private int size = 10;
 
-    private String sortBy = "createdAt";
+    private String sortBy = "date";
     private String sortDirection = "DESC";
 }

@@ -20,9 +20,7 @@ public class AssessmentService {
     private final AssessmentRepository repository;
 
     private static final Map<String, String> SORT_FIELD_MAP = Map.of(
-            "date", "createdAt",
-            "ailment", "ailment",
-            "patient", "patientName"
+            "date", "createdAt"
     );
 
     public Page<Assessment> getAssessments(AssessmentFilterRequest req) {
