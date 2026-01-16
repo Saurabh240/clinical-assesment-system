@@ -36,3 +36,8 @@ jobs:
         run: |
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/clinical-management-frontend:latest -f frontend/Dockerfile frontend
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/clinical-management-frontend:latest
+
+      - name: Build and push pdf-service image
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/clinical-management-pdf-service:latest -f pdf-service/Dockerfile pdf-service
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/clinical-management-pdf-service:latest
