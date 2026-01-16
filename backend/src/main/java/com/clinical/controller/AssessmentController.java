@@ -3,6 +3,7 @@ package com.clinical.controller;
 import com.clinical.dto.AssessmentFilterRequest;
 import com.clinical.dto.AssessmentRequest;
 import com.clinical.model.Assessment;
+import com.clinical.model.FollowupStatus;
 import com.clinical.repository.AssessmentRepository;
 import com.clinical.service.AssessmentService;
 import com.clinical.service.PdfClient;
@@ -36,6 +37,8 @@ public class AssessmentController {
         a.setAilmentCode(req.getAilmentCode());
         a.setAssessmentData(mapper.valueToTree(req.getData()));
         a.setCreatedAt(Instant.now());
+        a.setFollowupStatus(FollowupStatus.PENDING);
+        a.setLastFollowupDate(null);
         repo.save(a);
         return Map.of("id", a.getId());
     }
@@ -53,11 +56,9 @@ public class AssessmentController {
     @PostMapping("/{id}/pdf")
     public Map<String, String> generatePdf(@PathVariable Long id) {
         Assessment a = repo.findById(id).orElseThrow();
-
         Map<String, Object> model = mapper.convertValue(a.getAssessmentData(),
                 new TypeReference<>() {
                 });
-
         String html = htmlBuilder.renderTamiflu(model);
         byte[] pdf = pdfClient.generate(html);
         String url = s3.upload(pdf, "tamiflu-" + id + ".pdf");
