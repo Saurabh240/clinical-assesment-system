@@ -24,6 +24,11 @@ public class Assessment {
     @Column(columnDefinition = "jsonb")
     private JsonNode assessmentData;
 
+    private Instant lastFollowupDate;
+
+    @Enumerated(EnumType.STRING)
+    private FollowupStatus followupStatus;
+
     private String pdfUrl;
 
     private Instant createdAt;
