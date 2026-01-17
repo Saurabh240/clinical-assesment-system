@@ -99,26 +99,6 @@ export default function useAssessment() {
     }
   };
 
-  // Helper: Format keys to human-readable labels
-  const formatLabel = (key) =>
-    key
-      .replace(/([A-Z])/g, " $1")
-      .replace(/^./, (s) => s.toUpperCase())
-      .trim();
-
-  // Helper: Customize required fields (expand based on your needs)
-  const isRequired = (fieldKey) => {
-    // Examples: make key fields required
-    const requiredKeys = [
-      "firstName",
-      "lastName",
-      "dob",
-      "verbalConsent",
-      "noRedFlags",
-    ];
-    return requiredKeys.includes(fieldKey);
-  };
-
   return {
     template,
     assessmentId,
