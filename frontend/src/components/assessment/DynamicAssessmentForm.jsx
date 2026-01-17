@@ -204,10 +204,11 @@ export default function DynamicAssessmentForm({
             >
               <option value="">-- Select --</option>
               {field.options?.map((opt) => (
-                <option key={opt} value={opt}>
-                  {opt}
-                </option>
-              ))}
+  <option key={opt.value} value={opt.value}>
+    {opt.label}
+  </option>
+))}
+
             </select>
             {error && (
               <p className="text-xs text-red-600">{error}</p>
