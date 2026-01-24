@@ -5,21 +5,41 @@ import Button from "../ui/Button";
 import Card from "../ui/Card";
 
 export default function DynamicAssessmentForm({ config, onSubmit, submitting = false }) {
-  if (!config || !Array.isArray(config.sections)) return null;
+  if (!config || !Array.isArray(config.sections)) {
+    console.error("Invalid config:", config);
+    return null;
+  }
+  
+  console.log("DynamicAssessmentForm received config:", config);
 
+  // Extract the pure field key (after the dot if present)
   const getPureKey = (key) => (key.includes(".") ? key.split(".")[1] : key);
 
   // ---------------- STATE INIT ----------------
   const [values, setValues] = useState(() => {
     const initial = {};
+    
     config.sections.forEach((section) => {
-      initial[section.key] = {};
+      // Use "id" property (backend standard) with fallback to "key" for compatibility
+      const sectionKey = section.id || section.key;
+      
+      if (!sectionKey) {
+        console.error("Section missing id/key:", section);
+        return;
+      }
+      
+      initial[sectionKey] = {};
+      
       section.fields.forEach((field) => {
         const pureKey = getPureKey(field.key);
-        initial[section.key][pureKey] =
-          field.defaultValue ?? (field.type === "boolean" ? false : null);
+        initial[sectionKey][pureKey] =
+          field.defaultValue ?? 
+          field.default ?? 
+          (field.type === "boolean" ? false : null);
       });
     });
+    
+    console.log("Initial form state (section-wise):", JSON.stringify(initial, null, 2));
     return initial;
   });
 
@@ -46,12 +66,14 @@ export default function DynamicAssessmentForm({ config, onSubmit, submitting = f
   const validateForm = () => {
     const newErrors = {};
     config.sections.forEach((section) => {
+      const sectionKey = section.id || section.key;
+      
       section.fields.forEach((field) => {
         const pureKey = getPureKey(field.key);
-        const value = values[section.key]?.[pureKey];
-        const errorKey = `${section.key}.${pureKey}`;
+        const value = values[sectionKey]?.[pureKey];
+        const errorKey = `${sectionKey}.${pureKey}`;
 
-        if (field.required && (value === null || value === "")) {
+        if (field.required && (value === null || value === "" || value === undefined)) {
           newErrors[errorKey] = `${field.label || pureKey} is required`;
         }
       });
@@ -63,7 +85,13 @@ export default function DynamicAssessmentForm({ config, onSubmit, submitting = f
   const handleSubmit = (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
-    if (Object.keys(validationErrors).length) return setErrors(validationErrors);
+    
+    if (Object.keys(validationErrors).length) {
+      console.log("Validation errors:", validationErrors);
+      return setErrors(validationErrors);
+    }
+    
+    console.log("Submitting section-wise data:", JSON.stringify(values, null, 2));
     onSubmit(values);
   };
 
@@ -71,7 +99,7 @@ export default function DynamicAssessmentForm({ config, onSubmit, submitting = f
   const renderField = (sectionKey, field) => {
     const pureKey = getPureKey(field.key);
     const label = field.label || pureKey;
-    const value = values[sectionKey][pureKey];
+    const value = values[sectionKey]?.[pureKey];
     const error = errors[`${sectionKey}.${pureKey}`];
 
     switch (field.type) {
@@ -101,13 +129,16 @@ export default function DynamicAssessmentForm({ config, onSubmit, submitting = f
       case "textarea":
         return (
           <div className="space-y-1">
-            <label>{label}</label>
+            <label className="text-sm font-medium text-gray-700">
+              {label}
+              {field.required && <span className="text-red-500 ml-1">*</span>}
+            </label>
             <textarea
               rows={4}
               value={value ?? ""}
               required={field.required}
               onChange={(e) => handleChange(sectionKey, pureKey, e.target.value)}
-              className="w-full p-3 border rounded-lg"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
             {error && <p className="text-red-600 text-xs">{error}</p>}
           </div>
@@ -116,12 +147,15 @@ export default function DynamicAssessmentForm({ config, onSubmit, submitting = f
       case "select":
         return (
           <div className="space-y-1">
-            <label>{label}</label>
+            <label className="text-sm font-medium text-gray-700">
+              {label}
+              {field.required && <span className="text-red-500 ml-1">*</span>}
+            </label>
             <select
               value={value ?? ""}
               required={field.required}
               onChange={(e) => handleChange(sectionKey, pureKey, e.target.value)}
-              className="w-full p-3 border rounded-lg"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="">-- Select --</option>
               {Array.isArray(field.options) &&
@@ -157,20 +191,25 @@ export default function DynamicAssessmentForm({ config, onSubmit, submitting = f
   return (
     <Card shadow="md" className="bg-white">
       <form onSubmit={handleSubmit} className="space-y-6">
-        {config.sections.map((section, idx) => (
-          <div key={section.key} className="border p-5 rounded-lg">
-            <h3 className="font-medium mb-4">
-              {idx + 1}. {section.title}
-            </h3>
-            <div className="grid md:grid-cols-2 gap-4">
-              {section.fields.map((field) => (
-                <div key={`${section.key}-${field.key}`}>
-                  {renderField(section.key, field)}
-                </div>
-              ))}
+        {config.sections.map((section, idx) => {
+          // Use "id" property (backend standard) with fallback to "key"
+          const sectionKey = section.id || section.key;
+          
+          return (
+            <div key={sectionKey} className="border border-gray-200 p-5 rounded-lg bg-gray-50">
+              <h3 className="font-semibold text-lg text-gray-800 mb-4">
+                {idx + 1}. {section.title}
+              </h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                {section.fields.map((field) => (
+                  <div key={`${sectionKey}-${field.key}`}>
+                    {renderField(sectionKey, field)}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
         <Button type="submit" fullWidth disabled={submitting}>
           {submitting ? "Submitting..." : "Submit Assessment"}
         </Button>

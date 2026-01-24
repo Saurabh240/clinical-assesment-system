@@ -47,6 +47,15 @@ export default function useAssessment() {
       if (!templateData || !Array.isArray(templateData.sections)) {
         throw new Error("Invalid template format: sections array not found");
       }
+      
+      // Backend standard is "id", but support legacy "key" format
+      templateData.sections = templateData.sections.map((section) => ({
+        ...section,
+        id: section.id || section.key, // Prefer id, fallback to key
+      }));
+      
+      console.log("Normalized template (using 'id'):", templateData);
+      
       setTemplate(templateData);
     } catch (err) {
       console.error("Failed to load template:", err);
@@ -57,7 +66,7 @@ export default function useAssessment() {
   };
 
   /**
-   * Submit assessment JSON EXACTLY as backend expects
+   * Submit assessment - data is already section-wise structured
    */
   const submitAssessment = async (payload) => {
     if (!payload) return;
@@ -65,13 +74,20 @@ export default function useAssessment() {
     setSubmitting(true);
     setError(null);
 
-    try {
+    try {    
+      console.log("Submitting assessment with payload:", payload);
+      
+      // The data object is already properly structured section-wise
+      // axios/fetch will automatically JSON.stringify it
       const res = await createAssessment(payload);
+      
+      console.log("Assessment created:", res);
+      
       setAssessmentId(res?.data?.id || res?.data?.assessmentId);
       setPdfReady(true);
     } catch (err) {
-      console.error(err);
-      setError("Failed to submit assessment");
+      console.error("Assessment submission error:", err);
+      setError(err.response?.data?.message || "Failed to submit assessment");
       throw err;
     } finally {
       setSubmitting(false);
@@ -91,8 +107,8 @@ export default function useAssessment() {
       const res = await generateAssessmentPDF(assessmentId);
       return res?.data || null;
     } catch (err) {
-      console.error(err);
-      setError("Failed to generate PDF");
+      console.error("PDF generation error:", err);
+      setError(err.response?.data?.message || "Failed to generate PDF");
       return null;
     } finally {
       setLoading(false);
