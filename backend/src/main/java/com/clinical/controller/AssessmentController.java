@@ -67,8 +67,8 @@ public class AssessmentController {
         return Map.of("url", url);
     }
 
-    @GetMapping
-    public ResponseEntity<Page<Assessment>> getAssessments(
+    @PostMapping("/getAllAssessments")
+    public ResponseEntity<Page<Assessment>> getAssessments(@RequestBody
             AssessmentFilterRequest request) {
 
         return ResponseEntity.ok(
