@@ -42,6 +42,7 @@ public class SecurityConfig {
                                 "/auth/signUp",
                                 "/auth/refresh",
                                 "/v3/api-docs/**",
+                                "/pdfs/**",
                                 "/swagger-ui/**"
                         ).permitAll()
                         .requestMatchers("/auth/logout").authenticated()

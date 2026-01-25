@@ -17,6 +17,6 @@ public class S3Service {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return "http://localhost:8080/pdfs/" + name;
+        return "http://localhost:8082/pdfs/" + name;
     }
 }
