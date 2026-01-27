@@ -1,5 +1,3 @@
-
-
 const Card = ({
   children,
   variant = 'default',
