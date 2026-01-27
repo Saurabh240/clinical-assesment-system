@@ -61,7 +61,7 @@ export default function AssessmentView() {
     setGenerating(true);
     try {
       const res = await api.post(
-        `/assessments/${assessment.id}/generate-pdf`
+        `/assessments/${assessment.id}/generatepdf`
       );
       if (res.data?.pdfUrl) {
         window.open(res.data.pdfUrl, "_blank");

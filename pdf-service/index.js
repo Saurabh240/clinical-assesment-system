@@ -9,6 +9,7 @@ app.post("/generate-pdf", async (req, res) => {
 
   try {
     const browser = await puppeteer.launch({
+      executablePath: process.env.CHROME_PATH!=null ? process.env.CHROME_PATH : "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
       headless: "new",
       args: [
         "--no-sandbox",
@@ -31,7 +32,7 @@ app.post("/generate-pdf", async (req, res) => {
     res.type("application/pdf").send(pdf);
 
   } catch (err) {
-    console.error(err);
+    console.error("PDF ERROR:", err);
     res.status(500).json({ error: "PDF generation failed" });
   }
 });

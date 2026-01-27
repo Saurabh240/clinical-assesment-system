@@ -1,6 +1,4 @@
-
-
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useId } from "react";
 
 const CustomSelect = ({
   label,
@@ -18,6 +16,7 @@ const CustomSelect = ({
 }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
+  const selectId = id || useId();
 
   const selectedOption = options.find((o) => o.value === value);
 
@@ -29,42 +28,51 @@ const CustomSelect = ({
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
     <div ref={ref} className={`w-full relative ${className}`}>
       {label && (
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label
+          htmlFor={selectId}
+          className="block text-sm font-medium text-gray-700 mb-2"
+        >
           {label}
           {required && <span className="text-red-500 ml-1">*</span>}
         </label>
       )}
 
-      {/* SELECT BOX */}
+      {/* SELECT BUTTON */}
       <button
         type="button"
+        id={selectId}
         disabled={disabled}
-        onClick={() => setOpen(!open)}
+        onClick={() => !disabled && setOpen((p) => !p)}
         className={`
           w-full flex items-center justify-between rounded-lg border px-4 py-3
           transition-all duration-200
-          ${error
-            ? "border-red-500 bg-red-50"
-            : "border-gray-300 bg-white focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+          ${
+            error
+              ? "border-red-500 bg-red-50"
+              : "border-gray-300 bg-white focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
           }
-          ${disabled
-            ? "bg-gray-100 text-gray-500 cursor-not-allowed"
-            : "hover:border-teal-400"
+          ${
+            disabled
+              ? "bg-gray-100 text-gray-500 cursor-not-allowed"
+              : "hover:border-teal-400"
           }
         `}
+        aria-haspopup="listbox"
+        aria-expanded={open}
       >
         <div className="flex items-center gap-2">
           {icon && <span className="text-gray-400">{icon}</span>}
           <span
-            className={`${
+            className={
               selectedOption ? "text-gray-900" : "text-gray-400"
-            }`}
+            }
           >
             {selectedOption?.label || placeholder}
           </span>
@@ -91,6 +99,7 @@ const CustomSelect = ({
       {/* DROPDOWN */}
       {open && !disabled && (
         <ul
+          role="listbox"
           className="
             absolute z-50 mt-2 w-full rounded-lg border border-teal-200
             bg-white shadow-lg max-h-60 overflow-auto
@@ -99,6 +108,7 @@ const CustomSelect = ({
           {options.map((opt) => (
             <li
               key={opt.value}
+              role="option"
               onClick={() => {
                 onChange(opt.value);
                 setOpen(false);
@@ -119,11 +129,22 @@ const CustomSelect = ({
       )}
 
       {helperText && !error && (
-        <p className="mt-1.5 text-sm text-gray-500">{helperText}</p>
+        <p
+          id={`${selectId}-helper`}
+          className="mt-1.5 text-sm text-gray-500"
+        >
+          {helperText}
+        </p>
       )}
 
       {error && (
-        <p className="mt-1.5 text-sm text-red-600">{error}</p>
+        <p
+          id={`${selectId}-error`}
+          className="mt-1.5 text-sm text-red-600"
+          role="alert"
+        >
+          {error}
+        </p>
       )}
     </div>
   );
