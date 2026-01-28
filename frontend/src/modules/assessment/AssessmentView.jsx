@@ -5,6 +5,8 @@ import { useParams } from "react-router-dom";
 import api from "../../api/axios";
 import Card from "../../components/ui/Card";
 import Button from "../../components/ui/Button";
+import {  useNavigate } from "react-router-dom";
+
 
 /*
    UI Helpers
@@ -21,17 +23,12 @@ function LabelValue({ label, value }) {
   );
 }
 
-function YesNoBadge({ value }) {
-  return (
-    <span
-      className={`px-2 py-0.5 rounded-full text-xs font-medium
-        ${value ? "bg-teal-100 text-teal-700" : "bg-gray-200 text-gray-600"}
-      `}
-    >
-      {value ? "Yes" : "No"}
-    </span>
-  );
-}
+function YesNoBadge({ value }) { 
+  return ( <span className={`px-2 py-2.5 rounded-full text-xs font-medium 
+    ${value ? "bg-gray-200  text-gray-600" : "bg-gray-200 text-gray-600"}`} >
+       {value ? "Yes" : "No"} </span> ); }
+
+
 
 /*
    Main Component
@@ -45,6 +42,13 @@ export default function AssessmentView() {
   const [error, setError] = useState("");
   const [generating, setGenerating] = useState(false);
 
+  const navigate = useNavigate();
+
+const handleEdit = () => {
+  navigate(`/assessments/${id}/edit`);
+};
+
+
   useEffect(() => {
     if (!id) return;
 
@@ -55,21 +59,41 @@ export default function AssessmentView() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  const handleGeneratePdf = async () => {
-    if (!assessment?.id) return;
+  
 
-    setGenerating(true);
-    try {
-      const res = await api.post(
-        `/assessments/${assessment.id}/generatepdf`
-      );
-      if (res.data?.pdfUrl) {
-        window.open(res.data.pdfUrl, "_blank");
-      }
-    } finally {
-      setGenerating(false);
+const handleGeneratePdf = async () => {
+  if (!assessment?.id) return;
+
+  // open blank tab immediately (user action)
+  const pdfWindow = window.open("", "_blank");
+
+  setGenerating(true);
+  try {
+    const res = await api.post(
+      `/assessments/${assessment.id}/pdf`
+    );
+
+    const pdfUrl = res.data?.url || res.data?.pdfUrl;
+
+    if (!pdfUrl) {
+      pdfWindow?.close();
+      alert("PDF generated but URL not returned");
+      return;
     }
-  };
+
+    // redirect opened tab
+    pdfWindow.location.href = pdfUrl;
+  } catch (err) {
+    pdfWindow?.close();
+    console.error("Generate PDF error:", err);
+    alert("Error generating PDF");
+  } finally {
+    setGenerating(false);
+  }
+};
+
+
+
 
   if (loading) return <div className="p-6 text-center">Loading...</div>;
   if (error) return <div className="p-6 text-center text-red-500">{error}</div>;
@@ -80,6 +104,13 @@ export default function AssessmentView() {
 
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-6">
+<div className="flex justify-between items-center mb-4">
+  <h1 className="text-xl font-semibold">Assessment Details</h1>
+
+  <Button variant="secondary" onClick={handleEdit}>
+    Edit Assessment
+  </Button>
+</div>
 
       {/* Patient */}
       <Card>
@@ -240,16 +271,47 @@ export default function AssessmentView() {
       </Card>
 
       {/* PDF */}
-      <Card className="bg-teal-50 border-teal-200">
-        <div className="flex justify-between items-center">
-          <span className="font-semibold text-teal-800">
-            Assessment Report
-          </span>
-          <Button variant="secondary" onClick={handleGeneratePdf} disabled={generating}>
-            {generating ? "Generating..." : "Generate PDF"}
-          </Button>
-        </div>
-      </Card>
+      {/*<Card className="bg-teal-50 border-teal-200">
+  <div className="flex justify-between items-center gap-2">
+ 
+
+    <div className="flex gap-2">
+      <Button variant="outline" onClick={handleEdit}>
+        Edit Assessment
+      </Button>
+
+      <Button
+        variant="secondary"
+        onClick={handleGeneratePdf}
+        disabled={generating}
+      >
+        {generating ? "Generating..." : "Generate PDF"}
+      </Button>
+    </div>
+  </div>
+</Card>*/}
+<Card className="bg-teal-50 border-teal-200">
+  <div className="flex items-center justify-between">
+    
+    {/* Left side */}
+    <Button variant="outline" onClick={handleEdit}>
+      Edit Assessment
+    </Button>
+
+    {/* Right side */}
+    <Button
+      variant="secondary"
+      onClick={handleGeneratePdf}
+      disabled={generating}
+    >
+      {generating ? "Generating..." : "Generate PDF"}
+    </Button>
+
+  </div>
+</Card>
+
+
+     
     </div>
   );
 }
