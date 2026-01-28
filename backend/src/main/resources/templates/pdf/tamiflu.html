@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oseltamivir Pharmacy Assessment and Prescription</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
@@ -14,6 +18,7 @@
             max-width: 900px;
             margin: 0 auto;
             border: 2px solid #000;
+            overflow: hidden;
         }
         h1 {
             text-align: center;
@@ -25,11 +30,14 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
         }
         td, th {
             border: 1px solid #000;
             padding: 5px;
             vertical-align: top;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         .section-header {
             background-color: #d0d0d0;
@@ -47,8 +55,10 @@
         .field-value {
             display: inline-block;
             border-bottom: 1px solid #000;
-            min-width: 150px;
+            min-width: 80px;
+            max-width: 100%;
             padding: 2px 5px;
+            word-break: break-word;
         }
         .checkbox {
             font-family: monospace;
@@ -67,10 +77,11 @@
             background-color: #f9f9f9;
         }
         .notes-area {
-            width: 98%;
+            width: 100%;
             min-height: 60px;
             border: 1px solid #ccc;
             padding: 5px;
+            box-sizing: border-box;
         }
     </style>
 </head>
@@ -84,24 +95,24 @@
             <td colspan="2" class="section-header">Prescriber Information</td>
         </tr>
         <tr>
-            <td>
+            <td style="width: 20%;">
                 <span class="field-label">First Name:</span><br>
                 <span class="field-value" th:text="${patient.firstName}">_________</span>
             </td>
-            <td>
+            <td style="width: 20%;">
                 <span class="field-label">Last Name:</span><br>
                 <span class="field-value" th:text="${patient.lastName}">_________</span>
             </td>
-            <td>
+            <td style="width: 15%;">
                 <span class="field-label">Gender:</span><br>
                 <span class="checkbox" th:text="${patient.gender == 'M' ? '☑' : '☐'}">☐</span> M
                 <span class="checkbox" th:text="${patient.gender == 'F' ? '☑' : '☐'}">☐</span> F
             </td>
-            <td>
+            <td style="width: 22.5%;">
                 <span class="field-label">First Name:</span><br>
                 <span class="field-value" th:text="${prescriber.firstName}">_________</span>
             </td>
-            <td>
+            <td style="width: 22.5%;">
                 <span class="field-label">Last Name:</span><br>
                 <span class="field-value" th:text="${prescriber.lastName}">_________</span>
             </td>
@@ -179,18 +190,30 @@
         </div>
 
         <div class="checkbox-group">
-            <span class="checkbox" th:text="${symptoms.abruptRespiratory ? '☑' : '☐'}">☐</span> Abrupt sensation or worsening of respiratory symptoms<br>
-            <span class="checkbox" th:text="${symptoms.fever ? '☑' : '☐'}">☐</span> Fever: abrupt onset ≥ 38.5°C (may be slight or absent in children <5 years or adults ≥ 65 years)<br>
-            <span class="checkbox" th:text="${symptoms.cough ? '☑' : '☐'}">☐</span> Cough (non-productive)<br>
-            <span class="checkbox" th:text="${symptoms.chills ? '☑' : '☐'}">☐</span> Chills<br>
-            <span class="checkbox" th:text="${symptoms.gi ? '☑' : '☐'}">☐</span> Gastrointestinal (GI) symptoms (occasionally diarrhea, vomiting)<br>
-            <span class="checkbox" th:text="${symptoms.malaise ? '☑' : '☐'}">☐</span> Malaise<br>
-            <span class="checkbox" th:text="${symptoms.fatigue ? '☑' : '☐'}">☐</span> Fatigue<br>
-            <span class="checkbox" th:text="${symptoms.myalgia ? '☑' : '☐'}">☐</span> Myalgia<br>
-            <span class="checkbox" th:text="${symptoms.rhinitis ? '☑' : '☐'}">☐</span> Rhinitis<br>
-            <span class="checkbox" th:text="${symptoms.soreThroat ? '☑' : '☐'}">☐</span> Sore throat<br>
-            <span class="checkbox" th:text="${symptoms.headache ? '☑' : '☐'}">☐</span> Headache: frontal (forehead) or retro-orbital (behind the eye)
+            <span class="checkbox" th:text="${(symptoms.abruptRespiratory ?: false) ? '☑' : '☐'}">☐</span>
+            Abrupt sensation or worsening of respiratory symptoms<br>
+            <span class="checkbox" th:text="${(symptoms.fever ?: false) ? '☑' : '☐'}">☐</span>
+            Fever: abrupt onset ≥ 38.5°C (may be slight or absent in children &lt;5 years or adults ≥ 65 years)<br>
+            <span class="checkbox" th:text="${(symptoms.cough ?: false) ? '☑' : '☐'}">☐</span>
+            Cough (non-productive)<br>
+            <span class="checkbox" th:text="${(symptoms.chills ?: false) ? '☑' : '☐'}">☐</span>
+            Chills<br>
+            <span class="checkbox" th:text="${(symptoms.gi ?: false) ? '☑' : '☐'}">☐</span>
+            Gastrointestinal (GI) symptoms (occasionally diarrhea, vomiting)<br>
+            <span class="checkbox" th:text="${(symptoms.malaise ?: false) ? '☑' : '☐'}">☐</span>
+            Malaise<br>
+            <span class="checkbox" th:text="${(symptoms.fatigue ?: false) ? '☑' : '☐'}">☐</span>
+            Fatigue<br>
+            <span class="checkbox" th:text="${(symptoms.myalgia ?: false) ? '☑' : '☐'}">☐</span>
+            Myalgia<br>
+            <span class="checkbox" th:text="${(symptoms.rhinitis ?: false) ? '☑' : '☐'}">☐</span>
+            Rhinitis<br>
+            <span class="checkbox" th:text="${(symptoms.soreThroat ?: false) ? '☑' : '☐'}">☐</span>
+            Sore throat<br>
+            <span class="checkbox" th:text="${(symptoms.headache ?: false) ? '☑' : '☐'}">☐</span>
+            Headache: frontal (forehead) or retro-orbital (behind the eye)
         </div>
+
 
         <div style="margin: 10px 0;">
             <strong>Patient meets the following criteria that none of the red flags below are present:</strong>
@@ -348,58 +371,105 @@
         <tr>
             <td>
                 <strong>Treatment:</strong><br>
-                <span class="checkbox" th:text="${medication.treatmentOseltamivir ? '☑' : '☐'}">☐</span> <strong>Oseltamivir:</strong><br>
+
+                <span class="checkbox" th:text="${(medication.treatmentOseltamivir ?: false) ? '☑' : '☐'}">☐</span>
+                <strong>Oseltamivir:</strong><br>
+
                 <div style="margin-left: 20px;">
-                    <span class="checkbox" th:text="${medication.adultsChildren13Plus ? '☑' : '☐'}">☐</span> Adults and Children ≥ 13 years of age: 75 mg TWICE daily for 5 days<br>
-                    <span class="checkbox" th:text="${medication.children1to12 ? '☑' : '☐'}">☐</span> Children 1 to 12 years of age<br>
+                    <span class="checkbox" th:text="${(medication.adultsChildren13Plus ?: false) ? '☑' : '☐'}">☐</span>
+                    Adults and Children ≥ 13 years of age: 75 mg TWICE daily for 5 days<br>
+
+                    <span class="checkbox" th:text="${(medication.children1to12 ?: false) ? '☑' : '☐'}">☐</span>
+                    Children 1 to 12 years of age<br>
+
                     <div style="margin-left: 40px;">
-                        <span class="checkbox" th:text="${medication.weightOver40kg ? '☑' : '☐'}">☐</span> >23 to 40 kg: 60 mg PO TWICE daily for 5 days<br>
-                        <span class="checkbox" th:text="${medication.weight23to40kg ? '☑' : '☐'}">☐</span> ≥ 15 to 23 kg: 45 mg PO TWICE daily for 5 days<br>
-                        <span class="checkbox" th:text="${medication.weightUnder15kg ? '☑' : '☐'}">☐</span> > 15 kg: 30 mg PO TWICE daily for 5 days<br>
+                        <span class="checkbox" th:text="${(medication.weightOver40kg ?: false) ? '☑' : '☐'}">☐</span>
+                        >23 to 40 kg: 60 mg PO TWICE daily for 5 days<br>
+
+                        <span class="checkbox" th:text="${(medication.weight23to40kg ?: false) ? '☑' : '☐'}">☐</span>
+                        ≥ 15 to 23 kg: 45 mg PO TWICE daily for 5 days<br>
+
+                        <span class="checkbox" th:text="${(medication.weightUnder15kg ?: false) ? '☑' : '☐'}">☐</span>
+                        > 15 kg: 30 mg PO TWICE daily for 5 days<br>
                     </div>
-                    <span class="checkbox" th:text="${medication.infantsUnder1 ? '☑' : '☐'}">☐</span> LIU 639 - For treatment of individuals during the 2023-2024 influenza season who are at <strong>high risk</strong> of complications
+
+                    <span class="checkbox" th:text="${(medication.infantsUnder1 ?: false) ? '☑' : '☐'}">☐</span>
+                    LIU 639 – For treatment of individuals during the influenza season who are at <strong>high risk</strong> of complications
                 </div>
+
                 <br>
 
                 <strong>Prevention:</strong><br>
-                <span class="checkbox" th:text="${medication.preventionOseltamivir ? '☑' : '☐'}">☐</span> <strong>Oseltamivir:</strong><br>
+
+                <span class="checkbox" th:text="${(medication.preventionOseltamivir ?: false) ? '☑' : '☐'}">☐</span>
+                <strong>Oseltamivir:</strong><br>
+
                 <div style="margin-left: 20px;">
-                    <span class="checkbox" th:text="${medication.prevAdults13Plus ? '☑' : '☐'}">☐</span> Adults and Children ≥ 13 years of age: 75 mg ONCE daily for 14 days<br>
-                    <span class="checkbox" th:text="${medication.prevChildren1to12 ? '☑' : '☐'}">☐</span> Children 1 to 12 years of age<br>
+                    <span class="checkbox" th:text="${(medication.prevAdults13Plus ?: false) ? '☑' : '☐'}">☐</span>
+                    Adults and Children ≥ 13 years of age: 75 mg ONCE daily for 14 days<br>
+
+                    <span class="checkbox" th:text="${(medication.prevChildren1to12 ?: false) ? '☑' : '☐'}">☐</span>
+                    Children 1 to 12 years of age<br>
+
                     <div style="margin-left: 40px;">
-                        <span class="checkbox" th:text="${medication.prevWeightOver40kg ? '☑' : '☐'}">☐</span> >23 to 40 kg: 60 mg PO ONCE daily for 14 days<br>
-                        <span class="checkbox" th:text="${medication.prevWeight23to40kg ? '☑' : '☐'}">☐</span> ≥ 15 to 23 kg: 45 mg PO ONCE daily for 14 days<br>
-                        <span class="checkbox" th:text="${medication.prevWeightUnder15kg ? '☑' : '☐'}">☐</span> > 15 kg: 30 mg PO ONCE daily for 14 days<br>
+                        <span class="checkbox" th:text="${(medication.prevWeightOver40kg ?: false) ? '☑' : '☐'}">☐</span>
+                        >23 to 40 kg: 60 mg PO ONCE daily for 14 days<br>
+
+                        <span class="checkbox" th:text="${(medication.prevWeight23to40kg ?: false) ? '☑' : '☐'}">☐</span>
+                        ≥ 15 to 23 kg: 45 mg PO ONCE daily for 14 days<br>
+
+                        <span class="checkbox" th:text="${(medication.prevWeightUnder15kg ?: false) ? '☑' : '☐'}">☐</span>
+                        > 15 kg: 30 mg PO ONCE daily for 14 days<br>
                     </div>
                 </div>
+
                 <br>
 
-                <span class="checkbox" th:text="${medication.standardDose ? '☑' : '☐'}">☐</span> <strong>Standard Dose (eGFR above 60mL/min) Paxlovid™ (Nirmatrelvir 150mg and Ritonavir 100mg)</strong><br>
-                <em>Take 2 pink tablets of nirmatrelvir and 1 white tablet of ritonavir once in the morning and once in the evening for 5 days</em><br><br>
+                <span class="checkbox" th:text="${(medication.standardDose ?: false) ? '☑' : '☐'}">☐</span>
+                <strong>Standard Dose (eGFR above 60mL/min) Paxlovid™</strong><br>
+                <em>Take 2 pink tablets of nirmatrelvir and 1 white tablet of ritonavir twice daily for 5 days</em><br><br>
 
-                <span class="checkbox" th:text="${medication.renalImpairmentTreatment ? '☑' : '☐'}">☐</span> <strong>Oseltamivir Treatment (Renal Impairment):</strong><br>
+                <span class="checkbox" th:text="${(medication.renalImpairmentTreatment ?: false) ? '☑' : '☐'}">☐</span>
+                <strong>Oseltamivir Treatment (Renal Impairment):</strong><br>
+
                 <div style="margin-left: 20px;">
-                    <span class="checkbox" th:text="${medication.renalAdults18Plus ? '☑' : '☐'}">☐</span> Adults ≥ 18 years of age:<br>
+                    <span class="checkbox" th:text="${(medication.renalAdults18Plus ?: false) ? '☑' : '☐'}">☐</span>
+                    Adults ≥ 18 years of age:<br>
+
                     <div style="margin-left: 40px;">
-                        <span class="checkbox" th:text="${medication.creatinineOver30 ? '☑' : '☐'}">☐</span> Creatinine Clearance (mL/min) >30-59: 30 mg PO TWICE daily for 5 days<br>
-                        <span class="checkbox" th:text="${medication.creatinine10to30 ? '☑' : '☐'}">☐</span> Creatinine Clearance (mL/min) >10-29: 30 mg PO every ONCE daily for 5 days<br>
+                        <span class="checkbox" th:text="${(medication.creatinineOver30 ?: false) ? '☑' : '☐'}">☐</span>
+                        Creatinine Clearance >30–59: 30 mg PO TWICE daily for 5 days<br>
+
+                        <span class="checkbox" th:text="${(medication.creatinine10to30 ?: false) ? '☑' : '☐'}">☐</span>
+                        Creatinine Clearance >10–29: 30 mg PO ONCE daily for 5 days<br>
                     </div>
                 </div>
+
                 <br>
 
-                <span class="checkbox" th:text="${medication.renalImpairmentPrevention ? '☑' : '☐'}">☐</span> <strong>Oseltamivir Prevention (Renal Impairment):</strong><br>
+                <span class="checkbox" th:text="${(medication.renalImpairmentPrevention ?: false) ? '☑' : '☐'}">☐</span>
+                <strong>Oseltamivir Prevention (Renal Impairment):</strong><br>
+
                 <div style="margin-left: 20px;">
-                    <span class="checkbox" th:text="${medication.renalPrevAdults18Plus ? '☑' : '☐'}">☐</span> Adults ≥ 18 years of age:<br>
+                    <span class="checkbox" th:text="${(medication.renalPrevAdults18Plus ?: false) ? '☑' : '☐'}">☐</span>
+                    Adults ≥ 18 years of age:<br>
+
                     <div style="margin-left: 40px;">
-                        <span class="checkbox" th:text="${medication.renalPrevCreatinineOver30 ? '☑' : '☐'}">☐</span> Creatinine Clearance (mL/min) >30-59: 30 mg PO ONCE daily for 14 days<br>
-                        <span class="checkbox" th:text="${medication.renalPrevCreatinine10to30 ? '☑' : '☐'}">☐</span> Creatinine Clearance (mL/min) >10-29: 30 mg PO every other day for 14 days<br>
+                        <span class="checkbox" th:text="${(medication.renalPrevCreatinineOver30 ?: false) ? '☑' : '☐'}">☐</span>
+                        Creatinine Clearance >30–59: 30 mg PO ONCE daily for 14 days<br>
+
+                        <span class="checkbox" th:text="${(medication.renalPrevCreatinine10to30 ?: false) ? '☑' : '☐'}">☐</span>
+                        Creatinine Clearance >10–29: 30 mg PO every other day for 14 days<br>
                     </div>
                 </div>
+
                 <br>
 
-                <span class="checkbox" th:text="${medication.reducedDosePaxlovid ? '☑' : '☐'}">☐</span> <strong>Reduced Dose (eGFR between 30-59ml/min) Paxlovid™ (Nirmatrelvir 150mg and Ritonavir 100mg)</strong><br>
-                <em>Take 1 pink tablet of nirmatrelvir and 1 white tablet of ritonavir once in the morning and once in the evening for 5 days</em>
+                <span class="checkbox" th:text="${(medication.reducedDosePaxlovid ?: false) ? '☑' : '☐'}">☐</span>
+                <strong>Reduced Dose (eGFR 30–59 mL/min) Paxlovid™</strong><br>
+                <em>Take 1 pink tablet of nirmatrelvir and 1 white tablet of ritonavir twice daily for 5 days</em>
             </td>
+
         </tr>
     </table>
 
@@ -429,31 +499,72 @@
         <tr>
             <td style="width: 40%;">
                 Follow-up with patient completed (safety, efficacy)<br>
-                Date: <span class="field-value" th:text="${followUp.date}">_____</span><br>
-                In-person <span class="checkbox" th:text="${followUp.inPerson ? '☑' : '☐'}">☐</span>
-                Phone <span class="checkbox" th:text="${followUp.phone ? '☑' : '☐'}">☐</span>
+
+                Date:
+                <span class="field-value"
+                      th:if="${followUp.date != null}"
+                      th:text="${followUp.date}">_____</span>
+                <span class="field-value"
+                      th:unless="${followUp.date != null}">_____</span><br>
+
+                In-person
+                <span class="checkbox"
+                      th:text="${(followUp.inPerson ?: false) ? '☑' : '☐'}">☐</span>
+
+                Phone
+                <span class="checkbox"
+                      th:text="${(followUp.phone ?: false) ? '☑' : '☐'}">☐</span>
             </td>
+
             <td style="width: 30%;">
                 Primary care provider notified
             </td>
+
             <td style="width: 30%;">
-                Date: <span class="field-value" th:text="${followUp.pcpNotifiedDate}">_____</span><br>
-                <span class="checkbox" th:text="${followUp.pcpPhone ? '☑' : '☐'}">☐</span> Phone
-                <span class="checkbox" th:text="${followUp.pcpFax ? '☑' : '☐'}">☐</span> Fax
+                Date:
+                <span class="field-value"
+                      th:if="${followUp.pcpNotifiedDate != null}"
+                      th:text="${followUp.pcpNotifiedDate}">_____</span>
+                <span class="field-value"
+                      th:unless="${followUp.pcpNotifiedDate != null}">_____</span><br>
+
+
+                <span class="checkbox"
+                      th:text="${(followUp.pcpPhone ?: false) ? '☑' : '☐'}">☐</span> Phone
+
+                <span class="checkbox"
+                      th:text="${(followUp.pcpFax ?: false) ? '☑' : '☐'}">☐</span> Fax
             </td>
         </tr>
+
         <tr>
             <td colspan="2">
                 Confirm with patient Paxlovid treatment initiated within 5 days since the start of symptoms
-                <span class="checkbox" th:text="${followUp.paxlovidConfirmed == true ? '☑' : '☐'}">☐</span> Yes
-                <span class="checkbox" th:text="${followUp.paxlovidConfirmed == false ? '☑' : '☐'}">☐</span> No
-                Date: <span class="field-value" th:text="${followUp.paxlovidConfirmDate}">_____</span>
+
+                <span class="checkbox"
+                      th:text="${(followUp.paxlovidConfirmed ?: false) ? '☑' : '☐'}">☐</span> Yes
+
+                <span class="checkbox"
+                      th:text="${(followUp.paxlovidConfirmed != null and !followUp.paxlovidConfirmed) ? '☑' : '☐'}">☐</span> No
+
+                Date:
+                <span class="field-value"
+                      th:if="${followUp.paxlovidConfirmDate != null}"
+                      th:text="${followUp.paxlovidConfirmDate}">_____</span>
+                <span class="field-value"
+                      th:unless="${followUp.paxlovidConfirmDate != null}">_____</span>
+
             </td>
+
             <td>
-                <span class="checkbox" th:text="${followUp.paxlovidPhone ? '☑' : '☐'}">☐</span> Phone
-                <span class="checkbox" th:text="${followUp.paxlovidInPerson ? '☑' : '☐'}">☐</span> In-person
+        <span class="checkbox"
+              th:text="${(followUp.paxlovidPhone ?: false) ? '☑' : '☐'}">☐</span> Phone
+
+                <span class="checkbox"
+                      th:text="${(followUp.paxlovidInPerson ?: false) ? '☑' : '☐'}">☐</span> In-person
             </td>
         </tr>
+
     </table>
 </div>
 </body>
