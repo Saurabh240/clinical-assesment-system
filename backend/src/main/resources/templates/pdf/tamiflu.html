@@ -85,6 +85,7 @@
         }
     </style>
 </head>
+
 <body>
 <div class="container">
     <h1>Oseltamivir Pharmacy Assessment and Prescription</h1>
@@ -117,56 +118,33 @@
                 <span class="field-value" th:text="${prescriber.lastName}">_________</span>
             </td>
         </tr>
+
         <tr>
-            <td>
-                <span class="field-label">DOB:</span><br>
-                <span class="field-value" th:text="${patient.dob}">_________</span>
-            </td>
-            <td>
-                <span class="field-label">Height:</span><br>
-                <span class="field-value" th:text="${patient.height}">_________</span>
-            </td>
-            <td>
-                <span class="field-label">Weight:</span><br>
-                <span class="field-value" th:text="${patient.weight}">_________</span>
-            </td>
-            <td>
-                <span class="field-label">License No.:</span><br>
-                <span class="field-value" th:text="${prescriber.licenseNo}">_________</span>
-            </td>
-            <td rowspan="2">
-                <span class="field-label">Fax No.:</span><br>
-                <span class="field-value" th:text="${prescriber.faxNo}">_________</span>
-            </td>
+            <td>DOB:<br><span class="field-value" th:text="${patient?.dob ?: ''}">_________</span></td>
+            <td>Height:<br><span class="field-value" th:text="${patient?.height ?: ''}">_________</span></td>
+            <td>Weight:<br><span class="field-value" th:text="${patient?.weight ?: ''}">_________</span></td>
+            <td>License No.:<br><span class="field-value" th:text="${prescriber?.licenseNo ?: ''}">_________</span></td>
+            <td rowspan="2">Fax No.:<br><span class="field-value" th:text="${prescriber?.faxNo ?: ''}">_________</span></td>
         </tr>
+
         <tr>
-            <td>
-                <span class="field-label">Phone No.:</span><br>
-                <span class="field-value" th:text="${patient.phone}">_________</span>
-            </td>
-            <td colspan="2">
-                <span class="field-label">Health Card No.:</span><br>
-                <span class="field-value" th:text="${patient.healthCardNo}">_________</span>
-            </td>
-            <td>
-                <span class="field-label">Phone No.:</span><br>
-                <span class="field-value" th:text="${prescriber.phone}">_________</span>
-            </td>
+            <td>Phone No.:<br><span class="field-value" th:text="${patient?.phone ?: ''}">_________</span></td>
+            <td colspan="2">Health Card No.:<br>
+                <span class="field-value" th:text="${patient?.healthCardNo ?: ''}">_________</span></td>
+            <td>Phone No.:<br><span class="field-value" th:text="${prescriber?.phone ?: ''}">_________</span></td>
         </tr>
+
         <tr>
-            <td colspan="2">
-                <span class="field-label">Address:</span><br>
-                <span class="field-value" th:text="${patient.address}">_________</span>
-            </td>
-            <td colspan="3">
-                <span class="field-label">Address:</span><br>
-                <span class="field-value" th:text="${prescriber.address}">_________</span>
-            </td>
+            <td colspan="2">Address:<br>
+                <span class="field-value" th:text="${patient?.address ?: ''}">_________</span></td>
+            <td colspan="3">Address:<br>
+                <span class="field-value" th:text="${prescriber?.address ?: ''}">_________</span></td>
         </tr>
     </table>
 
-    <div class="section-header" style="margin-top: 15px; padding: 8px;">
-        Individual Eligibility - Must meet criteria to proceed with treatment or prophylaxis
+    <!-- ================= ELIGIBILITY ================= -->
+    <div class="section-header" style="margin-top:15px;">
+        Individual Eligibility - Must meet criteria to proceed
     </div>
 
     <div class="criteria-section">
@@ -221,153 +199,53 @@
             <span class="checkbox" th:text="${eligibility.noRedFlags == false ? '☑' : '☐'}">☐</span> No
         </div>
 
-        <ul>
-            <li>Difficulty breathing (particularly severe exertional dyspnea, orthopnea, platypnea, wheezing, tachypnea, chest pain when breathing, tachycardia)</li>
-            <li>Stridor (high-pitched musical sound on inspiration, barking cough, unusual snoring, severe dyspnea (hoarseness)</li>
-            <li>Altered headache, neck pain or stiffness, photophobia</li>
-            <li>Altered level of consciousness</li>
-            <li>Severe dehydration (decreased urination, very dry mouth. Also no tears, sunken eyes/cheeks in young children)</li>
-            <li>Difficulty walking and interacting</li>
-            <li>Seizures</li>
-            <li>Severe chest pain or severe abdominal pain</li>
-            <li>Persistent bloody vomiting</li>
-            <li>Any patient with moderate to severe or progressive influenza symptoms</li>
-            <li>Severe throat pain, dysphagia (difficulty swallowing), odynophagia (painful swallowing)</li>
-            <li>Respiratory distress or increased work of breathing (tachypnea, retractions, grunting)</li>
-            <li>Cough > 3 weeks</li>
-            <li>Prolonged nasal congestion (> 7 days) with purulent discharge, facial pain, or maxillary pain</li>
-            <li>Fever ≥ 3 days or worsening after a few days of initial improvement</li>
-            <li>Significant reduction in food or fluid intake</li>
-        </ul>
+        <span class="checkbox" th:text="${eligibility?.outbreakDiagnosis ?: false ? '☑' : '☐'}">☐</span>
+        Outbreak diagnosis<br>
+
+        Symptom onset:
+        <span class="field-value" th:text="${eligibility?.symptomOnsetDate ?: ''}">_________</span>
     </div>
 
-    <div class="section-header" style="margin-top: 15px; padding: 8px;">
-        Informed consent to provide prescribing services
-    </div>
-
-    <table style="margin-top: 0;">
+    <!-- ================= CONSENT ================= -->
+    <div class="section-header">Consent</div>
+    <table>
         <tr>
             <td>
-                <span class="checkbox" th:text="${consent.verbalConsent ? '☑' : '☐'}">☐</span>
-                Verbal consent received from the eligible individual
+                <span class="checkbox" th:text="${consent?.verbalConsent ?: false ? '☑' : '☐'}">☐</span>
+                Verbal consent
             </td>
         </tr>
         <tr>
             <td>
-                <span class="checkbox" th:text="${consent.substituteConsent ? '☑' : '☐'}">☐</span>
-                Verbal consent received from the eligible individual's substitute decision maker. Name:
-                <span class="field-value" th:text="${consent.substituteName}">_________</span>
+                <span class="checkbox" th:text="${consent?.substituteConsent ?: false ? '☑' : '☐'}">☐</span>
+                Substitute Name:
+                <span class="field-value" th:text="${consent?.substituteName ?: ''}">_________</span>
                 Relation:
-                <span class="field-value" th:text="${consent.substituteRelation}">_________</span>
+                <span class="field-value" th:text="${consent?.substituteRelation ?: ''}">_________</span>
             </td>
         </tr>
     </table>
 
-    <div class="section-header" style="margin-top: 15px; padding: 8px;">
-        Assessment
-    </div>
-
-    <table style="margin-top: 0;">
-        <tr>
-            <td style="width: 50%;">
-                <span class="checkbox" th:text="${assessment.medicationListAttached ? '☑' : '☐'}">☐</span>
-                Attach current medication, herbal, OTC list<br>
-
-                <strong>Is the patient taking medications from another pharmacy?</strong>
-                <span class="checkbox" th:text="${assessment.otherPharmacy == true ? '☑' : '☐'}">☐</span> Yes
-                <span class="checkbox" th:text="${assessment.otherPharmacy == false ? '☑' : '☐'}">☐</span> No<br>
-
-                <span class="checkbox" th:text="${assessment.pregnancyBreastfeeding == true ? '☑' : '☐'}">☐</span> Pregnancy/breastfeeding?
-                <span class="checkbox" th:text="${assessment.pregnancyBreastfeeding == true ? '☑' : '☐'}">☐</span> Yes
-                <span class="checkbox" th:text="${assessment.pregnancyBreastfeeding == false ? '☑' : '☐'}">☐</span> No
-                <span class="checkbox" th:text="${assessment.pregnancyBreastfeeding == null ? '☑' : '☐'}">☐</span> N/A<br>
-
-                <span class="checkbox" th:text="${assessment.hasAllergies ? '☑' : '☐'}">☐</span> Allergies
-                <span class="field-value" th:text="${assessment.allergies}">_________</span>
-                <span class="checkbox" th:text="${assessment.nka ? '☑' : '☐'}">☐</span> NKA<br>
-
-                <span class="checkbox" th:text="${assessment.knownPregnant == true ? '☑' : '☐'}">☐</span> Known pregnant?
-                <span class="checkbox" th:text="${assessment.knownPregnant == true ? '☑' : '☐'}">☐</span> Yes
-                <span class="checkbox" th:text="${assessment.knownPregnant == false ? '☑' : '☐'}">☐</span> No
-                <span class="checkbox" th:text="${assessment.knownPregnant == null ? '☑' : '☐'}">☐</span> N/A
-            </td>
-            <td style="width: 50%;">
-                Existing liver impairment:
-                <span class="checkbox" th:text="${assessment.liverImpairment == true ? '☑' : '☐'}">☐</span> Yes
-                <span class="checkbox" th:text="${assessment.liverImpairment == false ? '☑' : '☐'}">☐</span> No
-                <span class="checkbox" th:text="${assessment.liverImpairment == null ? '☑' : '☐'}">☐</span> Unknown<br>
-
-                Existing renal impairment:
-                <span class="checkbox" th:text="${assessment.renalImpairment == true ? '☑' : '☐'}">☐</span> Yes
-                <span class="checkbox" th:text="${assessment.renalImpairment == false ? '☑' : '☐'}">☐</span> No
-                <span class="checkbox" th:text="${assessment.renalImpairment == null ? '☑' : '☐'}">☐</span> Unknown<br>
-
-                <span class="checkbox" th:text="${assessment.eGFRandSCr != null ? '☑' : '☐'}">☐</span>
-                eGFR (mL/min) and sCr:
-                <span class="field-value" th:text="${assessment.eGFRandSCr}">___</span> Suitable<br>
-
-                <span class="checkbox" th:text="${assessment.sCr != null ? '☑' : '☐'}">☐</span>
-                sCr (μmol/L):
-                <span class="field-value" th:text="${assessment.sCr}">___</span>
-                Date:
-                <span class="field-value" th:text="${assessment.sCrDate}">___</span><br>
-
-                <span class="checkbox" th:text="${assessment.eGFR != null ? '☑' : '☐'}">☐</span>
-                eGFR (mL/min):
-                <span class="field-value" th:text="${assessment.eGFR}">___</span>
-                Date:
-                <span class="field-value" th:text="${assessment.eGFRDate}">___</span>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <strong>Notes:</strong><br>
-                <div class="notes-area" th:text="${assessment.notes}"></div>
-            </td>
-        </tr>
-    </table>
+    <!-- ================= ASSESSMENT ================= -->
+    <div class="section-header">Assessment</div>
+    <div class="notes-area" th:text="${assessment?.notes ?: ''}"></div>
 
     <!-- ================= CARE PLAN ================= -->
-    <div class="section-header" style="margin-top: 15px; padding: 8px;">
-        Care Plan
-    </div>
+    <div class="section-header">Care Plan</div>
+    <div class="notes-area" th:text="${carePlan?.notes ?: ''}"></div>
 
-    <table style="margin-top: 0;">
+    <!-- ================= SIGNATURE ================= -->
+    <table style="margin-top:15px;">
         <tr>
-            <td>
-                <span class="checkbox" th:text="${carePlan.prescriptionIssued ? '☑' : '☐'}">☐</span>
-                Oseltamivir Prescription issued by the pharmacist
-
-                <span class="checkbox" th:text="${carePlan.inPersonCare ? '☑' : '☐'}">☐</span> In-person care (PIN 5858321)
-                <span class="checkbox" th:text="${carePlan.virtualCareTelephone ? '☑' : '☐'}">☐</span> Virtual care/telephone (PIN 6858322)<br>
-
-                <span class="checkbox" th:text="${carePlan.prescriptionNotIssued ? '☑' : '☐'}">☐</span>
-                Oseltamivir Prescription Not issued by the pharmacist
-
-                <span class="checkbox" th:text="${carePlan.inPersonCareNotIssued ? '☑' : '☐'}">☐</span> In-person care (PIN5858325)
-                <span class="checkbox" th:text="${carePlan.virtualCareTelephoneNotIssued ? '☑' : '☐'}">☐</span> Virtual care/telephone (PIN 5858326)<br>
-
-                <span class="checkbox" th:text="${carePlan.inPersonCareRefer ? '☑' : '☐'}">☐</span> In-person care - refer to MD/NP/other (PIN 5858323)
-                <span class="checkbox" th:text="${carePlan.virtualCareTelephoneRefer ? '☑' : '☐'}">☐</span> Virtual care/telephone - refer to MD/NP/other (PIN 5858324)<br><br>
-
-                <span class="checkbox" th:text="${carePlan.issueRxWithModification ? '☑' : '☐'}">☐</span> Issue Rx with modification to other drug therapies
-                <span class="checkbox" th:text="${carePlan.referToMDNP ? '☑' : '☐'}">☐</span> Refer to MD/NP/Other
-                <span class="checkbox" th:text="${carePlan.recommendOTC ? '☑' : '☐'}">☐</span> Recommend OTC
-                <span class="checkbox" th:text="${carePlan.recommendNonPharm ? '☑' : '☐'}">☐</span> Recommend non-pharm
-                <span class="checkbox" th:text="${carePlan.other ? '☑' : '☐'}">☐</span> Other ___________<br><br>
-
-                <strong>Notes:</strong><br>
-                <div class="notes-area" th:text="${carePlan.notes}" style="min-height: 40px;"></div>
-            </td>
+            <td>Pharmacist<br><span class="field-value" th:text="${signature?.pharmacistName ?: ''}"></span></td>
+            <td>OCP<br><span class="field-value" th:text="${signature?.ocpNumber ?: ''}"></span></td>
+            <td>Signature<br><span class="field-value"></span></td>
+            <td>Date<br><span class="field-value" th:text="${signature?.date ?: ''}"></span></td>
         </tr>
     </table>
 
-    <!-- ================= MEDICATION ORDER ================= -->
-    <div class="section-header" style="margin-top: 15px; padding: 8px;">
-        Medication Order
-    </div>
-
-    <table style="margin-top: 0;">
+    <!-- ================= FOLLOW UP ================= -->
+    <table style="margin-top:10px;">
         <tr>
             <td>
                 <strong>Treatment:</strong><br>
@@ -566,6 +444,7 @@
         </tr>
 
     </table>
+
 </div>
 </body>
 </html>

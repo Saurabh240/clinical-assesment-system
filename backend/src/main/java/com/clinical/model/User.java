@@ -23,6 +23,7 @@ public class User {
     private String password;
 
     @Column
+    @Enumerated(EnumType.STRING)
     private UserStatus status;
 
     @Column(nullable = false,updatable = false)
