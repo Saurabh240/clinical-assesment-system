@@ -1,4 +1,6 @@
-import Select from "../ui/Select";
+
+
+import CustomSelect from "../ui/Select";
 
 export default function AilmentSelect({
   ailments,
@@ -7,19 +9,16 @@ export default function AilmentSelect({
   loading,
 }) {
   return (
-    <Select
+    <CustomSelect
       label="Select Ailment"
       value={value}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={onChange}   
       disabled={loading}
-    >
-      <option value="">-- Select Ailment --</option>
-
-      {ailments.map((a) => (
-        <option key={a.code} value={a.code}>
-          {a.name}
-        </option>
-      ))}
-    </Select>
+      options={ailments.map((a) => ({
+        label: a.name,
+        value: a.code,
+      }))}
+      placeholder="-- Select Ailment --"
+    />
   );
 }

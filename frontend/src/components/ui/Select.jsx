@@ -18,7 +18,12 @@ const CustomSelect = ({
   const ref = useRef(null);
   const selectId = id || useId();
 
-  const selectedOption = options.find((o) => o.value === value);
+  /*const selectedOption = options.find((o) => o.value === value);*/
+ 
+ const selectedOption = options.find(
+   (o) => String(o.value) === String(value)
+ );
+
 
   // Close on outside click
   useEffect(() => {
