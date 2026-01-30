@@ -1,12 +1,13 @@
 package com.clinical.controller;
 
 import com.clinical.config.PaginationProperties;
+import com.clinical.dto.ProductListRequest;
 import com.clinical.dto.ProductPageResponse;
 import com.clinical.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -19,30 +20,25 @@ public class ProductController {
 
     @GetMapping
     public ProductPageResponse listProducts(
-            @RequestParam(required = false) String search,
-            @RequestParam(required = false) String ailment,
-            @RequestParam(required = false) String category,
-            @RequestParam(required = false) String brand,
-            @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size,
-            @RequestParam(defaultValue = "name") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortDir
+            @ModelAttribute ProductListRequest request
     ) {
-        int resolvedPage = (page != null)
-                ? page
+        int resolvedPage = (request.page() != null)
+                ? request.page()
                 : paginationProperties.getDefaultPage();
-        int resolvedSize = (size != null)
-                ? Math.min(size, paginationProperties.getMaxSize())
+
+        int resolvedSize = (request.size() != null)
+                ? Math.min(request.size(), paginationProperties.getMaxSize())
                 : paginationProperties.getDefaultSize();
+
         return productService.getProducts(
-                search,
-                ailment,
-                category,
-                brand,
+                request.search(),
+                request.ailment(),
+                request.category(),
+                request.brand(),
                 resolvedPage,
                 resolvedSize,
-                sortBy,
-                sortDir
+                request.sortBy(),
+                request.sortDir()
         );
     }
 }
