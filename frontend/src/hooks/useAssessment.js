@@ -65,6 +65,10 @@ export default function useAssessment() {
     }
   };
 
+
+
+
+
   /**
    * Submit assessment - data is already section-wise structured
    */
@@ -127,4 +131,8 @@ export default function useAssessment() {
     generatePdf,
     hasSections: !!template && Array.isArray(template.sections),
   };
+
+
+ 
+
 }

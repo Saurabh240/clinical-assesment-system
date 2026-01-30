@@ -62,6 +62,8 @@ export default function PharmacySelect() {
 
   /* HANDLE SELECT*/
   const handlePharmacyChange = (value) => {
+
+    setSelectedPharmacy(value);
     if (value === ADD_PHARMACY_VALUE) {
       navigate("/pharmacy-profile", {
         state: { mode: "create" },

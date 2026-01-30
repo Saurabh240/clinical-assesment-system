@@ -6,6 +6,7 @@ import ForgotPassword from "./pages/ForgetPassword";
 import PharmacySelect from "./pages/PharmacySelect";
 import PharmacyProfile from "./pages/PharmacyProfile";
 import Subscription from "./pages/Subscription";
+import AssessmentView from "./modules/assessment/AssessmentView";
 
 
 import AppRoutes from "./routes/AppRoutes";
@@ -21,6 +22,7 @@ function App() {
       <Route path="/pharmacy-select" element={<PharmacySelect />} />
       <Route path="/pharmacy-profile" element={<PharmacyProfile />} />
         <Route path="/subscription" element={<Subscription />} />
+        <Route path="/assessments/:id" element={<AssessmentView />} />
 
       {/* Protected dashboard routes */}
       <Route path="/*" element={<AppRoutes />} />
