@@ -1,0 +1,5 @@
+ALTER TABLE users
+ADD COLUMN firstName VARCHAR(20);
+
+ALTER TABLE users
+ADD COLUMN lastName VARCHAR(20);

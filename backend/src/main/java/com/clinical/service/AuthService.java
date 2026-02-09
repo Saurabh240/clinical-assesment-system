@@ -50,6 +50,8 @@ public class AuthService {
 
         User newUser = new User();
         newUser.setEmail(signupRequest.email());
+        newUser.setFirstName(signupRequest.firstName());
+        newUser.setLastName(signupRequest.lastName());
         newUser.setPassword(passwordEncoder.encode(signupRequest.password()));
         newUser.setRole(Role.PHARMACIST);
         newUser.setStatus(UserStatus.PENDING);
