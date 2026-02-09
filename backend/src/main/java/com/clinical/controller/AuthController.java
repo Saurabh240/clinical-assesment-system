@@ -27,10 +27,10 @@ public class AuthController {
 
     @PostMapping("/refresh")
     public ResponseEntity<TokenResponse> refresh(
-            @Valid @RequestBody TokenRequest request) {
+            @Valid @CookieValue("refresh_token") String refreshToken, HttpServletResponse response) {
 
         return ResponseEntity.ok(
-                authService.refresh(request.refreshToken())
+                authService.refresh(refreshToken, response)
         );
     }
 
