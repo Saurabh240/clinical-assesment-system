@@ -1,4 +1,4 @@
-package com.clinical.model;
+package com.clinical.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
