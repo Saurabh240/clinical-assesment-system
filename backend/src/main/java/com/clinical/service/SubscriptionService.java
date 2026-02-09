@@ -43,7 +43,7 @@ public class SubscriptionService {
         sub.setPlan(SubscriptionPlan.TRIAL);
         sub.setStatus(SubscriptionStatus.ACTIVE);
         sub.setStartDate(Instant.now());
-        sub.setEndDate(Instant.now().plusSeconds(15L * 24 * 60 * 60)); // 15 days trial
+        sub.setEndDate(Instant.now().plusSeconds(7L * 24 * 60 * 60)); // 15 days trial
 
         subscriptionRepo.save(sub);
 

@@ -100,7 +100,7 @@ public class AuthService {
     }
 
     @Transactional
-    public TokenResponse refresh(String refreshToken) {
+    public TokenResponse refresh(String refreshToken, HttpServletResponse response) {
 
         Claims claims = jwtUtil.parseRefreshToken(refreshToken);
         Long userId = Long.valueOf(claims.getSubject());
@@ -128,7 +128,15 @@ public class AuthService {
         String newAccess =
                 jwtUtil.generateAccessToken(user.getId(), user.getEmail(), user.getRole());
 
-        return new TokenResponse(newAccess, newRefreshJwt);
+        ResponseCookie cookie = ResponseCookie.from("refresh_token", newRefreshJwt)
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("Strict")
+                .path("/auth/refresh")
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        return new TokenResponse(newAccess);
     }
 
     @Transactional
