@@ -9,6 +9,9 @@ import Subscription from "./pages/Subscription";
 import AssessmentView from "./modules/assessment/AssessmentView";
 
 
+
+
+
 import AppRoutes from "./routes/AppRoutes";
 
 function App() {
@@ -23,7 +26,7 @@ function App() {
       <Route path="/pharmacy-profile" element={<PharmacyProfile />} />
         <Route path="/subscription" element={<Subscription />} />
         <Route path="/assessments/:id" element={<AssessmentView />} />
-
+      
       {/* Protected dashboard routes */}
       <Route path="/*" element={<AppRoutes />} />
     </Routes>

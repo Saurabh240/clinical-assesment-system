@@ -66,7 +66,9 @@ function Signup() {
     <div className="flex justify-center items-center min-h-screen bg-gray-50 p-4">
       <Card shadow="xl" padding="lg" className="w-full max-w-md">
         <Card.Header className="text-center">
-          <Card.Title>Create Account</Card.Title>
+ <Card.Title className="text-xl font-bold text-teal-600">
+            RxPrescribe
+          </Card.Title>
           <Card.Description>Sign up to get started</Card.Description>
         </Card.Header>
 

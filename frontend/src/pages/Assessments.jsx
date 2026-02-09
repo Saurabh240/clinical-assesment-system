@@ -41,6 +41,7 @@ export default function Assessments() {
     };
   }, []);
 
+
   const handleAilmentChange = (code) => {
     setSelectedCode(code);
     setPdfUrl(null);

@@ -11,3 +11,8 @@ export const createCheckoutSession = (plan) => {
     plan,
   });
 };
+
+// Check subscription status
+export const getSubscriptionStatus = () => {
+  return api.get("/api/subscriptions/status");
+};

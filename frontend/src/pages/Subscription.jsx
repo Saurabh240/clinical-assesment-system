@@ -84,7 +84,7 @@ export default function Subscription() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <Card className="w-full max-w-6xl">
-        {/* Header */}
+        {/* Header *
         <Card.Header className="text-center">
           <Card.Title>Select Your Subscription Plan</Card.Title>
           <Card.Description>
@@ -185,4 +185,5 @@ export default function Subscription() {
     </div>
   );
 }
+
 

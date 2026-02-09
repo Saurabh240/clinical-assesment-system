@@ -17,7 +17,6 @@ export default function PharmacyProfile() {
     designation: "",
     firstName: "",
     lastName: "",
-    language: "",
     registrationNumber: "",
     startDate: "",
 
@@ -54,7 +53,6 @@ export default function PharmacyProfile() {
     designation: formData.designation,
     firstName: formData.firstName,
     lastName: formData.lastName,
-    language: formData.language,
     registrationNumber: formData.registrationNumber,
     startDate: formData.startDate,
 
@@ -123,13 +121,8 @@ export default function PharmacyProfile() {
               />
             </div>
 
-            <Input
-              label="Preferred Language"
-              name="language"
-              required
-              value={formData.language}
-              onChange={handleChange}
-            />
+         
+            
 
             <Input
               label="Registration Number"
@@ -180,7 +173,7 @@ export default function PharmacyProfile() {
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
                 <Input
                   label="Country"
                   name="country"

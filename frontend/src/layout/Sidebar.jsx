@@ -1,5 +1,8 @@
 import { NavLink } from "react-router-dom";
 
+import { logoutUser } from "../utils/logout";
+
+
 const navLinkClass = ({ isActive }) =>
   `flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
     isActive
@@ -9,7 +12,7 @@ const navLinkClass = ({ isActive }) =>
 
 export default function Sidebar() {
   return (
-    <aside className="w-64 bg-gradient-to-b from-emerald-800 to-teal-900 text-white flex flex-col shadow-xl">
+    <aside className="w-64 bg-linear-to-b from-emerald-800 to-teal-900 text-white flex flex-col shadow-xl">
       {/* Logo Section */}
       <div className="p-6 border-b border-emerald-700/40">
         <div className="flex items-center gap-3">
@@ -59,7 +62,30 @@ export default function Sidebar() {
           </svg>
           Settings
         </NavLink>
-      </nav>
-    </aside>
+
+   </nav>
+
+      {/* Footer */}
+      <div className="p-6 border-t border-emerald-700/40">
+        <button
+          onClick={logoutUser}
+          className="flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-gray-300 hover:bg-emerald-700/30 hover:text-white transition-all duration-200 w-full"
+        >
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1"
+            />
+          </svg>
+          Logout
+        </button>
+      </div></aside>
   );
 }
