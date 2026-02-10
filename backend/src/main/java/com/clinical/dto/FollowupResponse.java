@@ -1,9 +1,11 @@
-package com.clinical.model;
+package com.clinical.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
