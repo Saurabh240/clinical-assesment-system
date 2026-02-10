@@ -1,61 +1,42 @@
-// Temporary mock – replace with real hook later
-/*const useAuth = () => ({
-  user: { email: "user@rxprescribe.com" },
-});
+
+
+import React, { useEffect, useState } from "react";
+import { authApi } from "../api/axios";
 
 export default function Topbar() {
-  const { user } = useAuth();
+  const [user, setUser] = useState(null);
 
-  const username = user?.email ? user.email.split("@")[0] : "User";
+ useEffect(() => {
+  let called = false;
 
-  return (
-    <header className="flex h-16 items-center justify-center border-b border-gray-200 bg-white px-6 shadow-sm">
-      <div className="flex items-center gap-3">
-        <div className="h-8 w-1 bg-linear-to-b from-emerald-500 to-teal-500 rounded-full"></div>
-        <span className="text-sm text-gray-600">
-          Welcome back,{" "}
-          <strong className="text-emerald-700">{username}</strong>
-        </span>
-      </div>
-    </header>
-  );
-}
-*/
+  const fetchUserData = async () => {
+    if (called) return;
+    called = true;
 
-import React from "react";
+    try {
+      const userData = await authApi.getCurrentUser();
+      setUser(userData);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-/* -------- Fake Auth Hook -------- */
-const useAuth = () => {
-  const storedUser = localStorage.getItem("user");
+  fetchUserData();
+}, []);
 
-  let user = null;
-
-  try {
-    user = storedUser ? JSON.parse(storedUser) : null;
-  } catch (err) {
-    user = null;
-  }
-
-  return { user };
-};
-
-/* -------- Topbar Component -------- */
-export default function Topbar() {
-  const { user } = useAuth();
 
   return (
-    <header className="flex h-16 items-center justify-center border-b border-gray-200 bg-white px-6 shadow-sm">
+   <header className="flex h-16 items-center justify-center border-b bg-white shadow-sm">
       <div className="flex items-center gap-3">
-        {/* Green gradient line */}
         <div className="h-8 w-1 bg-linear-to-b from-emerald-500 to-teal-500 rounded-full"></div>
 
-        {/* Welcome text */}
-        <span className="text-sm text-gray-600">
-          Welcome back,{" "}
-          <strong className="text-emerald-700">
-            {user?.name || "User"}
-          </strong>
-        </span>
+        <span className="text-gray-600 text-lg">
+  Welcome back,{" "}
+  <strong className="text-emerald-600 font-semibold">
+    {user ? `${user.firstName} ${user.lastName}` : "User"}
+  </strong>
+</span>
+
       </div>
     </header>
   );

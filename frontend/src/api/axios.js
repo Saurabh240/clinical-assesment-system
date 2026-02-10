@@ -115,7 +115,7 @@ api.interceptors.response.use(
 );
 
 //  Auth API Wrapper
-export const authApi = {
+/*export const authApi = {
   signIn: async (credentials) => {
     const response = await api.post("/auth/signIn", credentials);
     const { accessToken, userId, status, nextStep } = response.data;
@@ -124,6 +124,37 @@ export const authApi = {
     tokenManager.setTokens(accessToken);
     
     return { userId, status, nextStep, accessToken };
+  },
+
+
+
+
+  signUp: async (userData) => api.post("/auth/signUp", userData),
+
+  logout: async () => {
+    try {
+      await api.post("/auth/logout");
+    } finally {
+      tokenManager.clearTokens();
+      window.location.href = "/login";
+    }
+  },
+};
+*/
+
+export const authApi = {
+  signIn: async (credentials) => {
+    const response = await api.post("/auth/signIn", credentials);
+    const { accessToken, userId, status, nextStep } = response.data;
+
+    tokenManager.setTokens(accessToken);
+
+    return { userId, status, nextStep, accessToken };
+  },
+
+  getCurrentUser: async () => {
+    const res = await api.get("/auth/currentUser");
+    return res.data;
   },
 
   signUp: async (userData) => api.post("/auth/signUp", userData),

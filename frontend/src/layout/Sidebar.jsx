@@ -40,6 +40,19 @@ export default function Sidebar() {
           </svg>
           Assessments
         </NavLink>
+
+        <NavLink to="/products" className={navLinkClass}>
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+      strokeWidth={2} 
+      d="M20 13V7a2 2 0 00-2-2h-3V4a2 2 0 10-4 0v1H8a2 2 0 00-2 2v6m14 0v5a2 2 0 01-2 2H8a2 2 0 01-2-2v-5m14 0H6" 
+    />
+  </svg>
+  Products
+</NavLink>
+
         
         <NavLink to="/patients" className={navLinkClass}>
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

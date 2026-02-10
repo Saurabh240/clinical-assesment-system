@@ -270,26 +270,7 @@ const handleGeneratePdf = async () => {
         </div>
       </Card>
 
-      {/* PDF */}
-      {/*<Card className="bg-teal-50 border-teal-200">
-  <div className="flex justify-between items-center gap-2">
- 
-
-    <div className="flex gap-2">
-      <Button variant="outline" onClick={handleEdit}>
-        Edit Assessment
-      </Button>
-
-      <Button
-        variant="secondary"
-        onClick={handleGeneratePdf}
-        disabled={generating}
-      >
-        {generating ? "Generating..." : "Generate PDF"}
-      </Button>
-    </div>
-  </div>
-</Card>*/}
+    
 <Card className="bg-teal-50 border-teal-200">
   <div className="flex items-center justify-between">
     

@@ -13,7 +13,8 @@ function Signup() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -35,7 +36,8 @@ function Signup() {
   try {
     // sign up (just creates user)
     await api.post("/auth/signUp", {
-      name: formData.name.trim(),
+      firstName: formData.firstName.trim(),
+      lastName: formData.lastName.trim(),
       email: formData.email.trim().toLowerCase(),
       password: formData.password,
     });
@@ -81,9 +83,19 @@ function Signup() {
         <Card.Content>
           <form onSubmit={handleSignup} className="space-y-6">
             <Input
-              label="Full Name"
-              name="name"
-              value={formData.name}
+              label="First Name"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+              leftIcon={<User className="w-5 h-5" />}
+              required
+              disabled={loading}
+            />
+
+            <Input
+              label="Last Name"
+              name="lastName"
+              value={formData.lastName}
               onChange={handleChange}
               leftIcon={<User className="w-5 h-5" />}
               required
