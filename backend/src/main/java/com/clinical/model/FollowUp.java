@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -26,12 +28,12 @@ public class FollowUp {
     @Column(nullable = false)
     private String notes;
 
-    private LocalDate nextFollowupDate;
+    private Instant nextFollowupDate;
 
     @Enumerated(EnumType.STRING)
     private FollowupStatus status;
 
-    private LocalDateTime updatedAt;
+    private Instant updatedAt;
     private String updatedBy;
 }
 

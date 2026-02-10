@@ -23,23 +23,23 @@
 ### ✅ Request Details
 
 - **Type**: POST
-- **URL**: http://localhost:8080/assessments/2/followup
+- **URL**: http://localhost:8080/assessments/1/followup
 - **Request Name**: Create/update Followp
 ### 📤 Request Body (JSON)
 ```json
 {
   "notes": "Patient contacted, symptoms improving",
-  "nextFollowupDate": "2026-02-15",
+  "nextFollowupDate": "2026-02-15T00:00:00Z",
   "status": "COMPLETED"
 }
 ```
 ### 📤 Response Body (JSON)
 ```json
 {
-  "assessmentId": 2,
+  "assessmentId": 1,
   "status": "COMPLETED",
-  "lastFollowupDate": "2026-02-09T13:18:38.870450500Z",
-  "nextFollowupDate": "2026-02-15",
+  "lastFollowupDate": "2026-02-10T14:08:27.809771400Z",
+  "nextFollowupDate": "2026-02-15T00:00:00Z",
   "message": "Follow-up updated successfully"
 }
 ```

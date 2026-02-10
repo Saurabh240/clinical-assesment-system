@@ -1,6 +1,7 @@
 package com.clinical.service;
 
 import com.clinical.model.AuditLog;
+import com.clinical.model.FollowupStatus;
 import com.clinical.repository.AuditLogRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,21 +18,22 @@ public class AuditLogService {
             String entity,
             Long entityId,
             String field,
-            String oldValue,
-            String newValue,
+            FollowupStatus oldValue,
+            FollowupStatus newValue,
             String updatedBy
     ) {
-        AuditLog log = AuditLog.builder()
-                .entity(entity)
-                .entityId(entityId)
-                .field(field)
-                .oldValue(oldValue)
-                .newValue(newValue)
-                .updatedBy(updatedBy)
-                .updatedAt(LocalDateTime.now())
-                .build();
-
-        auditLogRepository.save(log);
+        auditLogRepository.save(
+                AuditLog.builder()
+                        .entity(entity)
+                        .entityId(entityId)
+                        .field(field)
+                        .oldValue(oldValue != null ? oldValue.name() : null)
+                        .newValue(newValue != null ? newValue.name() : null)
+                        .updatedBy(updatedBy)
+                        .updatedAt(Instant.now())
+                        .build()
+        );
     }
 }
+
 

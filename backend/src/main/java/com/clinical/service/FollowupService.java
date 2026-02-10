@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.*;
+import java.time.chrono.ChronoLocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -66,7 +67,7 @@ public class FollowupService {
                 .orElseThrow(() ->
                         new IllegalArgumentException("Assessment not found"));
         // 2️⃣ Business validation
-        if (request.nextFollowupDate().isBefore(LocalDate.now())) {
+        if (request.nextFollowupDate().isBefore((Instant.now()))) {
             throw new IllegalArgumentException(
                     "Next follow-up date cannot be in the past");
         }
@@ -79,7 +80,7 @@ public class FollowupService {
         followup.setNotes(request.notes());
         followup.setNextFollowupDate(request.nextFollowupDate());
         followup.setUpdatedAt(
-                LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault())
+                Instant.now()
         );
 
         followup.setUpdatedBy(updatedBy);
@@ -87,7 +88,7 @@ public class FollowupService {
         followupRepository.save(followup);
         // 4️⃣ Update Assessment fields (ONLY allowed ones)
         FollowupStatus oldStatus = assessment.getFollowupStatus();
-        assessment.setLastFollowupDate(Instant.now());
+        assessment.setLastFollowupDate((Instant.now()));
         assessment.setFollowupStatus(request.status());
         assessmentRepository.save(assessment);
         // 5️⃣ Audit logging (status change)
@@ -96,11 +97,12 @@ public class FollowupService {
                     "ASSESSMENT",
                     assessmentId,
                     "followupStatus",
-                    oldStatus != null ? oldStatus.name() : null,
-                    request.status().name(),
+                    oldStatus,
+                    request.status(),
                     updatedBy
             );
         }
+
         return new FollowupUpdateResponse(
                 assessment.getId(),
                 assessment.getFollowupStatus(),

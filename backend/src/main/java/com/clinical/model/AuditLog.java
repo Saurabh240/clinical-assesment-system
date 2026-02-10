@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity
@@ -27,5 +29,5 @@ public class AuditLog {
     private String newValue;
 
     private String updatedBy;
-    private LocalDateTime updatedAt;
+    private Instant updatedAt;
 }
