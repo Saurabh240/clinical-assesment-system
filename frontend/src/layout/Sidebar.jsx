@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { useState } from "react";
 
 const navLinkClass = ({ isActive }) =>
   `flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
@@ -7,7 +8,16 @@ const navLinkClass = ({ isActive }) =>
       : "text-gray-300 hover:bg-emerald-700/30 hover:text-white"
   }`;
 
+const subNavLinkClass = ({ isActive }) =>
+  `flex items-center gap-3 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 ${
+    isActive
+      ? "bg-emerald-600/50 text-white"
+      : "text-gray-300 hover:bg-emerald-700/30 hover:text-white"
+  }`;
+
 export default function Sidebar() {
+  const [isAssessmentsOpen, setIsAssessmentsOpen] = useState(false);
+
   return (
     <aside className="w-64 bg-gradient-to-b from-emerald-800 to-teal-900 text-white flex flex-col shadow-xl">
       {/* Logo Section */}
@@ -31,12 +41,38 @@ export default function Sidebar() {
           Dashboard
         </NavLink>
         
-        <NavLink to="/assessments" className={navLinkClass}>
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-          </svg>
-          Assessments
-        </NavLink>
+        {/* Assessments with Submenu */}
+        <div 
+          onMouseEnter={() => setIsAssessmentsOpen(true)}
+          onMouseLeave={() => setIsAssessmentsOpen(false)}
+        >
+          <NavLink to="/assessments" className={navLinkClass}>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+            </svg>
+            Assessments
+            <svg 
+              className={`w-4 h-4 ml-auto transition-transform duration-200 ${isAssessmentsOpen ? 'rotate-180' : ''}`} 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </NavLink>
+          
+          {/* Submenu */}
+          {isAssessmentsOpen && (
+            <div className="ml-4 mt-1 space-y-1 border-l-2 border-emerald-600/30 pl-2">
+              <NavLink to="/follow-ups" className={subNavLinkClass}>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                Follow Ups
+              </NavLink>
+            </div>
+          )}
+        </div>
         
         <NavLink to="/patients" className={navLinkClass}>
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

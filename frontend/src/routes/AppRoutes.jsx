@@ -5,6 +5,7 @@ import Assessments from "../pages/Assessments";
 import Patients from "../pages/Patients";
 import Billing from "../pages/Billing";
 import Settings from "../pages/Settings";
+import FollowUps from "../pages/FollowUps";
 
 
 export default function AppRoutes() {
@@ -18,6 +19,7 @@ export default function AppRoutes() {
         <Route path="patients" element={<Patients />} />
         <Route path="billing" element={<Billing />} />
         <Route path="settings" element={<Settings />} />
+        <Route path="follow-ups" element={<FollowUps />} />
         
       </Route>
     </Routes>
