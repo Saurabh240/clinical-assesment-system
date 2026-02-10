@@ -4,13 +4,13 @@ import axios from "axios";
 const refreshApi = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: { "Content-Type": "application/json" },
-  withCredentials: true, // Required to send the HttpOnly cookie
+  withCredentials: true, 
 });
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: { "Content-Type": "application/json" },
-  withCredentials: true, // Required for secure cross-site requests
+  withCredentials: true, 
 });
 
 //  Token Management (Access Token only)
@@ -62,26 +62,29 @@ const processQueue = (error, token = null) => {
 
 api.interceptors.response.use(
   (response) => response,
+
+
   async (error) => {
     const originalRequest = error.config;
+    
+    const status = error.response ? error.response.status : null;
 
-    if (!error.response || originalRequest._retry) {
-      return Promise.reject(error);
-    }
+  
+    if ((status === 401 || status === 403) && !originalRequest._retry) {
+      
+      if (originalRequest.url?.includes("/auth/refresh")) {
+        tokenManager.clearTokens();
+        window.dispatchEvent(new Event("auth:logout"));
+        return Promise.reject(error);
+      }
 
-    const { status } = error.response;
-    const isAuthEndpoint = originalRequest.url?.includes("/auth/");
-
-    if (status === 401 && !isAuthEndpoint) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
-        })
-          .then((token) => {
-            originalRequest.headers["Authorization"] = `Bearer ${token}`;
-            return api(originalRequest);
-          })
-          .catch((err) => Promise.reject(err));
+        }).then(token => {
+          originalRequest.headers.Authorization = `Bearer ${token}`;
+          return api(originalRequest);
+        });
       }
 
       originalRequest._retry = true;
@@ -89,31 +92,20 @@ api.interceptors.response.use(
 
       try {
       
-        // The browser automatically attaches the 'refresh_token' cookie 
-        // because of 'withCredentials: true' and 'Path=/auth/refresh'.
-        const { data } = await refreshApi.post("/auth/refresh", {});
+        const { data } = await refreshApi.post("/auth/refresh");
+        const newToken = data.accessToken;
 
-        const { accessToken } = data;
-        if (!accessToken) throw new Error("No access token in refresh response");
+        tokenManager.setTokens(newToken);
+        processQueue(null, newToken);
 
-        tokenManager.setTokens(accessToken);
-        processQueue(null, accessToken);
-
-       
-        if (originalRequest.data && typeof originalRequest.data === 'string') {
-          try { originalRequest.data = JSON.parse(originalRequest.data); } catch (e) {}
-        }
-
-        originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
-        return api(originalRequest);
-
-      } catch (refreshError) {
-        processQueue(refreshError, null);
+        // RETRY the original list API with the NEW token
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        return api(originalRequest); 
+      } catch (err) {
+        processQueue(err, null);
         tokenManager.clearTokens();
-        if (!window.location.pathname.includes("/login")) {
-          window.location.href = "/login";
-        }
-        return Promise.reject(refreshError);
+        window.dispatchEvent(new Event("auth:logout"));
+        return Promise.reject(err);
       } finally {
         isRefreshing = false;
       }
@@ -128,7 +120,7 @@ export const authApi = {
     const response = await api.post("/auth/signIn", credentials);
     const { accessToken, userId, status, nextStep } = response.data;
     
-    // We only save the accessToken. The refreshToken is now a cookie.
+   
     tokenManager.setTokens(accessToken);
     
     return { userId, status, nextStep, accessToken };
@@ -147,3 +139,5 @@ export const authApi = {
 };
 
 export default api;
+
+

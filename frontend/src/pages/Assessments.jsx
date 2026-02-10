@@ -6,6 +6,8 @@ import Card from "../components/ui/Card";
 import { getAilments } from "../services/ailment.service";
 import useAssessment from "../hooks/useAssessment";
 
+
+
 export default function Assessments() {
   const [ailments, setAilments] = useState([]);
   const [selectedCode, setSelectedCode] = useState("");
@@ -80,7 +82,11 @@ export default function Assessments() {
   return (
     <div className="min-h-screen bg-linear-to-br from-teal-50 via-white to-blue-50 p-4 sm:p-6 lg:p-8">
       <div className="max-w-5xl mx-auto space-y-6">
+    
+      
         {/* Global Error */}
+
+      
         {error && (
           <div className="p-4 bg-red-50 border-l-4 border-red-500 rounded-lg">
             <p className="text-sm text-red-700">{error}</p>
@@ -117,6 +123,11 @@ export default function Assessments() {
             submitting={submitting}
           />
         )}
+</div>
+
+
+       
+
 
         {/* Success & PDF Section */}
         {pdfReady && assessmentId && (
@@ -152,6 +163,7 @@ export default function Assessments() {
           </Card>
         )}
       </div>
-    </div>
+
+    
   );
 }

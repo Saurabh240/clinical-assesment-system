@@ -18,7 +18,7 @@ export default function AppRoutes() {
         <Route path="patients" element={<Patients />} />
         <Route path="billing" element={<Billing />} />
         <Route path="settings" element={<Settings />} />
-        
+   
       </Route>
     </Routes>
   );
