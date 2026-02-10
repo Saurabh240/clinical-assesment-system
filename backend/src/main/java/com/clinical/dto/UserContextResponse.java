@@ -8,6 +8,8 @@ import com.clinical.model.UserStatus;
 public record UserContextResponse(
         Long userId,
         String email,
+        String firstName,
+        String lastName,
         Role role,
         UserStatus status,
         PharmacyInfo pharmacy,
@@ -22,6 +24,8 @@ public record UserContextResponse(
         return new UserContextResponse(
                 user.getId(),
                 user.getEmail(),
+                user.getFirstName(),
+                user.getLastName(),
                 user.getRole(),
                 user.getStatus(),
                 user.getPharmacy() != null

@@ -46,4 +46,10 @@ public class AuthController {
 
         return ResponseEntity.ok(authService.signUp(request));
     }
+
+    @GetMapping("/currentUser")
+    public ResponseEntity<UserContextResponse> getCurrentUser(Authentication authentication) {
+        UserContextResponse res = authService.getCurrentUser(authentication);
+        return ResponseEntity.ok(res);
+    }
 }

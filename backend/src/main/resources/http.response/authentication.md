@@ -11,8 +11,10 @@
 ### 📤 Request Body (JSON)
 ```json
 {
-  "email":"test@gmail.com",
-  "password":"Test@123"
+  "email": "test@gmail.com",
+  "firstName": "Test",
+  "lastName": "User",
+  "password": "Test@123"
 }
 ```
 
@@ -71,6 +73,31 @@
 {
   "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYXVyYXZAbWFpbC5jb20iLCJyb2xlIjpbIlBIQVJNQUNJU1QiXSwiaWF0IjoxNzY2NDYyOTM5LCJleHAiOjE3NjY1NDkzMzl9.5w3QTp_oJg_gtdB54q8KWO22bhQ61YAJXLchcx5gogs",
   "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYXVyYXZAbWFpbC5jb20iLCJpYXQiOjE3NjY0NjI4NzcsImV4cCI6MTc2NzA2NzY3N30.DrjEEXqz-UO8uUfeuhTPOY9EHHM-MHZ2ipZIvc_xQD8"
+}
+```
+- **Response Status**: 200 OK
+- ----
+## 🔄 Endpoint: "auth/currentUser"
+
+### ✅ Request Details
+
+- **Type**: GET
+- **URL**: http://localhost:8080/auth/currentUser
+- **Request Name**: Current User
+  ### 📤 Request Body (JSON)
+```token
+```
+### 📤 Response Body (JSON)
+```json
+{
+  "userId": 9,
+  "email": "test5@gmail.com",
+  "firstName": "Test 5",
+  "lastName": "User 5",
+  "role": "PHARMACIST",
+  "status": "PENDING",
+  "pharmacy": null,
+  "subscription": null
 }
 ```
 - **Response Status**: 200 OK
