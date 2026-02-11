@@ -17,15 +17,25 @@ export default function FollowUps() {
   }, []);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpenDropdown(null);
+  const handleClickOutside = (event) => {
+    // Check if click is outside any dropdown
+    const dropdowns = document.querySelectorAll('[data-dropdown]');
+    let clickedOutside = true;
+    
+    dropdowns.forEach(dropdown => {
+      if (dropdown.contains(event.target)) {
+        clickedOutside = false;
       }
-    };
+    });
+    
+    if (clickedOutside) {
+      setOpenDropdown(null);
+    }
+  };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  document.addEventListener("mousedown", handleClickOutside);
+  return () => document.removeEventListener("mousedown", handleClickOutside);
+}, []);
 
   const fetchFollowUps = async () => {
     try {
@@ -45,7 +55,7 @@ export default function FollowUps() {
     setOpenDropdown(openDropdown === id ? null : id);
   };
 
-  const handleViewAssessment = (assessmentId) => {
+    const handleViewAssessment = (assessmentId) => {
     console.log("Navigating to assessment:", assessmentId);
     setOpenDropdown(null);
     navigate(`/assessments/${assessmentId}`);
@@ -228,55 +238,55 @@ export default function FollowUps() {
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right">
-                          <div className="relative inline-block">
-                            <button
-                              onClick={() => toggleDropdown(followUp.assessmentId)}
-                              className="p-2 hover:bg-emerald-50 rounded-lg transition-colors"
-                              aria-label="More options"
-                            >
-                              <svg
-                                className="w-5 h-5 text-emerald-600"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                              >
-                                <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-                              </svg>
-                            </button>
+  <div className="relative inline-block">
+    <button
+      onClick={() => toggleDropdown(followUp.assessmentId)}
+      className="p-2 hover:bg-emerald-50 rounded-lg transition-colors"
+      aria-label="More options"
+    >
+      <svg
+        className="w-5 h-5 text-emerald-600"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
+        <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+      </svg>
+    </button>
 
-                            {openDropdown === followUp.assessmentId && (
-                              <div
-                                ref={dropdownRef}
-                                className="absolute right-0 mt-2 w-52 bg-white rounded-lg shadow-xl border border-emerald-100 py-2 z-20"
-                              >
-                                <button
-                                  onClick={() => handleViewAssessment(followUp.assessmentId)}
-                                  className="w-full text-left px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-3 transition-colors"
-                                >
-                                  <svg
-                                    className="w-5 h-5"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                    />
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                                    />
-                                  </svg>
-                                  View Assessment
-                                </button>
-                              </div>
-                            )}
-                          </div>
-                        </td>
+    {openDropdown === followUp.assessmentId && (
+  <div
+    data-dropdown
+    className="absolute right-0 mt-2 w-52 bg-white rounded-lg shadow-xl border border-emerald-100 py-2 z-20"
+  >
+        <button
+          onClick={() => handleViewAssessment(followUp.assessmentId)}
+          className="w-full text-left px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-3 transition-colors"
+        >
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+            />
+          </svg>
+          View Assessment
+        </button>
+      </div>
+    )}
+  </div>
+</td>
                       </tr>
                     ))}
                   </tbody>
@@ -404,10 +414,10 @@ export default function FollowUps() {
                       </button>
 
                       {openDropdown === followUp.assessmentId && (
-                        <div
-                          ref={dropdownRef}
-                          className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-emerald-100 py-2 z-20"
-                        >
+  <div
+    data-dropdown
+    className="absolute right-0 mt-2 w-52 bg-white rounded-lg shadow-xl border border-emerald-100 py-2 z-20"
+  >
                           <button
                             onClick={() => handleViewAssessment(followUp.assessmentId)}
                             className="w-full text-left px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-3 transition-colors"
