@@ -5,6 +5,9 @@ import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
 import { getAilments } from "../services/ailment.service";
 import useAssessment from "../hooks/useAssessment";
+import { useNavigate } from "react-router-dom";
+
+
 
 
 
@@ -12,7 +15,7 @@ export default function Assessments() {
   const [ailments, setAilments] = useState([]);
   const [selectedCode, setSelectedCode] = useState("");
   const [pdfUrl, setPdfUrl] = useState(null);
-
+const navigate = useNavigate();
   const {
     template,
     loading,
@@ -136,6 +139,19 @@ export default function Assessments() {
               <h3 className="text-xl font-medium text-green-800">
                 Assessment Submitted Successfully!
               </h3>
+               
+                  {/* VIEW BUTTON */}
+      <Button
+        variant="secondary"
+        size="lg"
+        fullWidth
+        onClick={() => navigate(`/assessments/${assessmentId}`)}
+      >
+        View Assessment
+      </Button>
+
+
+
 
               {!pdfUrl ? (
                 <Button
