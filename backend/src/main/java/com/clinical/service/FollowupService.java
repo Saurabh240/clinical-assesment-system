@@ -19,6 +19,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
+import static org.apache.coyote.http11.Constants.a;
+
 @Service
 @RequiredArgsConstructor
 public class FollowupService {
@@ -29,13 +31,14 @@ public class FollowupService {
 
     public List<FollowupResponse> getOverdueFollowups() {
         Instant now = Instant.now();
-        return assessmentRepository.findAll()
+        return assessmentRepository
+                .findAllByOrderByLastFollowupDateDesc()
                 .stream()
                 .map(a -> computeFollowup(a, now))
                 .filter(Objects::nonNull)
-                .sorted(Comparator.comparingLong(FollowupResponse::getOverdueDays).reversed())
                 .toList();
     }
+
     private FollowupResponse computeFollowup(Assessment a, Instant now) {
         Instant baseDate =
                 a.getLastFollowupDate() != null
@@ -53,7 +56,8 @@ public class FollowupService {
                 patientName,
                 a.getAilmentCode(),
                 days - 14,
-                a.getLastFollowupDate()
+                a.getLastFollowupDate(),
+                a.getFollowupStatus()
         );
     }
     @Transactional
@@ -118,4 +122,35 @@ public class FollowupService {
         return patient.path("firstName").asText("") + " " +
                 patient.path("lastName").asText("");
     }
+
+    public FollowupResponse getFollowupByAssessmentId(Long assessmentId) {
+
+        Assessment assessment = assessmentRepository.findById(assessmentId)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Assessment not found"));
+
+        FollowUp followup = followupRepository
+                .findByAssessmentId(assessmentId)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Follow-up not found"));
+        Instant now = Instant.now();
+        Instant baseDate = assessment.getLastFollowupDate() != null
+                ? assessment.getLastFollowupDate()
+                : assessment.getCreatedAt();
+        long days = Duration.between(baseDate, now).toDays();
+        long overdueDays = days > 14 ? days - 14 : 0;
+
+        String patientName = extractPatientName(assessment.getAssessmentData());
+
+        return new FollowupResponse(
+                assessment.getId(),
+                patientName,
+                assessment.getAilmentCode(),
+                overdueDays,
+                assessment.getLastFollowupDate(),
+                assessment.getFollowupStatus()
+        );
+    }
+
+
 }

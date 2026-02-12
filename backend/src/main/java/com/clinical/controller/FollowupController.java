@@ -37,4 +37,15 @@ public class FollowupController {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/assessments/{assessmentId}/followup")
+    public ResponseEntity<FollowupResponse> getFollowupByAssessmentId(
+            @PathVariable Long assessmentId
+    ) {
+        FollowupResponse response =
+                followupService.getFollowupByAssessmentId(assessmentId);
+
+        return ResponseEntity.ok(response);
+    }
+
 }
