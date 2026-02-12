@@ -45,3 +45,23 @@
 ```
 - **Response Status**: 200 OK
 - ----
+
+### ✅ Request Details
+
+- **Type**: Get
+- **URL**: http://localhost:8080/assessments/1/followup
+- **Request Name**: Get followup by assessment id
+
+### 📤 Response Body (JSON)
+```json
+{
+  "assessmentId": 1,
+  "patientName": "",
+  "ailment": null,
+  "overdueDays": 0,
+  "lastFollowupDate": "2026-02-10T14:08:27.809771Z",
+  "status": "COMPLETED"
+}
+```
+- **Response Status**: 200 OK
+- ----
