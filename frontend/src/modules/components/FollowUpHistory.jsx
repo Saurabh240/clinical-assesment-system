@@ -1,19 +1,79 @@
+
 import { useEffect, useState } from "react";
 import Card from "../../components/ui/Card";
 import Button from "../../components/ui/Button";
 import api from "../../api/axios";
 
 export default function FollowUpHistory({ assessmentId }) {
-  const [list, setList] = useState([]);
+  const [followup, setFollowup] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
+  // Fetch followup by assessment
+  const fetchFollowup = async () => {
     if (!assessmentId) return;
 
-    api
-      .get("/followups", { params: { assessmentId } })
-      .then(res => setList(res.data || []))
-      .catch(err => console.error(err));
+    try {
+      setLoading(true);
+
+      const res = await api.get(
+        `/assessments/${assessmentId}/followup`
+      );
+
+      setFollowup(res.data);
+    } catch (err) {
+      
+      if (err.response?.status === 404) {
+        setFollowup(null);
+      } else {
+        console.error("Fetch error:", err);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchFollowup();
   }, [assessmentId]);
+
+  // Add OR Edit Followup
+
+const handleAddOrEdit = async () => {
+  if (!assessmentId) return;
+
+
+  const future = new Date();
+  future.setDate(future.getDate() + 1);
+
+  const payload = {
+    notes: "Patient contacted",
+    nextFollowupDate: future.toISOString(), 
+    status: followup ? "COMPLETED" : "PENDING"
+  };
+
+  try {
+    setSaving(true);
+
+    const res = await api.post(
+      `/assessments/${assessmentId}/followup`,
+      payload
+    );
+
+    alert(res.data.message || "Saved successfully");
+    fetchFollowup();
+
+  } catch (err) {
+    console.error("FULL ERROR:", err.response?.data);
+    alert(err.response?.data?.message || "Failed to save");
+  } finally {
+    setSaving(false);
+  }
+};
+
+
+
+
 
   return (
     <Card>
@@ -21,26 +81,47 @@ export default function FollowUpHistory({ assessmentId }) {
         Follow-Up History
       </h2>
 
-      {list.length === 0 ? (
-        <p>No follow-ups recorded</p>
-      ) : (
-        list.map((f, i) => (
-          <div key={i} className="border p-3 rounded mb-2">
-          
-           
-            <p>Patient: {f.patientName}</p>
-            <p>Ailment: {f.ailment}</p>
-             <p>Overdue Days: {f.overdueDays}</p>
-            <p>Last Follow-up: {f.lastFollowupDate || "N/A"}</p>
-          </div>
-        ))
+      {/* Loading */}
+      {loading && <p>Loading...</p>}
+
+      {/* No followup */}
+      {!loading && !followup && (
+        <p>No follow-up recorded</p>
       )}
 
-      <Button variant="secondary" className="mt-3">
-        Add Follow-Up
-      </Button>
+      {/* Show followup */}
+      {followup && (
+        <div className="border p-3 rounded mb-2">
+          <p>
+            <strong>Status:</strong> {followup.status}
+          </p>
 
+          <p>
+            <strong>Last Follow-up:</strong>{" "}
+            {followup.lastFollowupDate || "N/A"}
+          </p>
 
+          <p>
+            <strong>Next Follow-up:</strong>{" "}
+            {followup.nextFollowupDate || "N/A"}
+          </p>
+        </div>
+      )}
+
+      {/* Dynamic Button */}
+      <div className="flex gap-2 mt-3">
+        <Button
+          variant="secondary"
+          onClick={handleAddOrEdit}
+          disabled={saving}
+        >
+          {saving
+            ? "Saving..."
+            : followup
+            ? "Edit Follow-Up"
+            : "Add Follow-Up"}
+        </Button>
+      </div>
     </Card>
   );
 }
