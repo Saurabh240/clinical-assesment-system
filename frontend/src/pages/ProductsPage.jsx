@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 
@@ -5,6 +6,25 @@ import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import CustomSelect from "../components/ui/Select";
+
+
+function FilterChip({ label, value, onRemove }) {
+  return (
+    <div className="flex items-center gap-2 px-4 py-1 bg-teal-100 text-teal-800 rounded-full text-sm font-bold">
+      <span className="font-bold text-center">
+        {label}: {value}
+      </span>
+
+      <button
+        onClick={onRemove}
+        className="font-bold hover:text-red-600"
+      >
+        ✕
+      </button>
+    </div>
+  );
+}
+
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
@@ -22,23 +42,22 @@ export default function ProductsPage() {
     sortDir: "asc",
   });
 
- const fetchProducts = async () => {
-  setLoading(true);
-  try {
-    const res = await api.get("/products", {
-      params: filters,
-    });
 
-    setProducts(res.data.data || []);
-    setTotalPages(res.data.meta?.totalPages || 0);
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      const res = await api.get("/products", {
+        params: filters,
+      });
 
-  } catch (err) {
-    console.error("Products fetch failed", err);
-  } finally {
-    setLoading(false);
-  }
-};
-
+      setProducts(res.data.data || []);
+      setTotalPages(res.data.meta?.totalPages || 0);
+    } catch (err) {
+      console.error("Products fetch failed", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchProducts();
@@ -48,6 +67,7 @@ export default function ProductsPage() {
     const t = setTimeout(fetchProducts, 400);
     return () => clearTimeout(t);
   }, [filters.search]);
+
 
   const handleChange = (name, value) => {
     setFilters({ ...filters, [name]: value, page: 0 });
@@ -66,20 +86,18 @@ export default function ProductsPage() {
     });
   };
 
+
   return (
     <div className="p-6 space-y-6">
-
-      {/* PAGE CARD */}
       <Card>
         <Card.Header>
-         <Card.Title>Products Viewer</Card.Title>
+          <Card.Title>Products Viewer</Card.Title>
           <Card.Description>
             Search and filter available products
           </Card.Description>
         </Card.Header>
 
         <Card.Content className="space-y-5">
-
           {/* SEARCH */}
           <Input
             placeholder="Search by name or description..."
@@ -88,47 +106,90 @@ export default function ProductsPage() {
           />
 
           {/* FILTERS */}
-          <div className="grid md:grid-cols-4 gap-4 sticky top-0 bg-white z-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            {/* AILMENT */}
+            <div className="space-y-1 text-center">
+              <label className="text-sm font-bold">Ailment</label>
+              <CustomSelect
+                value={filters.ailment}
+                onChange={(v) => handleChange("ailment", v)}
+                options={[
+                  { label: "All", value: "" },
+                  { label: "Flu", value: "FLU" },
+                  { label: "Fever", value: "FEVER" },
+                ]}
+              />
+            </div>
 
-            <CustomSelect
-              placeholder="All Ailments"
-              value={filters.ailment}
-              onChange={(v) => handleChange("ailment", v)}
-              options={[
-                { label: "All", value: "" },
-                { label: "Flu", value: "FLU" },
-                { label: "Fever", value: "FEVER" },
-              ]}
-            />
+            {/* CATEGORY */}
+            <div className="space-y-1 text-center">
+              <label className="text-sm font-bold">Category</label>
+              <CustomSelect
+                value={filters.category}
+                onChange={(v) => handleChange("category", v)}
+                options={[
+                  { label: "All", value: "" },
+                  { label: "Antiviral", value: "ANTIVIRAL" },
+                ]}
+              />
+            </div>
 
-            <CustomSelect
-              placeholder="All Categories"
-              value={filters.category}
-              onChange={(v) => handleChange("category", v)}
-              options={[
-                { label: "All", value: "" },
-                { label: "Antiviral", value: "ANTIVIRAL" },
-              ]}
-            />
+            {/* BRAND */}
+            <div className="space-y-1 text-center">
+              <label className="text-sm font-bold">Brand</label>
+              <CustomSelect
+                value={filters.brand}
+                onChange={(v) => handleChange("brand", v)}
+                options={[
+                  { label: "All", value: "" },
+                  { label: "XYZ", value: "XYZ" },
+                  { label: "ABC", value: "ABC" },
+                ]}
+              />
+            </div>
 
-            <CustomSelect
-              placeholder="All Brands"
-              value={filters.brand}
-              onChange={(v) => handleChange("brand", v)}
-              options={[
-                { label: "All", value: "" },
-                { label: "XYZ", value: "XYZ" },
-                { label: "ABC", value: "ABC" }
-              ]}
-            />
-
-            <Button variant="secondary" onClick={clearFilters}>
-              Clear Filters
-            </Button>
-
+            {/* CLEAR */}
+            <div className="flex items-end">
+              <Button
+                variant="secondary"
+                onClick={clearFilters}
+                className="w-full"
+              >
+                Clear Filters
+              </Button>
+            </div>
           </div>
 
-          {/*  TABLE */}
+          {/* ACTIVE CHIPS */}
+          {(filters.ailment || filters.category || filters.brand) && (
+            <div className="flex flex-wrap justify-center gap-3">
+              {filters.ailment && (
+                <FilterChip
+                  label="Ailment"
+                  value={filters.ailment}
+                  onRemove={() => handleChange("ailment", "")}
+                />
+              )}
+
+              {filters.category && (
+                <FilterChip
+                  label="Category"
+                  value={filters.category}
+                  onRemove={() => handleChange("category", "")}
+                />
+              )}
+
+              {filters.brand && (
+                <FilterChip
+                  label="Brand"
+                  value={filters.brand}
+                  onRemove={() => handleChange("brand", "")}
+                />
+              )}
+            </div>
+          )}
+
+          {/* TABLE */}
           <div className="border rounded-lg overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="bg-gray-100">
@@ -151,7 +212,7 @@ export default function ProductsPage() {
                 ) : products.length === 0 ? (
                   <tr>
                     <td colSpan="5" className="text-center p-6">
-                      No products match your criteria
+                      No products found
                     </td>
                   </tr>
                 ) : (
@@ -168,12 +229,10 @@ export default function ProductsPage() {
               </tbody>
             </table>
           </div>
-
         </Card.Content>
 
-        {/*  PAGINATION */}
-        <Card.Footer className="flex justify-center gap-4">
-
+        {/* PAGINATION */}
+        <Card.Footer className="flex flex-col sm:flex-row justify-center items-center gap-4">
           <Button
             variant="outline"
             disabled={filters.page === 0}
@@ -184,8 +243,8 @@ export default function ProductsPage() {
             Prev
           </Button>
 
-          <span className="self-center">
-            Page {filters.page + 1} of {totalPages}
+          <span>
+            Page {filters.page + 1} of {totalPages || 1}
           </span>
 
           <Button
@@ -197,10 +256,8 @@ export default function ProductsPage() {
           >
             Next
           </Button>
-
         </Card.Footer>
       </Card>
-
     </div>
   );
 }

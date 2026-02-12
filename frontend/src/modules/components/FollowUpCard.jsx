@@ -37,7 +37,7 @@ export default function FollowUpSection({ data, onAdd, onEdit }) {
           Initial Follow-Up Plan
         </h2>
 
-        <div className="flex gap-2">
+        {/*<div className="flex gap-2">
           <Button variant="secondary" onClick={onAdd}>
             Add
           </Button>
@@ -48,7 +48,7 @@ export default function FollowUpSection({ data, onAdd, onEdit }) {
           >
             Edit
           </Button>
-        </div>
+        </div>*/}
       </div>
 
       {/* Follow-up Info */}

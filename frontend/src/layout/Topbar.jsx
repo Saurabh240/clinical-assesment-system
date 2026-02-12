@@ -33,7 +33,7 @@ export default function Topbar() {
         <span className="text-gray-600 text-lg">
   Welcome back,{" "}
   <strong className="text-emerald-600 font-semibold">
-    {user ? `${user.firstName} ${user.lastName}` : "User"}
+    {user ? `${user.firstName} ` : "User"}
   </strong>
 </span>
 

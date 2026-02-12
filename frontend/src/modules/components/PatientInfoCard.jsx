@@ -4,11 +4,15 @@ import Card from "../../components/ui/Card";
 function LabelValue({ label, value }) {
   return (
     <div className="flex flex-col">
-      <span className="text-xs text-gray-500">{label}</span>
-      <span className="text-sm font-medium">{value || "-"}</span>
+      <span className="text-xs "><strong>{label}</strong></span>
+      <span className="text-sm  text-gray-500 font-medium">{value || "-"}</span>
     </div>
   );
 }
+
+
+
+
 
 export default function PatientInfoCard({ data }) {
   if (!data) return null;
@@ -21,7 +25,9 @@ export default function PatientInfoCard({ data }) {
         Patient Information
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
         <LabelValue label="First Name" value={p.firstName} />
         <LabelValue label="Last Name" value={p.lastName} />
         <LabelValue label="Date of Birth" value={p.dob} />
@@ -32,6 +38,10 @@ export default function PatientInfoCard({ data }) {
       
         <LabelValue label="Health Card" value={p.healthCardNo} />
         <LabelValue label="Address" value={p.address} />
+        
+ 
+
+
       
        
       </div>

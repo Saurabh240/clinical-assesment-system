@@ -16,13 +16,14 @@ export default function SymptomsCard({ data }) {
         Symptoms
       </h2>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+     
+       <div className="space-y-2 text-sm">
         {Object.entries(data).map(([key, value]) => (
           <div
             key={key}
-            className="flex justify-between border rounded p-2"
+            className="flex  items-center gap-2 p-2 flex-wrap"
           >
-            <span>{formatLabel(key)}</span>
+            <span><strong>{formatLabel(key)}:</strong></span>
             <span className={value ? "text-red-600" : "text-gray-400"}>
               {value ? "Yes" : "No"}
             </span>
