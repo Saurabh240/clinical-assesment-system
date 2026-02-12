@@ -151,22 +151,22 @@ export default function Assessments() {
     } finally {
       setLoading(false);
     }
-  }, [currentPage, pageSize, sorting, filters, updateURL]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage, pageSize, sorting.sortBy, sorting.sortDirection, filters.patientName, filters.status, filters.ailment]);
 
-  // Initial fetch and URL sync
-  useEffect(() => {
-    const urlPage = parseInt(searchParams.get("page")) || 0;
-    const urlSortBy = searchParams.get("sortBy") || "createdAt";
-    const urlSortDirection = searchParams.get("sortDirection") || "desc";
-    
-    setCurrentPage(urlPage);
-    setSorting({ sortBy: urlSortBy, sortDirection: urlSortDirection });
-  }, [searchParams]);
-
-  // Fetch on mount and when dependencies change
+  // Initial fetch on mount only
   useEffect(() => {
     fetchAssessments();
-  }, [currentPage, pageSize, sorting, filters.status, filters.ailment]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Fetch when dependencies change (but not on initial mount)
+  useEffect(() => {
+    if (assessments.length > 0) {
+      fetchAssessments();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage, sorting.sortBy, sorting.sortDirection, filters.status, filters.ailment]);
 
   // Debounced search
   const handleSearchChange = (value) => {
@@ -177,7 +177,8 @@ export default function Assessments() {
     }
     
     debounceTimer.current = setTimeout(() => {
-      setCurrentPage(0); // Reset to first page on search
+      setCurrentPage(0);
+      fetchAssessments();
     }, 500);
   };
 
@@ -214,11 +215,6 @@ const handleFilterChange = (filterName, value) => {
   // View assessment details
   const handleViewAssessment = (assessmentId) => {
     navigate(`/assessments/${assessmentId}`);
-  };
-
-  // Handle follow-up action
-  const handleFollowUp = (assessmentId) => {
-    navigate(`/assessments/${assessmentId}/follow-up`);
   };
 
   // Get status badge color
@@ -321,14 +317,14 @@ const handleFilterChange = (filterName, value) => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-emerald-50/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Header */}
-        {/* <div className="mb-6 sm:mb-8">
+        <div className="mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-emerald-700 to-teal-700 bg-clip-text text-transparent mb-1 sm:mb-2">
             Dashboard
           </h1>
           <p className="text-sm sm:text-base lg:text-lg text-gray-600">
             Manage and track patient assessments
           </p>
-        </div> */}
+        </div>
 
         {/* Filters Bar */}
         <div className="bg-white rounded-xl shadow-sm border border-emerald-100 p-4 sm:p-6 mb-6">
@@ -562,29 +558,16 @@ const handleFilterChange = (filterName, value) => {
                           {getFollowUpBadge(assessment.overdueDays || 0)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right">
-                          <div className="flex items-center justify-end gap-2">
-                            <button
-                              onClick={() => handleViewAssessment(assessment.id)}
-                              className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition-colors"
-                            >
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                              </svg>
-                              View
-                            </button>
-                            {assessment.overdueDays > 0 && (
-                              <button
-                                onClick={() => handleFollowUp(assessment.id)}
-                                className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 rounded-lg transition-all shadow-sm"
-                              >
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                                </svg>
-                                Follow-up
-                              </button>
-                            )}
-                          </div>
+                          <button
+                            onClick={() => handleViewAssessment(assessment.id)}
+                            className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition-colors"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                            View
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -730,29 +713,16 @@ const handleFilterChange = (filterName, value) => {
                     </div>
                   </div>
 
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => handleViewAssessment(assessment.id)}
-                      className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition-colors"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                      </svg>
-                      View
-                    </button>
-                    {assessment.overdueDays > 0 && (
-                      <button
-                        onClick={() => handleFollowUp(assessment.id)}
-                        className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 rounded-lg transition-all shadow-sm"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                        </svg>
-                        Follow-up
-                      </button>
-                    )}
-                  </div>
+                  <button
+                    onClick={() => handleViewAssessment(assessment.id)}
+                    className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition-colors"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    View
+                  </button>
                 </div>
               ))}
 

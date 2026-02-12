@@ -20,6 +20,12 @@ export default function FollowUps() {
     status: "", // "overdue" or "on-track"
   });
   
+  // Sorting
+  const [sorting, setSorting] = useState({
+    sortBy: "patientName", // Default sort by patient name
+    sortDirection: "asc",
+  });
+  
   // Debounce timer
   const debounceTimer = useRef(null);
 
@@ -47,10 +53,10 @@ export default function FollowUps() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Apply filters whenever filters or followUps change
+  // Apply filters whenever filters, sorting, or followUps change
   useEffect(() => {
     applyFilters();
-  }, [filters, followUps]);
+  }, [filters, sorting, followUps]);
 
   // Cleanup debounce on unmount
   useEffect(() => {
@@ -100,6 +106,30 @@ export default function FollowUps() {
       filtered = filtered.filter(followUp => followUp.overdueDays === 0);
     }
 
+    // Apply sorting
+    filtered.sort((a, b) => {
+      let aValue = a[sorting.sortBy];
+      let bValue = b[sorting.sortBy];
+
+      // Handle date sorting
+      if (sorting.sortBy === "lastFollowupDate") {
+        aValue = aValue ? new Date(aValue) : new Date(0);
+        bValue = bValue ? new Date(bValue) : new Date(0);
+      }
+
+      // Handle string sorting (case-insensitive)
+      if (typeof aValue === "string") {
+        aValue = aValue.toLowerCase();
+        bValue = bValue.toLowerCase();
+      }
+
+      if (sorting.sortDirection === "asc") {
+        return aValue > bValue ? 1 : -1;
+      } else {
+        return aValue < bValue ? 1 : -1;
+      }
+    });
+
     setFilteredFollowUps(filtered);
     setCurrentPage(1); // Reset to first page when filters change
   };
@@ -128,6 +158,39 @@ export default function FollowUps() {
 
   const clearFilter = (filterName) => {
     setFilters(prev => ({ ...prev, [filterName]: "" }));
+  };
+
+  // Handle sorting
+  const handleSort = (column) => {
+    setSorting(prev => ({
+      sortBy: column,
+      sortDirection: prev.sortBy === column && prev.sortDirection === "asc" ? "desc" : "asc",
+    }));
+  };
+
+  // Sort icon
+  const getSortIcon = (column) => {
+    if (sorting.sortBy !== column) {
+      return (
+        <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+        </svg>
+      );
+    }
+    
+    if (sorting.sortDirection === "asc") {
+      return (
+        <svg className="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+          <path fillRule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clipRule="evenodd" />
+        </svg>
+      );
+    }
+    
+    return (
+      <svg className="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+      </svg>
+    );
   };
 
   const toggleDropdown = (id) => {
@@ -341,17 +404,41 @@ export default function FollowUps() {
                 <table className="min-w-full divide-y divide-emerald-100">
                   <thead className="bg-gradient-to-r from-emerald-50 to-teal-50">
                     <tr>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-emerald-800 uppercase tracking-wider">
-                        Patient Name
+                      <th
+                        onClick={() => handleSort("patientName")}
+                        className="px-6 py-4 text-left text-xs font-semibold text-emerald-800 uppercase tracking-wider cursor-pointer hover:bg-emerald-100 transition-colors"
+                      >
+                        <div className="flex items-center gap-2">
+                          Patient Name
+                          {getSortIcon("patientName")}
+                        </div>
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-emerald-800 uppercase tracking-wider">
-                        Ailment
+                      <th
+                        onClick={() => handleSort("ailment")}
+                        className="px-6 py-4 text-left text-xs font-semibold text-emerald-800 uppercase tracking-wider cursor-pointer hover:bg-emerald-100 transition-colors"
+                      >
+                        <div className="flex items-center gap-2">
+                          Ailment
+                          {getSortIcon("ailment")}
+                        </div>
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-emerald-800 uppercase tracking-wider">
-                        Status
+                      <th
+                        onClick={() => handleSort("overdueDays")}
+                        className="px-6 py-4 text-left text-xs font-semibold text-emerald-800 uppercase tracking-wider cursor-pointer hover:bg-emerald-100 transition-colors"
+                      >
+                        <div className="flex items-center gap-2">
+                          Status
+                          {getSortIcon("overdueDays")}
+                        </div>
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-emerald-800 uppercase tracking-wider">
-                        Last Follow-up
+                      <th
+                        onClick={() => handleSort("lastFollowupDate")}
+                        className="px-6 py-4 text-left text-xs font-semibold text-emerald-800 uppercase tracking-wider cursor-pointer hover:bg-emerald-100 transition-colors"
+                      >
+                        <div className="flex items-center gap-2">
+                          Last Follow-up
+                          {getSortIcon("lastFollowupDate")}
+                        </div>
                       </th>
                       <th className="px-6 py-4 text-right text-xs font-semibold text-emerald-800 uppercase tracking-wider">
                         Actions
