@@ -1,4 +1,6 @@
 
+
+
 import { useEffect, useState } from "react";
 import Card from "../../components/ui/Card";
 import Button from "../../components/ui/Button";
@@ -9,7 +11,7 @@ export default function FollowUpHistory({ assessmentId }) {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  // Fetch followup by assessment
+
   const fetchFollowup = async () => {
     if (!assessmentId) return;
 
@@ -22,7 +24,6 @@ export default function FollowUpHistory({ assessmentId }) {
 
       setFollowup(res.data);
     } catch (err) {
-      
       if (err.response?.status === 404) {
         setFollowup(null);
       } else {
@@ -37,19 +38,50 @@ export default function FollowUpHistory({ assessmentId }) {
     fetchFollowup();
   }, [assessmentId]);
 
-  // Add OR Edit Followup
 
-const handleAddOrEdit = async () => {
-  if (!assessmentId) return;
+  const handleAdd = async () => {
+    if (!assessmentId) return;
 
+    const future = new Date();
+    future.setDate(future.getDate() + 1);
+
+    const payload = {
+      notes: "New follow-up created",
+      nextFollowupDate: future.toISOString(),
+      status: "PENDING",
+    };
+
+    try {
+      setSaving(true);
+
+      const res = await api.post(
+        `/assessments/${assessmentId}/followup`,
+        payload
+      );
+
+      alert(res.data.message || "Follow-up saved");
+      fetchFollowup();
+    } catch (err) {
+      console.error(err);
+      alert("Failed to add follow-up");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+ 
+ const handleEdit = async () => {
+  if (!assessmentId || !followup) return;
 
   const future = new Date();
-  future.setDate(future.getDate() + 1);
+  future.setDate(future.getDate() + 2);
 
   const payload = {
-    notes: "Patient contacted",
-    nextFollowupDate: future.toISOString(), 
-    status: followup ? "COMPLETED" : "PENDING"
+    notes: "Follow-up updated",
+    nextFollowupDate:
+      followup.nextFollowupDate ||
+      future.toISOString(),
+    status: "COMPLETED",
   };
 
   try {
@@ -60,36 +92,66 @@ const handleAddOrEdit = async () => {
       payload
     );
 
-    alert(res.data.message || "Saved successfully");
+    alert(res.data.message || "Updated");
     fetchFollowup();
-
   } catch (err) {
-    console.error("FULL ERROR:", err.response?.data);
-    alert(err.response?.data?.message || "Failed to save");
+    console.error(err);
+    alert("Update failed");
   } finally {
     setSaving(false);
   }
 };
 
 
-
-
-
   return (
     <Card>
-      <h2 className="text-lg font-semibold mb-4">
-        Follow-Up History
-      </h2>
 
-      {/* Loading */}
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-lg font-semibold">
+          Follow-Up History
+        </h2>
+
+        <div className="flex gap-2">
+      
+          <Button
+            variant="secondary"
+            onClick={handleAdd}
+            disabled={saving}
+          >
+            + Add
+          </Button>
+
+     
+          <Button
+            variant="secondary"
+            onClick={handleEdit}
+            disabled={!followup || saving}
+            className="flex items-center gap-2"
+          >
+           
+            <svg
+              width="16"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path d="M12 20h9" />
+              <path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z" />
+            </svg>
+            Edit
+          </Button>
+        </div>
+      </div>
+
+  
       {loading && <p>Loading...</p>}
 
-      {/* No followup */}
       {!loading && !followup && (
         <p>No follow-up recorded</p>
       )}
 
-      {/* Show followup */}
       {followup && (
         <div className="border p-3 rounded mb-2">
           <p>
@@ -107,21 +169,6 @@ const handleAddOrEdit = async () => {
           </p>
         </div>
       )}
-
-      {/* Dynamic Button */}
-      <div className="flex gap-2 mt-3">
-        <Button
-          variant="secondary"
-          onClick={handleAddOrEdit}
-          disabled={saving}
-        >
-          {saving
-            ? "Saving..."
-            : followup
-            ? "Edit Follow-Up"
-            : "Add Follow-Up"}
-        </Button>
-      </div>
     </Card>
   );
 }

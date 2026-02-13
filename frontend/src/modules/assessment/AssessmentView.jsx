@@ -85,20 +85,23 @@ export default function AssessmentView() {
       
 
 
-         <Button variant="outline" onClick={handleEdit}>
-            Edit Assessment
-          </Button>
-<h1 className="text-xl font-semibold order-1 sm:order-0">
+         
+<h1 className="text-xl font-semibold">
   Assessment Details
 </h1>
-          <Button
-            variant="secondary"
-            onClick={handleGeneratePdf}
-            disabled={generating}
-          >
-            {generating ? "Generating..." : "Generate PDF"}
-          </Button>
 
+<div className="flex items-center gap-2">
+    <Button variant="outline" onClick={handleEdit}>
+      Edit Assessment
+    </Button>
+    <Button
+      variant="secondary"
+      onClick={handleGeneratePdf}
+      disabled={generating}
+    >
+      {generating ? "Generating..." : "Generate PDF"}
+    </Button>
+  </div>
 
 
 
@@ -107,6 +110,10 @@ export default function AssessmentView() {
 
 
       </div>
+
+
+      
+
 
 
       {/* Section Components */}
@@ -134,7 +141,7 @@ export default function AssessmentView() {
 </div>
       {/* Footer Actions */}
       <Card className="bg-teal-50 border-teal-200">
-       <div className="flex flex-col sm:flex-row gap-3 sm:justify-between">
+       <div className="flex flex-col sm:flex-row gap-3 justify-end w-full">
 
           <Button variant="outline" onClick={handleEdit}
             className="w-full sm:w-auto">
