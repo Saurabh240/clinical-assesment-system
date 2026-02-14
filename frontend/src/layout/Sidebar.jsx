@@ -1,6 +1,16 @@
 import { NavLink } from "react-router-dom";
 
-import { logoutUser } from "../utils/logout";
+
+import { authApi } from "../api/axios";
+
+
+const handleLogout = async () => {
+  try {
+    await authApi.logout();
+  } catch (err) {
+    console.error("Logout failed:", err);
+  }
+};
 
 
 const navLinkClass = ({ isActive }) =>
@@ -78,27 +88,32 @@ export default function Sidebar() {
 
    </nav>
 
+ 
+
       {/* Footer */}
-      <div className="p-6 border-t border-emerald-700/40">
-        <button
-          onClick={logoutUser}
-          className="flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-gray-300 hover:bg-emerald-700/30 hover:text-white transition-all duration-200 w-full"
-        >
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1"
-            />
-          </svg>
-          Logout
-        </button>
-      </div></aside>
+<div className="p-6 border-t border-emerald-700/40">
+  <button
+    onClick={handleLogout}
+    className="flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-gray-300 hover:bg-emerald-700/30 hover:text-white transition-all duration-200 w-full"
+  >
+    <svg
+      className="w-5 h-5"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1"
+      />
+    </svg>
+    Logout
+  </button>
+</div>
+
+      
+      </aside>
   );
 }
