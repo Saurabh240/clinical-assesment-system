@@ -190,7 +190,7 @@ export default function FollowUps() {
   };
 
   const handleViewAssessment = (assessmentId) => {
-    console.log("Navigating to assessment:", assessmentId);
+    
     setOpenDropdown(null);
     navigate(`/assessments/${assessmentId}`);
   };

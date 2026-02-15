@@ -48,14 +48,14 @@ export default function Assessments() {
   };
 
   const handleSubmit = async (formData) => {
-    console.log("Form Data (section-wise):", JSON.stringify(formData, null, 2));
+    
     
     const payload = {
       ailmentCode: selectedCode,
       data: formData, // Send as-is - already properly structured
     };
 
-    console.log("Final Payload:", JSON.stringify(payload, null, 2));
+    
 
     try {
       await submitAssessment(payload);
