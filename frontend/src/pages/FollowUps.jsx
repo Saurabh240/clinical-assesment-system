@@ -87,7 +87,7 @@ export default function FollowUps() {
     // Filter by patient name
     if (filters.patientName) {
       filtered = filtered.filter(followUp =>
-        followUp.patientName.toLowerCase().includes(filters.patientName.toLowerCase())
+        followUp.patientName?.toLowerCase().includes(filters.patientName.toLowerCase()) || false
       );
     }
 
@@ -415,7 +415,7 @@ export default function FollowUps() {
                           <div className="flex items-center">
                             <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
                               <span className="text-white font-bold text-sm">
-                                {followUp.patientName.charAt(0).toUpperCase()}
+                                {followUp.patientName?.charAt(0)?.toUpperCase() || "?"}
                               </span>
                             </div>
                             <div className="ml-4">
@@ -655,7 +655,7 @@ export default function FollowUps() {
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
                         <span className="text-white font-bold text-base">
-                          {followUp.patientName.charAt(0).toUpperCase()}
+                          {followUp.patientName?.charAt(0)?.toUpperCase() || "?"}
                         </span>
                       </div>
                       <div>

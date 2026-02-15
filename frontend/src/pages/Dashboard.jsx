@@ -2,34 +2,34 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import api from "../api/axios";
 
-export default function Assessments() {
+export default function Dashboard() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  
+
   // State
   const [assessments, setAssessments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   // Pagination metadata
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [currentPage, setCurrentPage] = useState(0); // API uses 0-based indexing
-  
+
   // Filters and sorting from URL
   const [filters, setFilters] = useState({
     patientName: "",
     status: searchParams.get("status") || "",
     ailment: "",
   });
-  
+
   const [sorting, setSorting] = useState({
     sortBy: searchParams.get("sortBy") || "createdAt",
     sortDirection: searchParams.get("sortDirection") || "desc",
   });
-  
+
   const [pageSize] = useState(parseInt(searchParams.get("size")) || 10);
-  
+
   // Debounce timer
   const debounceTimer = useRef(null);
   const ailmentDebounceTimer = useRef(null);
@@ -37,33 +37,33 @@ export default function Assessments() {
   // Sync URL with state
   const updateURL = useCallback((params) => {
     const newParams = new URLSearchParams();
-    
+
     Object.entries(params).forEach(([key, value]) => {
       if (value !== null && value !== undefined && value !== "") {
         newParams.set(key, value);
       }
     });
-    
+
     setSearchParams(newParams);
   }, [setSearchParams]);
 
   // Parse patient name from assessment data
   const getPatientName = (assessmentData) => {
     if (!assessmentData) return "Unknown";
-    
+
     // Check different possible structures
     if (assessmentData.patient) {
       const firstName = assessmentData.patient.firstName?.trim() || "";
       const lastName = assessmentData.patient.lastName?.trim() || "";
       return `${firstName} ${lastName}`.trim() || "Unknown";
     }
-    
+
     if (assessmentData.undefined) {
       const firstName = assessmentData.undefined.firstName?.trim() || "";
       const lastName = assessmentData.undefined.lastName?.trim() || "";
       return `${firstName} ${lastName}`.trim() || "Unknown";
     }
-    
+
     return "Unknown";
   };
 
@@ -71,53 +71,53 @@ export default function Assessments() {
   // OVERDUE = lastFollowupDate + 14 days has passed
   const calculateOverdueDays = (lastFollowupDate, followupStatus) => {
     if (!lastFollowupDate || followupStatus === "COMPLETED") return 0;
-    
+
     const followupDate = new Date(lastFollowupDate);
+
+    // Next followup due date = lastFollowupDate + 14 days
     const dueDate = new Date(followupDate);
-    dueDate.setDate(dueDate.getDate() + 14); // Add 14 days to lastFollowupDate
-    
+    dueDate.setDate(dueDate.getDate() + 14);
+
     const today = new Date();
+
+    // Reset time to avoid partial day issues
+    today.setHours(0, 0, 0, 0);
+    dueDate.setHours(0, 0, 0, 0);
+
     const diffTime = today - dueDate;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
     return diffDays > 0 ? diffDays : 0;
   };
+
 
   // Fetch assessments from API
   const fetchAssessments = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
-      
+
       const requestBody = {
         page: currentPage,
         size: pageSize,
         sortBy: sorting.sortBy,
         sortDirection: sorting.sortDirection.toUpperCase(), // API expects uppercase
       };
-      
+
       // Add filters if they exist
       if (filters.patientName && filters.patientName.trim()) {
         requestBody.patientName = filters.patientName.trim();
       }
-      
-      // Don't send status filter to backend - we'll filter client-side
-      // Backend's followupStatus logic may not match our filter expectations
-      
-      // Don't send ailment filter to backend if it doesn't support partial matching
-      // We'll filter client-side instead
-      
-      console.log("Fetching assessments with:", requestBody);
       const response = await api.post("/assessments/getAllAssessments", requestBody);
-      
+
       // Parse the response
       let content = response.data.content || [];
-      
+
       // Apply client-side filters
       if (filters.status) {
         content = content.filter(item => {
           const status = item.followupStatus;
-          
+
           // Match selected filter with actual status
           if (filters.status === "COMPLETED") {
             return status === "COMPLETED";
@@ -125,7 +125,7 @@ export default function Assessments() {
             // PENDING means: not completed and not overdue
             // Check if it's pending by: status is null or "PENDING", and not overdue
             if (status === "COMPLETED" || status === "OVERDUE") return false;
-            
+
             // Check if actually overdue based on date
             if (item.lastFollowupDate) {
               const followupDate = new Date(item.lastFollowupDate);
@@ -139,7 +139,7 @@ export default function Assessments() {
             // OVERDUE means: status is "OVERDUE" OR (has lastFollowupDate and is past due date)
             if (status === "OVERDUE") return true;
             if (status === "COMPLETED") return false;
-            
+
             if (item.lastFollowupDate) {
               const followupDate = new Date(item.lastFollowupDate);
               const dueDate = new Date(followupDate);
@@ -152,14 +152,14 @@ export default function Assessments() {
           return true;
         });
       }
-      
+
       if (filters.ailment && filters.ailment.trim()) {
         const ailmentSearch = filters.ailment.trim().toUpperCase();
         content = content.filter(item => {
           return item.ailmentCode && item.ailmentCode.toUpperCase().includes(ailmentSearch);
         });
       }
-      
+
       // Transform data to match our component structure
       const transformedData = content.map(item => ({
         id: item.id,
@@ -171,13 +171,13 @@ export default function Assessments() {
         pdfUrl: item.pdfUrl,
         lastFollowupDate: item.lastFollowupDate,
       }));
-      
+
       setAssessments(transformedData);
-      
+
       // For client-side filtering, we need to adjust pagination
       setTotalPages(1); // All results on one page after filtering
       setTotalElements(transformedData.length);
-      
+
       // Update URL with current params
       updateURL({
         page: currentPage,
@@ -190,10 +190,10 @@ export default function Assessments() {
       });
     } catch (err) {
       console.error("Error fetching assessments:", err);
-      
+
       // More detailed error message
       let errorMessage = "Failed to fetch assessments";
-      
+
       if (err.response) {
         errorMessage = err.response.data?.message || `Server error: ${err.response.status}`;
       } else if (err.request) {
@@ -201,7 +201,7 @@ export default function Assessments() {
       } else {
         errorMessage = err.message || "An unexpected error occurred";
       }
-      
+
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -216,17 +216,17 @@ export default function Assessments() {
   // Debounced search
   const handleSearchChange = (value) => {
     setFilters(prev => ({ ...prev, patientName: value }));
-    
+
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current);
     }
-    
+
     // If empty, clear and fetch immediately
     if (!value || value.trim() === "") {
       setCurrentPage(0);
       return; // fetchAssessments will be called by useEffect
     }
-    
+
     // Otherwise debounce
     debounceTimer.current = setTimeout(() => {
       setCurrentPage(0);
@@ -236,19 +236,19 @@ export default function Assessments() {
   // Handle filter change
   const handleFilterChange = (filterName, value) => {
     setFilters(prev => ({ ...prev, [filterName]: value }));
-    
+
     // Ailment filter - debounced
     if (filterName === "ailment") {
       if (ailmentDebounceTimer.current) {
         clearTimeout(ailmentDebounceTimer.current);
       }
-      
+
       // If empty, clear and let useEffect handle fetch
       if (!value || value.trim() === "") {
         setCurrentPage(0);
         return;
       }
-      
+
       // Otherwise debounce
       ailmentDebounceTimer.current = setTimeout(() => {
         setCurrentPage(0);
@@ -263,7 +263,7 @@ export default function Assessments() {
   const handleSort = (column) => {
     setSorting(prev => ({
       sortBy: column,
-  sortDirection: prev.sortBy === column && prev.sortDirection === "asc" ? "desc" : "asc",
+      sortDirection: prev.sortBy === column && prev.sortDirection === "asc" ? "desc" : "asc",
     }));
     setCurrentPage(0);
   };
@@ -304,7 +304,7 @@ export default function Assessments() {
         </span>
       );
     }
-    
+
     // If status is COMPLETED
     if (status === "COMPLETED") {
       return (
@@ -316,7 +316,7 @@ export default function Assessments() {
         </span>
       );
     }
-    
+
     // For PENDING or null status, show PENDING
     return (
       <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-yellow-50 text-yellow-700 border border-yellow-200">
@@ -337,7 +337,7 @@ export default function Assessments() {
         </svg>
       );
     }
-    
+
     if (sorting.sortDirection === "asc") {
       return (
         <svg className="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
@@ -345,7 +345,7 @@ export default function Assessments() {
         </svg>
       );
     }
-    
+
     return (
       <svg className="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
         <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -654,11 +654,10 @@ export default function Assessments() {
                       <button
                         onClick={() => handlePageChange(currentPage - 1)}
                         disabled={currentPage === 0}
-                        className={`relative inline-flex items-center px-3 py-2 rounded-l-md border border-emerald-200 text-sm font-medium ${
-                          currentPage === 0
+                        className={`relative inline-flex items-center px-3 py-2 rounded-l-md border border-emerald-200 text-sm font-medium ${currentPage === 0
                             ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                             : "bg-white text-emerald-700 hover:bg-emerald-50"
-                        }`}
+                          }`}
                       >
                         <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -676,11 +675,10 @@ export default function Assessments() {
                             <button
                               key={pageNumber}
                               onClick={() => handlePageChange(pageNumber)}
-                              className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
-                                currentPage === pageNumber
+                              className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${currentPage === pageNumber
                                   ? "z-10 bg-gradient-to-r from-emerald-500 to-teal-500 border-emerald-500 text-white shadow-md"
                                   : "bg-white border-emerald-200 text-emerald-700 hover:bg-emerald-50"
-                              }`}
+                                }`}
                             >
                               {pageNumber + 1}
                             </button>
@@ -704,11 +702,10 @@ export default function Assessments() {
                       <button
                         onClick={() => handlePageChange(currentPage + 1)}
                         disabled={currentPage === totalPages - 1}
-                        className={`relative inline-flex items-center px-3 py-2 rounded-r-md border border-emerald-200 text-sm font-medium ${
-                          currentPage === totalPages - 1
+                        className={`relative inline-flex items-center px-3 py-2 rounded-r-md border border-emerald-200 text-sm font-medium ${currentPage === totalPages - 1
                             ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                             : "bg-white text-emerald-700 hover:bg-emerald-50"
-                        }`}
+                          }`}
                       >
                         <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
@@ -796,22 +793,20 @@ export default function Assessments() {
                   <button
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 0}
-                    className={`flex-1 px-4 py-2.5 text-sm font-medium rounded-lg transition-all ${
-                      currentPage === 0
+                    className={`flex-1 px-4 py-2.5 text-sm font-medium rounded-lg transition-all ${currentPage === 0
                         ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                         : "bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600 shadow-md"
-                    }`}
+                      }`}
                   >
                     Previous
                   </button>
                   <button
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages - 1}
-                    className={`flex-1 px-4 py-2.5 text-sm font-medium rounded-lg transition-all ${
-                      currentPage === totalPages - 1
+                    className={`flex-1 px-4 py-2.5 text-sm font-medium rounded-lg transition-all ${currentPage === totalPages - 1
                         ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                         : "bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600 shadow-md"
-                    }`}
+                      }`}
                   >
                     Next
                   </button>
