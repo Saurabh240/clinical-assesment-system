@@ -18,9 +18,9 @@ export default function Assessments() {
   
   // Filters and sorting from URL
   const [filters, setFilters] = useState({
-    patientName: searchParams.get("patientName") || "",
+    patientName: "",
     status: searchParams.get("status") || "",
-    ailment: searchParams.get("ailment") || "",
+    ailment: "",
   });
   
   const [sorting, setSorting] = useState({
@@ -32,6 +32,7 @@ export default function Assessments() {
   
   // Debounce timer
   const debounceTimer = useRef(null);
+  const ailmentDebounceTimer = useRef(null);
 
   // Sync URL with state
   const updateURL = useCallback((params) => {
@@ -67,12 +68,16 @@ export default function Assessments() {
   };
 
   // Calculate overdue days from followup data
+  // OVERDUE = lastFollowupDate + 14 days has passed
   const calculateOverdueDays = (lastFollowupDate, followupStatus) => {
     if (!lastFollowupDate || followupStatus === "COMPLETED") return 0;
     
     const followupDate = new Date(lastFollowupDate);
+    const dueDate = new Date(followupDate);
+    dueDate.setDate(dueDate.getDate() + 14); // Add 14 days to lastFollowupDate
+    
     const today = new Date();
-    const diffTime = today - followupDate;
+    const diffTime = today - dueDate;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     
     return diffDays > 0 ? diffDays : 0;
@@ -92,20 +97,68 @@ export default function Assessments() {
       };
       
       // Add filters if they exist
-      if (filters.patientName) {
-        requestBody.patientName = filters.patientName;
-      }
-      if (filters.status) {
-        requestBody.status = filters.status;
-      }
-      if (filters.ailment) {
-        requestBody.ailment = filters.ailment;
+      if (filters.patientName && filters.patientName.trim()) {
+        requestBody.patientName = filters.patientName.trim();
       }
       
+      // Don't send status filter to backend - we'll filter client-side
+      // Backend's followupStatus logic may not match our filter expectations
+      
+      // Don't send ailment filter to backend if it doesn't support partial matching
+      // We'll filter client-side instead
+      
+      console.log("Fetching assessments with:", requestBody);
       const response = await api.post("/assessments/getAllAssessments", requestBody);
       
       // Parse the response
-      const content = response.data.content || [];
+      let content = response.data.content || [];
+      
+      // Apply client-side filters
+      if (filters.status) {
+        content = content.filter(item => {
+          const status = item.followupStatus;
+          
+          // Match selected filter with actual status
+          if (filters.status === "COMPLETED") {
+            return status === "COMPLETED";
+          } else if (filters.status === "PENDING") {
+            // PENDING means: not completed and not overdue
+            // Check if it's pending by: status is null or "PENDING", and not overdue
+            if (status === "COMPLETED" || status === "OVERDUE") return false;
+            
+            // Check if actually overdue based on date
+            if (item.lastFollowupDate) {
+              const followupDate = new Date(item.lastFollowupDate);
+              const dueDate = new Date(followupDate);
+              dueDate.setDate(dueDate.getDate() + 14);
+              const today = new Date();
+              if (today > dueDate) return false; // It's overdue, not pending
+            }
+            return true;
+          } else if (filters.status === "OVERDUE") {
+            // OVERDUE means: status is "OVERDUE" OR (has lastFollowupDate and is past due date)
+            if (status === "OVERDUE") return true;
+            if (status === "COMPLETED") return false;
+            
+            if (item.lastFollowupDate) {
+              const followupDate = new Date(item.lastFollowupDate);
+              const dueDate = new Date(followupDate);
+              dueDate.setDate(dueDate.getDate() + 14);
+              const today = new Date();
+              return today > dueDate;
+            }
+            return false;
+          }
+          return true;
+        });
+      }
+      
+      if (filters.ailment && filters.ailment.trim()) {
+        const ailmentSearch = filters.ailment.trim().toUpperCase();
+        content = content.filter(item => {
+          return item.ailmentCode && item.ailmentCode.toUpperCase().includes(ailmentSearch);
+        });
+      }
       
       // Transform data to match our component structure
       const transformedData = content.map(item => ({
@@ -113,15 +166,17 @@ export default function Assessments() {
         date: item.createdAt,
         patientName: getPatientName(item.assessmentData),
         ailmentCode: item.ailmentCode,
-        status: item.followupStatus || "PENDING",
+        status: item.followupStatus, // Keep original status from API (can be null, PENDING, COMPLETED, or OVERDUE)
         overdueDays: calculateOverdueDays(item.lastFollowupDate, item.followupStatus),
         pdfUrl: item.pdfUrl,
         lastFollowupDate: item.lastFollowupDate,
       }));
       
       setAssessments(transformedData);
-      setTotalPages(response.data.totalPages || 0);
-      setTotalElements(response.data.totalElements || 0);
+      
+      // For client-side filtering, we need to adjust pagination
+      setTotalPages(1); // All results on one page after filtering
+      setTotalElements(transformedData.length);
       
       // Update URL with current params
       updateURL({
@@ -129,9 +184,9 @@ export default function Assessments() {
         size: pageSize,
         sortBy: sorting.sortBy,
         sortDirection: sorting.sortDirection,
-        ...(filters.patientName && { patientName: filters.patientName }),
+        ...(filters.patientName.trim() && { patientName: filters.patientName.trim() }),
         ...(filters.status && { status: filters.status }),
-        ...(filters.ailment && { ailment: filters.ailment }),
+        ...(filters.ailment.trim() && { ailment: filters.ailment.trim() }),
       });
     } catch (err) {
       console.error("Error fetching assessments:", err);
@@ -151,22 +206,12 @@ export default function Assessments() {
     } finally {
       setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, pageSize, sorting.sortBy, sorting.sortDirection, filters.patientName, filters.status, filters.ailment]);
+  }, [currentPage, pageSize, sorting.sortBy, sorting.sortDirection, filters.patientName, filters.status, filters.ailment, updateURL]);
 
-  // Initial fetch on mount only
+  // Single useEffect for all data fetching
   useEffect(() => {
     fetchAssessments();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Fetch when dependencies change (but not on initial mount)
-  useEffect(() => {
-    if (assessments.length > 0) {
-      fetchAssessments();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, sorting.sortBy, sorting.sortDirection, filters.status, filters.ailment]);
+  }, [fetchAssessments]);
 
   // Debounced search
   const handleSearchChange = (value) => {
@@ -176,16 +221,42 @@ export default function Assessments() {
       clearTimeout(debounceTimer.current);
     }
     
+    // If empty, clear and fetch immediately
+    if (!value || value.trim() === "") {
+      setCurrentPage(0);
+      return; // fetchAssessments will be called by useEffect
+    }
+    
+    // Otherwise debounce
     debounceTimer.current = setTimeout(() => {
       setCurrentPage(0);
-      fetchAssessments();
     }, 500);
   };
 
   // Handle filter change
-const handleFilterChange = (filterName, value) => {
+  const handleFilterChange = (filterName, value) => {
     setFilters(prev => ({ ...prev, [filterName]: value }));
-    setCurrentPage(0);
+    
+    // Ailment filter - debounced
+    if (filterName === "ailment") {
+      if (ailmentDebounceTimer.current) {
+        clearTimeout(ailmentDebounceTimer.current);
+      }
+      
+      // If empty, clear and let useEffect handle fetch
+      if (!value || value.trim() === "") {
+        setCurrentPage(0);
+        return;
+      }
+      
+      // Otherwise debounce
+      ailmentDebounceTimer.current = setTimeout(() => {
+        setCurrentPage(0);
+      }, 500);
+    } else {
+      // Status filter - immediate via useEffect
+      setCurrentPage(0);
+    }
   };
 
   // Handle sorting
@@ -209,6 +280,9 @@ const handleFilterChange = (filterName, value) => {
       if (debounceTimer.current) {
         clearTimeout(debounceTimer.current);
       }
+      if (ailmentDebounceTimer.current) {
+        clearTimeout(ailmentDebounceTimer.current);
+      }
     };
   }, []);
 
@@ -217,38 +291,39 @@ const handleFilterChange = (filterName, value) => {
     navigate(`/assessments/${assessmentId}`);
   };
 
-  // Get status badge color
-  const getStatusColor = (status) => {
-    switch (status?.toUpperCase()) {
-      case "COMPLETED":
-        return "bg-emerald-50 text-emerald-700 border-emerald-200";
-      case "PENDING":
-        return "bg-yellow-50 text-yellow-700 border-yellow-200";
-      case "OVERDUE":
-        return "bg-red-50 text-red-700 border-red-200";
-      default:
-        return "bg-gray-50 text-gray-700 border-gray-200";
-    }
-  };
-
   // Get follow-up status badge
-  const getFollowUpBadge = (overdueDays) => {
-    if (overdueDays > 0) {
+  const getFollowUpBadge = (status, overdueDays) => {
+    // If status is explicitly OVERDUE or there are overdue days
+    if (status === "OVERDUE" || overdueDays > 0) {
       return (
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-700 border border-red-200">
           <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
           </svg>
-          OVERDUE ({overdueDays}d)
+          OVERDUE {overdueDays > 0 ? `(${overdueDays}d)` : ''}
         </span>
       );
     }
+    
+    // If status is COMPLETED
+    if (status === "COMPLETED") {
+      return (
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+          </svg>
+          COMPLETED
+        </span>
+      );
+    }
+    
+    // For PENDING or null status, show PENDING
     return (
-      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-yellow-50 text-yellow-700 border border-yellow-200">
         <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
         </svg>
-        COMPLETED
+        PENDING
       </span>
     );
   };
@@ -371,6 +446,7 @@ const handleFilterChange = (filterName, value) => {
                 <option value="">All Statuses</option>
                 <option value="COMPLETED">Completed</option>
                 <option value="PENDING">Pending</option>
+                <option value="OVERDUE">Overdue</option>
               </select>
             </div>
 
@@ -488,17 +564,8 @@ const handleFilterChange = (filterName, value) => {
                       <th className="px-6 py-4 text-left text-xs font-semibold text-emerald-800 uppercase tracking-wider">
                         Ailment
                       </th>
-                      <th
-                        onClick={() => handleSort("followupStatus")}
-                        className="px-6 py-4 text-left text-xs font-semibold text-emerald-800 uppercase tracking-wider cursor-pointer hover:bg-emerald-100 transition-colors"
-                      >
-                        <div className="flex items-center gap-2">
-                          Status
-                          {getSortIcon("followupStatus")}
-                        </div>
-                      </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-emerald-800 uppercase tracking-wider">
-                        Follow-Up Status
+                        Follow Up Status
                       </th>
                       <th className="px-6 py-4 text-right text-xs font-semibold text-emerald-800 uppercase tracking-wider">
                         Actions
@@ -550,12 +617,7 @@ const handleFilterChange = (filterName, value) => {
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(assessment.status)}`}>
-                            {assessment.status}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          {getFollowUpBadge(assessment.overdueDays || 0)}
+                          {getFollowUpBadge(assessment.status, assessment.overdueDays || 0)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right">
                           <button
@@ -702,14 +764,7 @@ const handleFilterChange = (filterName, value) => {
 
                     <div className="flex items-center justify-between">
                       <span className="text-xs text-gray-500">Status</span>
-                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(assessment.status)}`}>
-                        {assessment.status}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-gray-500">Follow-Up</span>
-                      {getFollowUpBadge(assessment.overdueDays || 0)}
+                      {getFollowUpBadge(assessment.status, assessment.overdueDays || 0)}
                     </div>
                   </div>
 

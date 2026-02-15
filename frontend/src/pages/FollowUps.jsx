@@ -17,7 +17,6 @@ export default function FollowUps() {
   const [filters, setFilters] = useState({
     patientName: "",
     ailment: "",
-    status: "", // "overdue" or "on-track"
   });
   
   // Sorting
@@ -97,13 +96,6 @@ export default function FollowUps() {
       filtered = filtered.filter(followUp =>
         followUp.ailment.toLowerCase().includes(filters.ailment.toLowerCase())
       );
-    }
-
-    // Filter by status
-    if (filters.status === "overdue") {
-      filtered = filtered.filter(followUp => followUp.overdueDays > 0);
-    } else if (filters.status === "on-track") {
-      filtered = filtered.filter(followUp => followUp.overdueDays === 0);
     }
 
     // Apply sorting
@@ -274,7 +266,7 @@ export default function FollowUps() {
 
         {/* Filters Bar */}
         <div className="bg-white rounded-xl shadow-sm border border-emerald-100 p-4 sm:p-6 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Search by Patient Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -317,26 +309,10 @@ export default function FollowUps() {
                 className="w-full px-4 py-2.5 border border-emerald-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
               />
             </div>
-
-            {/* Filter by Status */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Status
-              </label>
-              <select
-                value={filters.status}
-                onChange={(e) => handleFilterChange("status", e.target.value)}
-                className="w-full px-4 py-2.5 border border-emerald-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
-              >
-                <option value="">All Statuses</option>
-                <option value="overdue">Overdue</option>
-                <option value="on-track">On Track</option>
-              </select>
-            </div>
           </div>
 
           {/* Active Filters Display */}
-          {(filters.patientName || filters.ailment || filters.status) && (
+          {(filters.patientName || filters.ailment) && (
             <div className="mt-4 flex flex-wrap gap-2">
               {filters.patientName && (
                 <span className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full text-sm">
@@ -364,19 +340,6 @@ export default function FollowUps() {
                   </button>
                 </span>
               )}
-              {filters.status && (
-                <span className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full text-sm">
-                  Status: {filters.status === "overdue" ? "Overdue" : "On Track"}
-                  <button
-                    onClick={() => clearFilter("status")}
-                    className="ml-1 hover:bg-emerald-100 rounded-full p-0.5"
-                  >
-                    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                    </svg>
-                  </button>
-                </span>
-              )}
             </div>
           )}
         </div>
@@ -391,7 +354,7 @@ export default function FollowUps() {
             </div>
             <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">No Follow-ups Found</h3>
             <p className="text-sm sm:text-base text-gray-600">
-              {(filters.patientName || filters.ailment || filters.status)
+              {(filters.patientName || filters.ailment)
                 ? "Try adjusting your filters"
                 : "There are currently no follow-ups to display."}
             </p>
