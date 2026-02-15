@@ -1,6 +1,9 @@
 package com.clinical.config;
 
-import lombok.RequiredArgsConstructor;
+import static org.springframework.http.HttpMethod.OPTIONS;
+
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,75 +19,70 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
-
-import static org.springframework.http.HttpMethod.OPTIONS;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthFilter jwtAuthFilter;
+        private final JwtAuthFilter jwtAuthFilter;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(OPTIONS, "/**").permitAll()
-                        .requestMatchers(
-                                "/auth/signIn",
-                                "/auth/signUp",
-                                "/auth/refresh",
-                                "/v3/api-docs/**",
-                                "/pdfs/**",
-                                "/swagger-ui/**"
-                        ).permitAll()
-                        .requestMatchers("/auth/logout").authenticated()
-                        .anyRequest().authenticated()
-                )
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .headers(headers -> headers
-                        .httpStrictTransportSecurity(hsts -> hsts.includeSubDomains(true))
-                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::deny)
-                )
-                .build();
-    }
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                return http
+                                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                                .csrf(AbstractHttpConfigurer::disable)
+                                .sessionManagement(session -> session
+                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                .authorizeHttpRequests(auth -> auth
+                                                .requestMatchers(OPTIONS, "/**").permitAll()
+                                                .requestMatchers(
+                                                                "/auth/signIn",
+                                                                "/auth/signUp",
+                                                                "/auth/refresh",
+                                                                "/v3/api-docs/**",
+                                                                "/pdfs/**",
+                                                                "/swagger-ui/**")
+                                                .permitAll()
+                                                .requestMatchers("/auth/logout").authenticated()
+                                                .anyRequest().authenticated())
+                                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                                .headers(headers -> headers
+                                                .httpStrictTransportSecurity(hsts -> hsts.includeSubDomains(true))
+                                                .frameOptions(HeadersConfigurer.FrameOptionsConfig::deny))
+                                .exceptionHandling(ex -> ex
+                                                .authenticationEntryPoint(((request, response, authException) -> {
+                                                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                                                })))
+                                .build();
+        }
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder(12);
-    }
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder(12);
+        }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
+        @Bean
+        public CorsConfigurationSource corsConfigurationSource() {
+                CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of(
-                "http://localhost:3000",
-                "http://localhost:5173"
-        ));
+                config.setAllowedOrigins(List.of(
+                                "http://localhost:3000",
+                                "http://localhost:5173"));
 
-        config.setAllowedMethods(List.of(
-                "GET", "POST", "PUT", "DELETE", "OPTIONS"
-        ));
+                config.setAllowedMethods(List.of(
+                                "GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
-        config.setAllowedHeaders(List.of(
-                "Authorization", "Content-Type"
-        ));
+                config.setAllowedHeaders(List.of(
+                                "Authorization", "Content-Type"));
 
-        config.setExposedHeaders(List.of("Authorization"));
-        config.setAllowCredentials(true);
+                config.setExposedHeaders(List.of("Authorization"));
+                config.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return source;
-    }
+                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+                source.registerCorsConfiguration("/**", config);
+                return source;
+        }
 }
-

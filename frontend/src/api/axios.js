@@ -53,11 +53,8 @@ api.interceptors.response.use(
       error.response?.status === 401 &&
       !originalRequest._retry &&
       !originalRequest.url.includes("/auth/signIn") &&
-      !originalRequest.url.includes("/auth/logout") 
-    )
-   
-
-      {
+      !originalRequest.url.includes("/auth/logout")
+    ) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
@@ -68,7 +65,8 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        await baseApi.post("/auth/refresh");
+        const refreshTokenResponse = await baseApi.post("/auth/refresh");
+        localStorage.setItem("accessToken", refreshTokenResponse.data.accessToken);
         processQueue(null);
         return api(originalRequest);
       } catch (err) {
