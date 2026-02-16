@@ -1,13 +1,11 @@
-
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../api/axios";
+
+import api, { authApi } from "../api/axios";
 
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
 import Input from "../components/ui/Input";
-import { logoutUser } from "../utils/logout";
 
 export default function PharmacyProfile() {
   const navigate = useNavigate();
@@ -17,16 +15,25 @@ export default function PharmacyProfile() {
     designation: "",
     firstName: "",
     lastName: "",
-    language: "",
     registrationNumber: "",
     startDate: "",
-
     streetAddress: "",
     city: "",
     province: "",
     country: "",
     postalCode: "",
   });
+
+  
+  const handleLogout = async () => {
+    try {
+      await authApi.logout();
+      navigate("/login");
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
+
 
   const handleChange = (e) => {
     setFormData({
@@ -35,44 +42,16 @@ export default function PharmacyProfile() {
     });
   };
 
-  /* CREATE PHARMACY*/
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      logoutUser();
-      return;
-    }
 
     try {
       setLoading(true);
 
-      await api.post(
-  "/pharmacies",
-  {
-    designation: formData.designation,
-    firstName: formData.firstName,
-    lastName: formData.lastName,
-    language: formData.language,
-    registrationNumber: formData.registrationNumber,
-    startDate: formData.startDate,
-
-    streetAddress: formData.streetAddress,
-    city: formData.city,
-    province: formData.province,
-    country: formData.country,
-    postalCode: formData.postalCode,
-  },
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-);
+      await api.post("/pharmacies", formData);
 
 
-      // Go to subscription after successful creation
       navigate("/subscription");
     } catch (error) {
       console.error(
@@ -124,14 +103,6 @@ export default function PharmacyProfile() {
             </div>
 
             <Input
-              label="Preferred Language"
-              name="language"
-              required
-              value={formData.language}
-              onChange={handleChange}
-            />
-
-            <Input
               label="Registration Number"
               name="registrationNumber"
               required
@@ -180,7 +151,7 @@ export default function PharmacyProfile() {
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
                 <Input
                   label="Country"
                   name="country"
@@ -225,7 +196,12 @@ export default function PharmacyProfile() {
           </Card.Content>
 
           <Card.Footer>
-            <Button variant="outline" fullWidth onClick={logoutUser}>
+            <Button
+              type="button"
+              variant="secondary"
+              fullWidth
+              onClick={handleLogout}
+            >
               Logout
             </Button>
           </Card.Footer>
@@ -234,4 +210,3 @@ export default function PharmacyProfile() {
     </div>
   );
 }
-

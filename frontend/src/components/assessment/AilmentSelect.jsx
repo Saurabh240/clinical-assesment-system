@@ -14,10 +14,14 @@ export default function AilmentSelect({
       value={value}
       onChange={onChange}   
       disabled={loading}
-      options={ailments.map((a) => ({
-        label: a.name,
-        value: a.code,
-      }))}
+     options={Array.isArray(ailments)
+  ? ailments.map((a) => ({
+      label: a.name,
+      value: a.code,
+    }))
+  : []
+}
+
       placeholder="-- Select Ailment --"
     />
   );

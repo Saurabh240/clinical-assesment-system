@@ -27,10 +27,10 @@ public class AuthController {
 
     @PostMapping("/refresh")
     public ResponseEntity<TokenResponse> refresh(
-            @Valid @RequestBody TokenRequest request) {
+            @Valid @CookieValue("refresh_token") String refreshToken, HttpServletResponse response) {
 
         return ResponseEntity.ok(
-                authService.refresh(request.refreshToken())
+                authService.refresh(refreshToken, response)
         );
     }
 
@@ -45,5 +45,11 @@ public class AuthController {
             @Valid @RequestBody SignupRequest request) {
 
         return ResponseEntity.ok(authService.signUp(request));
+    }
+
+    @GetMapping("/currentUser")
+    public ResponseEntity<UserContextResponse> getCurrentUser(Authentication authentication) {
+        UserContextResponse res = authService.getCurrentUser(authentication);
+        return ResponseEntity.ok(res);
     }
 }

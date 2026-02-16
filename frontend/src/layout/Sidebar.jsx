@@ -1,12 +1,26 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 
+
+import { authApi } from "../api/axios";
+
+
+const handleLogout = async () => {
+  try {
+    await authApi.logout();
+  } catch (err) {
+    console.error("Logout failed:", err);
+  }
+};
+
+
 const navLinkClass = ({ isActive }) =>
   `flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
     isActive
       ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md"
       : "text-gray-300 hover:bg-emerald-700/30 hover:text-white"
   }`;
+
 
 const subNavLinkClass = ({ isActive }) =>
   `flex items-center gap-3 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 ${
@@ -184,6 +198,16 @@ export default function Sidebar() {
             </svg>
             Billing
           </NavLink>
+          <NavLink 
+            to="/products" 
+            className={navLinkClass}
+            onClick={closeMobileSidebar}
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            Products
+          </NavLink>
           
           <NavLink 
             to="/settings" 
@@ -197,6 +221,29 @@ export default function Sidebar() {
             Settings
           </NavLink>
         </nav>
+
+        {/* Footer */}
+        <div className="p-6 border-t border-emerald-700/40">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-gray-300 hover:bg-emerald-700/30 hover:text-white transition-all duration-200 w-full"
+          >
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1"
+              />
+            </svg>
+            Logout
+          </button>
+        </div>
       </aside>
     </>
   );

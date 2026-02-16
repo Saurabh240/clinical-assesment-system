@@ -1,15 +1,14 @@
 
 
+
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 
-import api from "../api/axios";
-
+import { authApi, tokenManager } from "../api/axios";
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
 import Input from "../components/ui/Input";
-import { logoutUser } from "../utils/logout";
 
 function Login() {
   const navigate = useNavigate();
@@ -25,10 +24,7 @@ function Login() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleLogin = async (e) => {
@@ -37,24 +33,18 @@ function Login() {
     setLoading(true);
 
     try {
-      const res = await api.post("/auth/signIn", {
-        email: formData.email,
-        password: formData.password,
-      });
+      const { accessToken, userId, status, nextStep } =
+        await authApi.signIn(formData);
 
-      const { accessToken, nextStep, userId, status } = res.data;
+      if (!accessToken) throw new Error("No access token returned");
 
-      if (!accessToken) {
-        throw new Error("Access token not received");
-      }
+      // Save user info (NOT tokens — already handled by tokenManager)
+      localStorage.setItem(
+        "authUser",
+        JSON.stringify({ userId, email: formData.email, status })
+      );
 
-      // 1. Store auth data
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("authUser", JSON.stringify({ userId, status }));
-
-      // 2. Optimized Navigation Logic
-      // This logic ensures that if the backend says "SUBSCRIPTION", 
-      // the user CANNOT reach the dashboard.
+      // Navigate based on backend instruction
       switch (nextStep) {
         case "DASHBOARD":
           navigate("/dashboard", { replace: true });
@@ -65,35 +55,28 @@ function Login() {
           break;
 
         case "SUBSCRIPTION":
-          // If user linked pharmacy but didn't pay, backend sends "SUBSCRIPTION"
-          // We force them to the subscription page here.
           navigate("/subscription", { replace: true });
           break;
 
         default:
-          /* FALLBACK LOGIC 
-           * If nextStep is missing/undefined, we use the 'status' as a backup*/
-           
-          if (status === "PENDING_PHARMACY") {
+          if (status === "ACTIVE") {
+            navigate("/dashboard", { replace: true });
+          } else if (status === "PENDING_PHARMACY") {
             navigate("/pharmacy-select", { replace: true });
           } else if (status === "PENDING_SUBSCRIPTION") {
             navigate("/subscription", { replace: true });
-          } else if (status === "ACTIVE") {
-            navigate("/dashboard", { replace: true });
           } else {
-            // If we truly don't know where they are, logout to be safe
-            console.error("Unknown user state. Logging out.");
-            logoutUser();
+            tokenManager.clearTokens();
+            setError("Account not ready. Please contact support.");
           }
       }
-
     } catch (err) {
       if (!err.response) {
-        setError("Unable to connect to server. Please try again later.");
+        setError("Unable to connect to server.");
       } else if (err.response.status === 401) {
         setError("Invalid email or password.");
       } else {
-        setError(err.response.data?.message || "Login failed. Please try again.");
+        setError(err.response.data?.message || "Login failed");
       }
     } finally {
       setLoading(false);
@@ -103,8 +86,8 @@ function Login() {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50 p-4">
       <Card shadow="xl" padding="lg" className="w-full max-w-md">
-        <Card.Header className="text-center">
-          <Card.Title className="text-2xl font-bold">Welcome Back</Card.Title>
+        <Card.Header className="text-center space-y-3">
+          <h1 className="text-xl font-bold text-teal-600">RxPrescribe</h1>
           <Card.Description>Sign in to your account</Card.Description>
         </Card.Header>
 
@@ -117,7 +100,7 @@ function Login() {
         <Card.Content>
           <form onSubmit={handleLogin} className="space-y-6">
             <Input
-              label="Email Address"
+              label="Email"
               name="email"
               type="email"
               value={formData.email}
@@ -128,7 +111,7 @@ function Login() {
               disabled={loading}
             />
 
-            <div className="relative">
+            <div>
               <Input
                 label="Password"
                 name="password"
@@ -140,8 +123,8 @@ function Login() {
                 rightIcon={
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="text-gray-400 hover:text-gray-600 focus:outline-none"
+                    onClick={() => setShowPassword((s) => !s)}
+                    className="text-gray-400 hover:text-gray-600"
                   >
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
@@ -149,6 +132,7 @@ function Login() {
                 required
                 disabled={loading}
               />
+
               <div className="flex justify-end mt-1">
                 <Link
                   to="/forgot-password"
@@ -159,13 +143,7 @@ function Login() {
               </div>
             </div>
 
-            <Button
-              type="submit"
-              fullWidth
-              loading={loading}
-              variant="secondary"
-              className="mt-4"
-            >
+            <Button type="submit" fullWidth loading={loading} variant="secondary">
               Sign In
             </Button>
           </form>
@@ -188,4 +166,3 @@ function Login() {
 }
 
 export default Login;
-

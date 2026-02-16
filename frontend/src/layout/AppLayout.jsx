@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 
 export default function AppLayout() {
   return (
-    <div className="flex h-screen bg-gradient-to-br from-gray-50 to-emerald-50/30">
+    <div className="flex h-screen bg-linear-to-br from-gray-50 to-emerald-50/30">
       {/* Sidebar */}
       <Sidebar />
 

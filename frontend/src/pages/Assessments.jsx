@@ -5,12 +5,17 @@ import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
 import { getAilments } from "../services/ailment.service";
 import useAssessment from "../hooks/useAssessment";
+import { useNavigate } from "react-router-dom";
+
+
+
+
 
 export default function Assessments() {
   const [ailments, setAilments] = useState([]);
   const [selectedCode, setSelectedCode] = useState("");
   const [pdfUrl, setPdfUrl] = useState(null);
-
+const navigate = useNavigate();
   const {
     template,
     loading,
@@ -40,6 +45,7 @@ export default function Assessments() {
       mounted = false;
     };
   }, []);
+
 
   const handleAilmentChange = (code) => {
     setSelectedCode(code);
@@ -79,7 +85,11 @@ export default function Assessments() {
   return (
     <div className="min-h-screen bg-linear-to-br from-teal-50 via-white to-blue-50 p-4 sm:p-6 lg:p-8">
       <div className="max-w-5xl mx-auto space-y-6">
+    
+      
         {/* Global Error */}
+
+      
         {error && (
           <div className="p-4 bg-red-50 border-l-4 border-red-500 rounded-lg">
             <p className="text-sm text-red-700">{error}</p>
@@ -116,7 +126,7 @@ export default function Assessments() {
             submitting={submitting}
           />
         )}
-
+</div>
         {/* Success & PDF Section */}
         {pdfReady && assessmentId && (
           <Card className="bg-green-50 border border-green-200">
@@ -124,6 +134,18 @@ export default function Assessments() {
               <h3 className="text-xl font-medium text-green-800">
                 Assessment Submitted Successfully!
               </h3>
+                  {/* VIEW BUTTON */}
+      <Button
+        variant="secondary"
+        size="lg"
+        fullWidth
+        onClick={() => navigate(`/assessments/${assessmentId}`)}
+      >
+        View Assessment
+      </Button>
+
+
+
 
               {!pdfUrl ? (
                 <Button
@@ -151,6 +173,7 @@ export default function Assessments() {
           </Card>
         )}
       </div>
-    </div>
+
+    
   );
 }

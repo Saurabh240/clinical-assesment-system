@@ -8,6 +8,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "assessments")

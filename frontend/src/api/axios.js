@@ -1,92 +1,148 @@
-
 import axios from "axios";
 
-/* axios without interceptor (used for refresh only) */
-export const baseApi = axios.create({
+
+const refreshApi = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  headers: { "Content-Type": "application/json" },
+  withCredentials: true, 
 });
 
-/* main axios instance */
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  headers: { "Content-Type": "application/json" },
+  withCredentials: true, 
 });
 
-/*  request interceptor */
+//  Token Management (Access Token only)
+export const tokenManager = {
+  getAccessToken: () => localStorage.getItem("accessToken"),
+  
+  setTokens: (accessToken) => {
+    if (accessToken) {
+      localStorage.setItem("accessToken", accessToken);
+      api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+    }
+  },
+
+  clearTokens: () => {
+    localStorage.removeItem("accessToken");
+    delete api.defaults.headers.common["Authorization"];
+
+  },
+};
+
+// Initialize
+const initToken = tokenManager.getAccessToken();
+if (initToken) {
+  api.defaults.headers.common["Authorization"] = `Bearer ${initToken}`;
+}
+
+//  Request Interceptor
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("accessToken");
-
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    const token = tokenManager.getAccessToken();
+    const isAuthRequest = config.url?.includes("/auth/");
+    
+    if (token && !isAuthRequest) {
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
-
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-/* response interceptor  */
+//  Response Interceptor (Cookie-based Refresh)
 let isRefreshing = false;
 let failedQueue = [];
 
-const processQueue = (error) => {
-  failedQueue.forEach((p) =>
-    error ? p.reject(error) : p.resolve()
-  );
+const processQueue = (error, token = null) => {
+  failedQueue.forEach((prom) => error ? prom.reject(error) : prom.resolve(token));
   failedQueue = [];
 };
 
 api.interceptors.response.use(
   (response) => response,
+
+
   async (error) => {
     const originalRequest = error.config;
+    
+    const status = error.response ? error.response.status : null;
 
-    if (
-      error.response?.status === 401 &&
-      !originalRequest._retry &&
-      !originalRequest.url.includes("/auth/signIn") &&
-      !originalRequest.url.includes("/auth/logout") 
-    )
-   
+  
+    if ((status === 401 || status === 403) && !originalRequest._retry) {
+      
+      if (originalRequest.url?.includes("/auth/refresh")) {
+        tokenManager.clearTokens();
+        window.dispatchEvent(new Event("auth:logout"));
+        return Promise.reject(error);
+      }
 
-      {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
-        }).then(() => api(originalRequest));
+        }).then(token => {
+          originalRequest.headers.Authorization = `Bearer ${token}`;
+          return api(originalRequest);
+        });
       }
 
       originalRequest._retry = true;
       isRefreshing = true;
 
       try {
-        await baseApi.post("/auth/refresh");
-        processQueue(null);
-        return api(originalRequest);
+      
+        const { data } = await refreshApi.post("/auth/refresh");
+        const newToken = data.accessToken;
+
+        tokenManager.setTokens(newToken);
+        processQueue(null, newToken);
+
+        // RETRY the original list API with the NEW token
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        return api(originalRequest); 
       } catch (err) {
-        processQueue(err);
-        localStorage.clear();
-        window.location.replace("/login");
+        processQueue(err, null);
+        tokenManager.clearTokens();
+        window.dispatchEvent(new Event("auth:logout"));
         return Promise.reject(err);
       } finally {
         isRefreshing = false;
       }
     }
-
     return Promise.reject(error);
   }
 );
 
+
+
+export const authApi = {
+  signIn: async (credentials) => {
+    const response = await api.post("/auth/signIn", credentials);
+    const { accessToken, userId, status, nextStep } = response.data;
+
+    tokenManager.setTokens(accessToken);
+
+    return { userId, status, nextStep, accessToken };
+  },
+
+  getCurrentUser: async () => {
+    const res = await api.get("/auth/currentUser");
+    return res.data;
+  },
+
+  signUp: async (userData) => api.post("/auth/signUp", userData),
+
+  logout: async () => {
+    try {
+      await api.post("/auth/logout");
+    } finally {
+      tokenManager.clearTokens();
+      window.location.href = "/login";
+    }
+  },
+};
+
 export default api;
-
-
 
 

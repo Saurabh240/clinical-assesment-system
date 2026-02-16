@@ -18,8 +18,13 @@ public class AssessmentSpecification {
             List<Predicate> predicates = new ArrayList<>();
 
             if (req.getAilmentCode() != null) {
+                String search = req.getAilmentCode().trim().toLowerCase();
+
                 predicates.add(
-                        cb.equal(root.get("ailmentCode"), req.getAilmentCode())
+                        cb.like(
+                                cb.lower(root.get("ailmentCode")),
+                                "%" + search + "%"
+                        )
                 );
             }
 

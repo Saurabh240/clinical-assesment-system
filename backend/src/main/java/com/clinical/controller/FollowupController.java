@@ -1,24 +1,51 @@
 package com.clinical.controller;
 
-import com.clinical.model.FollowupResponse;
+import com.clinical.dto.FollowUpRequest;
+import com.clinical.dto.FollowupResponse;
+import com.clinical.dto.FollowupUpdateResponse;
 import com.clinical.service.FollowupService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/followups")
 @RequiredArgsConstructor
 public class FollowupController {
 
     private final FollowupService followupService;
 
-    @GetMapping
+    @GetMapping("/followups")
     public List<FollowupResponse> getOverdueFollowups() {
         return followupService.getOverdueFollowups();
     }
-}
 
+    @PostMapping("/assessments/{assessmentId}/followup")
+    public ResponseEntity<FollowupUpdateResponse> addOrUpdateFollowup(
+            @PathVariable Long assessmentId,
+            @Valid @RequestBody FollowUpRequest request,
+            Principal principal
+    ) {
+        FollowupUpdateResponse response =
+                followupService.addOrUpdateFollowup(
+                        assessmentId,
+                        request,
+                        principal.getName()
+                );
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/assessments/{assessmentId}/followup")
+    public ResponseEntity<FollowupResponse> getFollowupByAssessmentId(
+            @PathVariable Long assessmentId
+    ) {
+        FollowupResponse response =
+                followupService.getFollowupByAssessmentId(assessmentId);
+
+        return ResponseEntity.ok(response);
+    }
+
+}
