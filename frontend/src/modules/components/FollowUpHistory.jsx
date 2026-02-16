@@ -10,6 +10,9 @@ export default function FollowUpHistory({ assessmentId }) {
   const [followup, setFollowup] = useState(null);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
+const [errorMsg, setErrorMsg] = useState("");
+
 
 
   const fetchFollowup = async () => {
@@ -51,22 +54,27 @@ export default function FollowUpHistory({ assessmentId }) {
       status: "PENDING",
     };
 
-    try {
-      setSaving(true);
+ try {
+  setSaving(true);
 
-      const res = await api.post(
-        `/assessments/${assessmentId}/followup`,
-        payload
-      );
+  const res = await api.post(
+    `/assessments/${assessmentId}/followup`,
+    payload
+  );
 
-      alert(res.data.message || "Follow-up saved");
-      fetchFollowup();
-    } catch (err) {
-      console.error(err);
-      alert("Failed to add follow-up");
-    } finally {
-      setSaving(false);
-    }
+  setSuccessMsg(res.data.message || "Follow-up saved");
+  setErrorMsg("");
+
+  fetchFollowup();
+
+} catch (err) {
+  console.error(err);
+  setErrorMsg("Failed to add follow-up");
+  setSuccessMsg("");
+
+} finally {
+  setSaving(false);
+}
   };
 
  
@@ -84,25 +92,29 @@ export default function FollowUpHistory({ assessmentId }) {
     status: "COMPLETED",
   };
 
-  try {
-    setSaving(true);
+ try {
+  setSaving(true);
 
-    const res = await api.post(
-      `/assessments/${assessmentId}/followup`,
-      payload
-    );
+  const res = await api.post(
+    `/assessments/${assessmentId}/followup`,
+    payload
+  );
 
-    alert(res.data.message || "Updated");
-    fetchFollowup();
-  } catch (err) {
-    console.error(err);
-    alert("Update failed");
-  } finally {
-    setSaving(false);
-  }
-};
+  setSuccessMsg(res.data.message || "Updated");
+  setErrorMsg("");
 
+  fetchFollowup();
 
+} catch (err) {
+  console.error(err);
+  setErrorMsg("Failed to update follow-up");
+  setSuccessMsg("");
+
+} finally {
+  setSaving(false);
+}
+
+ };
   return (
     <Card>
 
@@ -144,6 +156,21 @@ export default function FollowUpHistory({ assessmentId }) {
           </Button>
         </div>
       </div>
+       
+      {successMsg && (
+  <div className="bg-green-100 text-green-700 p-2 rounded mb-2">
+    {successMsg}
+  </div>
+)}
+
+{errorMsg && (
+  <div className="bg-red-100 text-red-700 p-2 rounded mb-2">
+    {errorMsg}
+  </div>
+)}
+
+
+
 
   
       {loading && <p>Loading...</p>}

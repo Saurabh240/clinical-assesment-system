@@ -1,9 +1,9 @@
 
 
 import Card from "../../components/ui/Card";
-import Button from "../../components/ui/Button";
 
-export default function FollowUpSection({ data, onAdd, onEdit }) {
+
+export default function FollowUpCard({ data, onAdd, onEdit }) {
   if (!data) {
     return (
       <Card>
@@ -37,18 +37,7 @@ export default function FollowUpSection({ data, onAdd, onEdit }) {
           Initial Follow-Up Plan
         </h2>
 
-        {/*<div className="flex gap-2">
-          <Button variant="secondary" onClick={onAdd}>
-            Add
-          </Button>
-
-          <Button
-            variant="secondary"
-            onClick={() => onEdit(data)}
-          >
-            Edit
-          </Button>
-        </div>*/}
+      
       </div>
 
       {/* Follow-up Info */}
