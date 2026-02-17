@@ -127,11 +127,6 @@ const navigate = useNavigate();
           />
         )}
 </div>
-
-
-       
-
-
         {/* Success & PDF Section */}
         {pdfReady && assessmentId && (
           <Card className="bg-green-50 border border-green-200">
@@ -139,7 +134,6 @@ const navigate = useNavigate();
               <h3 className="text-xl font-medium text-green-800">
                 Assessment Submitted Successfully!
               </h3>
-               
                   {/* VIEW BUTTON */}
       <Button
         variant="secondary"

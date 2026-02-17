@@ -7,10 +7,6 @@ import PharmacySelect from "./pages/PharmacySelect";
 import PharmacyProfile from "./pages/PharmacyProfile";
 import Subscription from "./pages/Subscription";
 
-
-
-
-
 import AppRoutes from "./routes/AppRoutes";
 
 function App() {

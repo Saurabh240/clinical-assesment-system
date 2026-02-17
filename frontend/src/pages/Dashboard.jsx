@@ -175,8 +175,9 @@ export default function Dashboard() {
       setAssessments(transformedData);
 
       // For client-side filtering, we need to adjust pagination
-      setTotalPages(1); // All results on one page after filtering
-      setTotalElements(transformedData.length);
+     // Set pagination metadata from API response
+      setTotalPages(response.data.totalPages || 1);
+      setTotalElements(response.data.totalElements || transformedData.length);
 
       // Update URL with current params
       updateURL({

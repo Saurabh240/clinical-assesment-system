@@ -9,6 +9,8 @@ import AssessmentView from "../modules/assessment/AssessmentView";
 import ProductsPage from "../pages/ProductsPage";
 import FollowUps from "../pages/FollowUps";
 
+import AssessmentView from "../modules/assessment/AssessmentView";
+import ProductsPage from "../pages/ProductsPage";
 
 export default function AppRoutes() {
   return (
@@ -23,9 +25,7 @@ export default function AppRoutes() {
         <Route path="settings" element={<Settings />} />
         <Route path="/assessments/:id" element={<AssessmentView />} />
         <Route path="/products" element={<ProductsPage />} />
-   
-        <Route path="follow-ups" element={<FollowUps />} />
-        
+        <Route path="/follow-ups" element={<FollowUps />} />
       </Route>
     </Routes>
   );
