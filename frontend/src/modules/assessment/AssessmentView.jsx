@@ -12,7 +12,7 @@ import PatientInfoCard from "../components/PatientInfoCard";
 import SymptomsCard from "../components/SymptomsCard";
 import CarePlanCard from "../components/CarePlanCard";
 import MedicationCard from "../components/MedicationCard";
-import FollowUpCard from "../components/FollowUpCard";
+
 import FollowUpHistory from "../components/FollowUpHistory";
 import ConsentCard from "../components/ConsentCard";
 import SignatureCard from "../components/SignatureCard";
@@ -126,18 +126,17 @@ export default function AssessmentView() {
 <SignatureCard data={d.signature} />
 <AssessmentCard data={d.assessment} />
 <PrescriberCard data={d.prescriber} />
+<div className="md:col-span-2">
 <EligibilityCard data={d.eligibility} />
+</div>
 
-<FollowUpCard
-  data={d.followUp}
-  onAdd={() => console.log("Add")}
-  onEdit={(data) => console.log("Edit", data)}
-/>
 
 
 </div>
 <div className="mt-6">
-<FollowUpHistory assessmentId={id} />
+<FollowUpHistory assessmentId={id} 
+initialFollowUp={d.followUp}
+/>
 </div>
       {/* Footer Actions */}
       <Card className="bg-teal-50 border-teal-200">

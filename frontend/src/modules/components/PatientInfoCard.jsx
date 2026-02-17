@@ -1,18 +1,15 @@
+
+
 import Card from "../../components/ui/Card";
 
-
-function LabelValue({ label, value }) {
+function Row({ label, value }) {
   return (
-    <div className="flex flex-col">
-      <span className="text-xs "><strong>{label}</strong></span>
-      <span className="text-sm  text-gray-500 font-medium">{value || "-"}</span>
+    <div className="text-sm leading-tight">
+      <span className="font-semibold">{label}: </span>
+      <span className="text-gray-600">{value || "-"}</span>
     </div>
   );
 }
-
-
-
-
 
 export default function PatientInfoCard({ data }) {
   if (!data) return null;
@@ -20,30 +17,31 @@ export default function PatientInfoCard({ data }) {
   const p = data;
 
   return (
-    <Card>
-      <h2 className="text-lg font-semibold mb-4">
+    <Card className="p-3 h-fit">
+      <h2 className="text-base font-semibold mb-2">
         Patient Information
       </h2>
 
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-        <LabelValue label="First Name" value={p.firstName} />
-        <LabelValue label="Last Name" value={p.lastName} />
-        <LabelValue label="Date of Birth" value={p.dob} />
-        <LabelValue label="Gender" value={p.gender} />
-          <LabelValue label="Height" value={p.height} />
-        <LabelValue label="Weight" value={p.weight} />
-        <LabelValue label="Phone" value={p.phone} />
-      
-        <LabelValue label="Health Card" value={p.healthCardNo} />
-        <LabelValue label="Address" value={p.address} />
-        
- 
+      <div className="grid grid-cols-2 gap-x-6 gap-y-1">
+
+        <Row label="First Name" value={p.firstName} />
+        <Row label="Last Name" value={p.lastName} />
+
+        <Row label="DOB" value={p.dob} />
+        <Row label="Gender" value={p.gender} />
+
+        <Row label="Height" value={p.height} />
+        <Row label="Weight" value={p.weight} />
+
+        <Row label="Phone" value={p.phone} />
+        <Row label="Health Card" value={p.healthCardNo} />
 
 
-      
-       
+        <div className="col-span-2 pt-1">
+          <Row label="Address" value={p.address} />
+        </div>
+
       </div>
     </Card>
   );
