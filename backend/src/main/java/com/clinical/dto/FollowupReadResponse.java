@@ -1,16 +1,14 @@
 package com.clinical.dto;
 
 import com.clinical.model.FollowupStatus;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.Instant;
-import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
-public class FollowupResponse {
+public class FollowupReadResponse {
 
     private Long assessmentId;
     private String patientName;
@@ -18,5 +16,4 @@ public class FollowupResponse {
     private long overdueDays;
     private Instant lastFollowupDate;
     private FollowupStatus status;
-    private String notes;
 }
