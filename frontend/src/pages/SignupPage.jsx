@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Mail, Lock, User } from "lucide-react";
 
-import api from "../api/axios";
+import { authApi } from "../api/axios";
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
 import Input from "../components/ui/Input";
@@ -29,47 +29,52 @@ function Signup() {
   };
 
   const handleSignup = async (e) => {
-  e.preventDefault();
-  setError("");
-  setLoading(true);
+    e.preventDefault();
+    setError("");
 
-  try {
-    // sign up (just creates user)
-    await api.post("/auth/signUp", {
-      firstName: formData.firstName.trim(),
-      lastName: formData.lastName.trim(),
-      email: formData.email.trim().toLowerCase(),
-      password: formData.password,
-    });
 
-    //  login (creates session / cookie)
-    const loginRes = await api.post("/auth/signIn", {
-      email: formData.email.trim().toLowerCase(),
-      password: formData.password,
-    });
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
 
-    const { accessToken, user } = loginRes.data;
+    setLoading(true);
 
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("user", JSON.stringify(user));
+    try {
 
-    navigate("/pharmacy-select");
-  } catch (err) {
-    setError(
-      err.response?.data?.message || "Signup failed"
-    );
-  } finally {
-    setLoading(false);
-  }
-};
+      await authApi.signUp({
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        email: formData.email.trim().toLowerCase(),
+        password: formData.password,
+      });
 
+
+      await authApi.signIn({
+        email: formData.email.trim().toLowerCase(),
+        password: formData.password,
+      });
+
+
+      navigate("/pharmacy-select");
+
+    } catch (err) {
+      setError(err.response?.data?.message || "Signup failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50 p-4">
       <Card shadow="xl" padding="lg" className="w-full max-w-md">
         <Card.Header className="text-center">
-          <Card.Title>Create Account</Card.Title>
-          <Card.Description>Sign up to get started</Card.Description>
+          <Card.Title className="text-xl font-bold text-teal-600">
+            RxPrescribe
+          </Card.Title>
+          <Card.Description>
+            Sign up to get started
+          </Card.Description>
         </Card.Header>
 
         {error && (
@@ -132,7 +137,12 @@ function Signup() {
               disabled={loading}
             />
 
-            <Button type="submit" fullWidth loading={loading} variant="secondary">
+            <Button
+              type="submit"
+              fullWidth
+              loading={loading}
+              variant="secondary"
+            >
               Create Account
             </Button>
           </form>
@@ -155,3 +165,4 @@ function Signup() {
 }
 
 export default Signup;
+
