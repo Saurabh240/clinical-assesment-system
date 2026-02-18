@@ -1,6 +1,5 @@
 
 
-
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Mail, Lock, User } from "lucide-react";
@@ -33,7 +32,7 @@ function Signup() {
     e.preventDefault();
     setError("");
 
-  
+
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
       return;
@@ -50,13 +49,13 @@ function Signup() {
         password: formData.password,
       });
 
-     
+
       await authApi.signIn({
         email: formData.email.trim().toLowerCase(),
         password: formData.password,
       });
 
- 
+
       navigate("/pharmacy-select");
 
     } catch (err) {
@@ -105,7 +104,6 @@ function Signup() {
               required
               disabled={loading}
             />
-
             <Input
               label="Email Address"
               name="email"
