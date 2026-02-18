@@ -9,8 +9,7 @@ import AssessmentView from "../modules/assessment/AssessmentView";
 import ProductsPage from "../pages/ProductsPage";
 import FollowUps from "../pages/FollowUps";
 
-import AssessmentView from "../modules/assessment/AssessmentView";
-import ProductsPage from "../pages/ProductsPage";
+
 
 export default function AppRoutes() {
   return (

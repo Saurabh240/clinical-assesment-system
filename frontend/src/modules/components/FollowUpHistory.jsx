@@ -61,22 +61,39 @@ export default function FollowUpHistory({ assessmentId , initialFollowUp = null,
   };
 
 
-  const openEditForm = () => {
-    if (!followup) return;
-
-    setIsEdit(true);
-    setFormData({
-      notes: followup.notes || "",
-      nextFollowupDate: followup.nextFollowupDate
-        ? followup.nextFollowupDate.slice(0, 16)
-        : "",
-      status: followup.status || "PENDING",
-    });
-
-    setShowForm(true);
-  };
 
 
+
+
+const openEditForm = () => {
+  if (!followup) return;
+
+  setIsEdit(true);
+
+  let formattedDate = "";
+  if (followup.nextFollowupDate) {
+    const dateObj = new Date(followup.nextFollowupDate);
+    
+ 
+    if (!isNaN(dateObj.getTime())) {
+   
+      const offset = dateObj.getTimezoneOffset() * 60000; 
+      const localISOTime = new Date(dateObj.getTime() - offset)
+        .toISOString()
+        .slice(0, 16); 
+      
+      formattedDate = localISOTime;
+    }
+  }
+
+  setFormData({
+    notes: followup.notes || "",
+    nextFollowupDate: formattedDate,
+    status: followup.status || "PENDING",
+  });
+
+  setShowForm(true);
+};
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -85,44 +102,49 @@ export default function FollowUpHistory({ assessmentId , initialFollowUp = null,
   };
 
 
-  const handleSubmit = async () => {
-    if (!assessmentId) return;
+  
 
-    try {
-      setSaving(true);
+const handleSubmit = async () => {
+  if (!assessmentId) return;
 
-      const payload = {
-        ...formData,
-        nextFollowupDate: new Date(
-          formData.nextFollowupDate
-        ).toISOString(),
-      };
+  try {
+    setSaving(true);
 
-      const res = await api.post(
-        `/assessments/${assessmentId}/followup`,
-        payload
-      );
+    const payload = {
+      ...formData,
+      nextFollowupDate: new Date(formData.nextFollowupDate).toISOString(),
+    };
 
-      setSuccessMsg(
-        res.data.message || (isEdit ? "Updated" : "Saved")
-      );
-      setErrorMsg("");
+    const res = await api.post(
+      `/assessments/${assessmentId}/followup`,
+      payload
+    );
 
-      setShowForm(false);
-      fetchFollowup();
-    } catch (err) {
-      console.error(err);
-      setErrorMsg("Failed to save follow-up");
-      setSuccessMsg("");
-    } finally {
-      setSaving(false);
-    }
-  };
+    
+    setFollowup(res.data); 
+
+    setSuccessMsg(res.data.message || (isEdit ? "Updated" : "Saved"));
+    setErrorMsg("");
+    setShowForm(false);
+    
+    
+  } catch (err) {
+    console.error(err);
+    setErrorMsg("Failed to save follow-up");
+  } finally {
+    setSaving(false);
+  }
+
+  console.log("FOLLOWUP DATA:", followup);
+
+};
+
+
 
   return (
     <Card>
      
-{/* INITIAL FOLLOW-UP */}
+
 {initialFollowUp && (
   <div className="mb-4 p-4 rounded-xl border border-emerald-200 bg-emerald-50">
 
@@ -246,7 +268,7 @@ export default function FollowUpHistory({ assessmentId , initialFollowUp = null,
 {followup && (
   <div className="border p-3 rounded mb-2 relative bg-gray-50 hover:shadow-sm transition">
 
-    {/* EDIT ICON */}
+
  <button
   onClick={openEditForm}
   className="absolute top-2 right-2 p-2 rounded-full hover:bg-teal-400 transition"
@@ -272,12 +294,12 @@ export default function FollowUpHistory({ assessmentId , initialFollowUp = null,
 
     <p>
       <strong>Last Follow-up:</strong>{" "}
-      {followup.lastFollowupDate || "N/A"}
+   {followup.lastFollowupDate ? new Date(followup.lastFollowupDate).toLocaleString() : "N/A"}
     </p>
 
     <p>
       <strong>Next Follow-up:</strong>{" "}
-      {followup.nextFollowupDate || "N/A"}
+{followup.nextFollowupDate ? new Date(followup.nextFollowupDate).toLocaleString() : "N/A"}
     </p>
 
     {followup.notes && (
