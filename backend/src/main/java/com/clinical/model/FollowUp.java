@@ -7,8 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "followups")
@@ -23,6 +21,7 @@ public class FollowUp {
     private Long id;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "assessment_id")
     private Assessment assessment;
 
     @Column(nullable = false)
@@ -33,7 +32,7 @@ public class FollowUp {
     @Enumerated(EnumType.STRING)
     private FollowupStatus status;
 
-    private Instant updatedAt;
-    private String updatedBy;
+    private Instant createdAt;
+    private String createdBy;
 }
 
