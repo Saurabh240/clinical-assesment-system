@@ -1,6 +1,7 @@
 /backend/target/**
 .idea/**
 /frontend/node_modules/**
+/docker/docker-compose.yml
 .DS_Store
 /pdf-service/node_modules/.bin/browsers
 /pdf-service/node_modules/.bin/browsers.cmd

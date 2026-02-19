@@ -155,15 +155,7 @@ export default function Sidebar() {
           </button>
         </div>
 
-        {/* Logout */}
-        <div className="p-6 border-t border-emerald-700/40">
-          <button
-            onClick={handleLogout}
-            className="w-full text-left px-4 py-2 rounded-lg hover:bg-emerald-700/30"
-          >
-            Logout
-          </button>
-        </div>
+      
 
       </aside>
     </>

@@ -12,6 +12,7 @@ services:
       - clinic_system_data:/var/lib/postgresql/data
 
   backend:
+    platform: linux/amd64
     image: saurabh896/clinical-management-backend:latest
     container_name: clinical-management-backend
     depends_on:
