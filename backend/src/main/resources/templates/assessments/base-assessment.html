@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Minor Ailment Assessment</title>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- COMMON SECTIONS -->
+    <div th:replace="assessments/fragments/common/patient-info :: section"></div>
+
+    <div th:replace="assessments/fragments/common/consent :: section"></div>
+
+    <div th:replace="assessments/fragments/common/eligibility-common :: section"></div>
+
+    <!-- DYNAMIC AILMENT SECTION -->
+    <div th:switch="${data.ailment.code}">
+
+        <div th:case="'UTI'"
+             th:replace="~{assessments/fragments/ailments/uti :: section}">
+        </div>
+
+<!--        <div th:case="'OSELTAMIVIR'"-->
+<!--             th:replace="~{assessments/fragments/ailments/tamiflu :: section}">-->
+<!--        </div>-->
+
+        <div th:case="*">
+            Unknown Ailment
+        </div>
+
+    </div>
+
+    <div th:replace="assessments/fragments/common/assessment-common :: section"></div>
+
+    <div th:replace="assessments/fragments/common/care-plan :: section"></div>
+
+    <div th:replace="assessments/fragments/common/medication-order :: section"></div>
+
+    <div th:replace="assessments/fragments/common/signature :: section"></div>
+
+    <div th:replace="assessments/fragments/common/followup :: section"></div>
+
+</div>
+
+</body>
+</html>

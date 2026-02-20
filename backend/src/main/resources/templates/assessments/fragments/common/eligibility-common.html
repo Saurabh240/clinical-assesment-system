@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section">
+
+    <h2>Eligibility</h2>
+
+    <div>
+        <span th:text="${data.eligibility?.validHealthNumber ? '☑' : '☐'}"></span>
+        Valid Health Card
+    </div>
+
+    <div>
+        <span th:text="${data.eligibility?.noRedFlags ? '☑' : '☐'}"></span>
+        No Red Flags Present
+    </div>
+
+</div>
+
+</body>
+</html>

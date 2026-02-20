@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section">
+
+    <h2>Assessment</h2>
+
+    <div>
+        Notes:
+        <div th:text="${data['assessment'] != null ? data['assessment']['notes'] : ''}"></div>
+    </div>
+
+</div>
+
+</body>
+</html>

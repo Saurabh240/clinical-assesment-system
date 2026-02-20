@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section">
+
+  <h2>Follow-Up</h2>
+
+  <div>
+    Date:
+    <span th:text="${data['followUp'] != null and data['followUp']['date'] != null ? data['followUp']['date'] : ''}"></span>
+  </div>
+
+  <div>
+    <span th:text="${data['followUp'] != null and data['followUp']['phone'] == true ? '☑' : '☐'}"></span>
+    Phone
+
+    <span th:text="${data['followUp'] != null and data['followUp']['inPerson'] == true ? '☑' : '☐'}"></span>
+    In-person
+  </div>
+
+</div>
+
+</body>
+</html>

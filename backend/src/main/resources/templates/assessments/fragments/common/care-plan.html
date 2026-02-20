@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section">
+
+    <h2>Care Plan</h2>
+
+    <div>
+        <span th:text="${data['carePlan'] != null and data['carePlan']['prescriptionIssued'] == true ? '☑' : '☐'}"></span>
+        Prescription Issued
+    </div>
+
+    <div>
+        <span th:text="${data['carePlan'] != null and data['carePlan']['recommendOTC'] == true ? '☑' : '☐'}"></span>
+        Recommend OTC
+    </div>
+
+</div>
+
+</body>
+</html>

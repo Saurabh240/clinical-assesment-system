@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section">
+
+    <h2>Medication Order</h2>
+
+    <div th:if="${data['medicationOrder'] != null}">
+
+        <div th:text="${data['medicationOrder']['name'] != null ? data['medicationOrder']['name'] : ''}"></div>
+
+        <div th:text="${data['medicationOrder']['dose'] != null ? data['medicationOrder']['dose'] : ''}"></div>
+
+        <div th:text="${data['medicationOrder']['duration'] != null ? data['medicationOrder']['duration'] : ''}"></div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

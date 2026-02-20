@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section">
+
+    <h2>Consent</h2>
+
+    <div>
+        <span th:text="${data.consent?.verbalConsent ? '☑' : '☐'}"></span>
+        Verbal Consent Received
+    </div>
+
+</div>
+
+</body>
+</html>

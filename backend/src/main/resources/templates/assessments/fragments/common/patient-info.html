@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section">
+
+    <h2>Patient Information</h2>
+
+    <table>
+        <tr>
+            <td>First Name:</td>
+            <td th:text="${data.patient?.firstName ?: ''}"></td>
+            <td>Last Name:</td>
+            <td th:text="${data.patient?.lastName ?: ''}"></td>
+        </tr>
+        <tr>
+            <td>DOB:</td>
+            <td th:text="${data.patient?.dob ?: ''}"></td>
+            <td>Phone:</td>
+            <td th:text="${data.patient?.phone ?: ''}"></td>
+        </tr>
+    </table>
+
+</div>
+
+</body>
+</html>

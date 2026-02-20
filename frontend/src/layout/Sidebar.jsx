@@ -95,8 +95,8 @@ export default function Sidebar() {
 
         {/* Navigation */}
         <nav className="flex-1 flex flex-col gap-1.5 p-4 overflow-y-auto">
-          <NavLink 
-            to="/dashboard" 
+          <NavLink
+            to="/dashboard"
             className={navLinkClass}
             onClick={closeMobileSidebar}
           >
@@ -105,16 +105,16 @@ export default function Sidebar() {
             </svg>
             Dashboard
           </NavLink>
-          
+
           {/* Assessments with Submenu */}
-          <div 
+          <div
             onMouseEnter={() => window.innerWidth >= 1024 && setIsAssessmentsOpen(true)}
             onMouseLeave={() => window.innerWidth >= 1024 && setIsAssessmentsOpen(false)}
           >
             <div className="flex items-center">
-              <NavLink 
-                to="/assessments" 
-                className={({ isActive }) => 
+              <NavLink
+                to="/assessments"
+                className={({ isActive }) =>
                   `flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200 flex-1 ${
                     isActive
                       ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md"
@@ -128,17 +128,17 @@ export default function Sidebar() {
                 </svg>
                 Assessments
               </NavLink>
-              
+
               {/* Dropdown Toggle Button - Only visible on mobile */}
               <button
                 onClick={toggleAssessmentsSubmenu}
                 className="lg:hidden p-2.5 text-gray-300 hover:bg-emerald-700/30 hover:text-white rounded-lg transition-all duration-200"
                 aria-label="Toggle submenu"
               >
-                <svg 
-                  className={`w-4 h-4 transition-transform duration-200 ${isAssessmentsOpen ? 'rotate-180' : ''}`} 
-                  fill="none" 
-                  stroke="currentColor" 
+                <svg
+                  className={`w-4 h-4 transition-transform duration-200 ${isAssessmentsOpen ? 'rotate-180' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -147,25 +147,25 @@ export default function Sidebar() {
 
               {/* Dropdown indicator - Only visible on desktop */}
               <div className="hidden lg:block">
-                <svg 
-                  className={`w-4 h-4 transition-transform duration-200 text-gray-300 ${isAssessmentsOpen ? 'rotate-180' : ''}`} 
-                  fill="none" 
-                  stroke="currentColor" 
+                <svg
+                  className={`w-4 h-4 transition-transform duration-200 text-gray-300 ${isAssessmentsOpen ? 'rotate-180' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </div>
             </div>
-            
+
             {/* Submenu */}
-            <div 
+            <div
               className={`ml-4 mt-1 space-y-1 border-l-2 border-emerald-600/30 pl-2 overflow-hidden transition-all duration-300 ${
                 isAssessmentsOpen ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
               }`}
             >
-              <NavLink 
-                to="/follow-ups" 
+              <NavLink
+                to="/follow-ups"
                 className={subNavLinkClass}
                 onClick={closeMobileSidebar}
               >
@@ -176,9 +176,9 @@ export default function Sidebar() {
               </NavLink>
             </div>
           </div>
-          
-          <NavLink 
-            to="/patients" 
+
+          <NavLink
+            to="/patients"
             className={navLinkClass}
             onClick={closeMobileSidebar}
           >
@@ -187,9 +187,9 @@ export default function Sidebar() {
             </svg>
             Patients
           </NavLink>
-          
-          <NavLink 
-            to="/billing" 
+
+          <NavLink
+            to="/billing"
             className={navLinkClass}
             onClick={closeMobileSidebar}
           >
@@ -198,8 +198,8 @@ export default function Sidebar() {
             </svg>
             Billing
           </NavLink>
-          <NavLink 
-            to="/products" 
+          <NavLink
+            to="/products"
             className={navLinkClass}
             onClick={closeMobileSidebar}
           >
@@ -208,7 +208,7 @@ export default function Sidebar() {
             </svg>
             Products
           </NavLink>
-          
+
           <NavLink 
             to="/settings" 
             className={navLinkClass}
