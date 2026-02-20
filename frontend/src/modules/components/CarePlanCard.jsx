@@ -17,3 +17,4 @@ export default function CarePlanCard({ data }) {
     </Card>
   );
 }
+

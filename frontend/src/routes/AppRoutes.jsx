@@ -5,10 +5,11 @@ import Assessments from "../pages/Assessments";
 import Patients from "../pages/Patients";
 import Billing from "../pages/Billing";
 import Settings from "../pages/Settings";
-import FollowUps from "../pages/FollowUps";
-
 import AssessmentView from "../modules/assessment/AssessmentView";
 import ProductsPage from "../pages/ProductsPage";
+import FollowUps from "../pages/FollowUps";
+
+
 
 export default function AppRoutes() {
   return (
