@@ -11,6 +11,7 @@ public record FollowupUpdateResponse(
         FollowupStatus status,
         Instant lastFollowupDate,
         Instant nextFollowupDate,
+        String notes,
         String message
 ) {}
 
