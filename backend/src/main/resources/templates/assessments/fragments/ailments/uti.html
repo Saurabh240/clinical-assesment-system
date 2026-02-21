@@ -2,33 +2,45 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 
-<div th:fragment="section" xmlns:th="http://www.w3.org/1999/xhtml">
+<div th:fragment="section">
 
-  <h2 th:text="${data.ailment.displayName}"></h2>
-
-  <h3>Rationale for Prescribing</h3>
-
-  <div>
-    <span th:text="${data.ailment.clinicalBlock.symptoms.dysuria ? '☑' : '☐'}"></span> Dysuria<br>
-    <span th:text="${data.ailment.clinicalBlock.symptoms.frequency ? '☑' : '☐'}"></span> Frequency/Urgency<br>
-    <span th:text="${data.ailment.clinicalBlock.symptoms.suprapubicDiscomfort ? '☑' : '☐'}"></span> Suprapubic discomfort<br>
-    <span th:text="${data.ailment.clinicalBlock.symptoms.noVaginalDischarge ? '☑' : '☐'}"></span> No vaginal discharge
+  <div class="section-header">
+    UTI Clinical Assessment
   </div>
 
-  <h3>Criteria</h3>
+  <div class="criteria-section">
 
-  <div>
-    <span th:text="${data.ailment.clinicalBlock.criteria.ageAbove12 ? '☑' : '☐'}"></span> Age > 12<br>
-    <span th:text="${data.ailment.clinicalBlock.criteria.notPregnant ? '☑' : '☐'}"></span> Not pregnant<br>
-    <span th:text="${data.ailment.clinicalBlock.criteria.noRecentUTI ? '☑' : '☐'}"></span> No recent UTI<br>
-    <span th:text="${data.ailment.clinicalBlock.criteria.noRedFlags ? '☑' : '☐'}"></span> No red flags
-  </div>
+    <div>
+            <span class="checkbox"
+                  th:text="${data['ailment']['clinicalBlock']['symptoms']['dysuria'] == true ? '☑' : '☐'}"></span>
+      Dysuria
+    </div>
 
-  <h3>Prescription Treatment</h3>
+    <div>
+            <span class="checkbox"
+                  th:text="${data['ailment']['clinicalBlock']['symptoms']['frequency'] == true ? '☑' : '☐'}"></span>
+      Frequency / Urgency
+    </div>
 
-  <div>
-    <strong th:text="${data.ailment.clinicalBlock.treatment.selected}"></strong><br>
-    <span th:text="${data.ailment.clinicalBlock.treatment.dose}"></span>
+    <div>
+            <span class="checkbox"
+                  th:text="${data['ailment']['clinicalBlock']['symptoms']['suprapubicDiscomfort'] == true ? '☑' : '☐'}"></span>
+      Suprapubic Discomfort
+    </div>
+
+    <br>
+
+    <strong>Selected Treatment:</strong><br>
+    <span class="field-value"
+          th:text="${data['ailment']['clinicalBlock']['treatment']['selected']}">
+        </span>
+
+    <br>
+
+    <span class="field-value"
+          th:text="${data['ailment']['clinicalBlock']['treatment']['dose']}">
+        </span>
+
   </div>
 
 </div>
