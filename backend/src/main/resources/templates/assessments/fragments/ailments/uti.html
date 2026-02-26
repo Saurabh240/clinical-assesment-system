@@ -4,44 +4,158 @@
 
 <div th:fragment="section">
 
-  <div class="section-header">
-    UTI Clinical Assessment
-  </div>
+    <!-- ================= PAGE 1 ================= -->
 
-  <div class="criteria-section">
-
-    <div>
-            <span class="checkbox"
-                  th:text="${data['ailment']['clinicalBlock']['symptoms']['dysuria'] == true ? '☑' : '☐'}"></span>
-      Dysuria
+    <div class="section-header">
+        Individual Eligibility – Must meet criteria to proceed with treatment
     </div>
 
-    <div>
-            <span class="checkbox"
-                  th:text="${data['ailment']['clinicalBlock']['symptoms']['frequency'] == true ? '☑' : '☐'}"></span>
-      Frequency / Urgency
+    <div class="criteria-section">
+
+        <strong>Inclusion Criteria (All must apply)</strong><br><br>
+
+        <span class="checkbox"
+              th:text="${data['ailment']['clinicalBlock']['criteria']['ageAbove12'] == true ? '☑' : '☐'}"></span>
+        Age ≥ 12 years<br>
+
+        <span class="checkbox"
+              th:text="${data['ailment']['clinicalBlock']['criteria']['notPregnant'] == true ? '☑' : '☐'}"></span>
+        Not pregnant<br>
+
+        <span class="checkbox"
+              th:text="${data['ailment']['clinicalBlock']['criteria']['noRecentUTI'] == true ? '☑' : '☐'}"></span>
+        No recurrent UTI within 30 days<br>
+
+        <span class="checkbox"
+              th:text="${data['ailment']['clinicalBlock']['criteria']['noRedFlags'] == true ? '☑' : '☐'}"></span>
+        No red flag symptoms present
+
     </div>
 
-    <div>
-            <span class="checkbox"
-                  th:text="${data['ailment']['clinicalBlock']['symptoms']['suprapubicDiscomfort'] == true ? '☑' : '☐'}"></span>
-      Suprapubic Discomfort
+    <div class="section-header">Presenting Symptoms (Check all that apply)</div>
+
+    <div class="criteria-section">
+
+        <span class="checkbox"
+              th:text="${data['ailment']['clinicalBlock']['symptoms']['dysuria'] == true ? '☑' : '☐'}"></span>
+        Dysuria<br>
+
+        <span class="checkbox"
+              th:text="${data['ailment']['clinicalBlock']['symptoms']['frequency'] == true ? '☑' : '☐'}"></span>
+        Urinary frequency / urgency<br>
+
+        <span class="checkbox"
+              th:text="${data['ailment']['clinicalBlock']['symptoms']['suprapubicDiscomfort'] == true ? '☑' : '☐'}"></span>
+        Suprapubic discomfort<br>
+
+        <span class="checkbox"
+              th:text="${data['ailment']['clinicalBlock']['symptoms']['noVaginalDischarge'] == true ? '☑' : '☐'}"></span>
+        No vaginal discharge
+
     </div>
 
-    <br>
+    <div class="section-header">
+        Patient meets criteria that no red flags are present:
+        <span class="checkbox"
+              th:text="${data['ailment']['clinicalBlock']['criteria']['noRedFlags'] == true ? '☑' : '☐'}"></span>
+        Yes
+    </div>
 
-    <strong>Selected Treatment:</strong><br>
-    <span class="field-value"
-          th:text="${data['ailment']['clinicalBlock']['treatment']['selected']}">
-        </span>
+    <ul>
+        <li>Fever ≥ 38°C</li>
+        <li>Flank pain</li>
+        <li>Vomiting</li>
+        <li>Male patient</li>
+        <li>Pregnancy</li>
+        <li>Complicated UTI history</li>
+    </ul>
 
-    <br>
+    <!-- ================= PAGE BREAK ================= -->
 
-    <span class="field-value"
-          th:text="${data['ailment']['clinicalBlock']['treatment']['dose']}">
-        </span>
+    <div class="page-break"></div>
 
-  </div>
+    <!-- ================= PAGE 2 ================= -->
+
+    <div class="section-header">Care Plan</div>
+
+    <table>
+        <tr>
+            <td>
+                <span class="checkbox"
+                      th:text="${data['carePlan'] != null and data['carePlan']['prescriptionIssued'] == true ? '☑' : '☐'}"></span>
+                UTI Prescription issued by the pharmacist
+            </td>
+        </tr>
+    </table>
+
+    <div class="section-header">Medication Order</div>
+
+    <table>
+        <tr>
+            <td style="width:50%;">
+                <strong>First Line Therapy:</strong><br><br>
+
+                <span class="checkbox"
+                      th:text="${data['ailment']['clinicalBlock']['treatment']['selected'] == 'Nitrofurantoin' ? '☑' : '☐'}"></span>
+                Nitrofurantoin 100 mg BID x 5 days<br><br>
+
+                <span class="checkbox"
+                      th:text="${data['ailment']['clinicalBlock']['treatment']['selected'] == 'Fosfomycin' ? '☑' : '☐'}"></span>
+                Fosfomycin 3 g single dose<br>
+
+            </td>
+        </tr>
+    </table>
+
+    <!-- ================= SIGNATURE ================= -->
+
+    <table style="margin-top:15px;">
+        <tr>
+            <td style="width:25%; text-align:center;">
+                Pharmacist Name<br><br>
+                <span class="field-value"
+                      th:text="${data['signature'] != null ? data['signature']['pharmacistName'] : ''}"></span>
+            </td>
+
+            <td style="width:25%; text-align:center;">
+                OCP Number<br><br>
+                <span class="field-value"
+                      th:text="${data['signature'] != null ? data['signature']['ocpNumber'] : ''}"></span>
+            </td>
+
+            <td style="width:25%; text-align:center;">
+                Signature<br><br>
+                <span class="field-value">_________</span>
+            </td>
+
+            <td style="width:25%; text-align:center;">
+                Date<br><br>
+                <span class="field-value"
+                      th:text="${data['signature'] != null ? data['signature']['date'] : ''}"></span>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ================= FOLLOW-UP ================= -->
+
+    <table style="margin-top:10px;">
+        <tr>
+            <td>
+                Follow-up with patient completed (safety, efficacy)<br>
+                Date:
+                <span class="field-value"
+                      th:text="${data['followUp'] != null ? data['followUp']['date'] : ''}"></span><br>
+
+                In-person
+                <span class="checkbox"
+                      th:text="${data['followUp'] != null and data['followUp']['inPerson'] == true ? '☑' : '☐'}"></span>
+
+                Phone
+                <span class="checkbox"
+                      th:text="${data['followUp'] != null and data['followUp']['phone'] == true ? '☑' : '☐'}"></span>
+            </td>
+        </tr>
+    </table>
 
 </div>
 

@@ -7,25 +7,38 @@
     <style>
         * { box-sizing: border-box; }
 
+        @page {
+            size: A4;
+            margin: 15mm 15mm 15mm 15mm;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-            font-size: 12px;
+            font-size: 11px;
+            line-height: 1.35;
+            color: #000;
         }
 
         .container {
-            max-width: 900px;
-            margin: 0 auto;
+            width: 100%;
             border: 2px solid #000;
-            overflow: hidden;
         }
 
         h1 {
             text-align: center;
-            font-size: 16px;
-            margin: 10px 0;
-            padding: 10px;
-            background-color: #f0f0f0;
+            font-size: 15px;
+            margin: 8px 0;
+            padding: 8px;
+            background-color: #e5e5e5;
+            border-bottom: 2px solid #000;
+        }
+
+        .section-header {
+            background-color: #d9d9d9;
+            font-weight: bold;
+            padding: 6px;
+            border-top: 2px solid #000;
+            border-bottom: 1px solid #000;
         }
 
         table {
@@ -36,45 +49,13 @@
 
         td, th {
             border: 1px solid #000;
-            padding: 5px;
+            padding: 4px;
             vertical-align: top;
-            word-wrap: break-word;
         }
 
-        .section-header {
-            background-color: #d0d0d0;
-            font-weight: bold;
-            padding: 6px;
-            margin-top: 15px;
-        }
-
-        .field-label {
-            font-weight: bold;
-        }
-
-        .field-value {
-            display: inline-block;
-            border-bottom: 1px solid #000;
-            min-width: 80px;
-            padding: 2px 5px;
-        }
-
-        .checkbox {
-            font-family: monospace;
-            font-size: 14px;
-            margin-right: 3px;
-        }
-
-        .criteria-section {
-            padding: 10px;
-            background-color: #f9f9f9;
-        }
-
-        .notes-area {
-            width: 100%;
-            min-height: 60px;
-            border: 1px solid #ccc;
-            padding: 5px;
+        .page-break {
+            page-break-before: always;
+            break-before: page;
         }
 
     </style>
