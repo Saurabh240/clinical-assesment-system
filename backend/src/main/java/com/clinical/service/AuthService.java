@@ -98,7 +98,7 @@ public class AuthService {
 
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
-        return new LoginResponse(user.getId(), user.getStatus(), resolveNextStep(user), accessToken);
+        return new LoginResponse(user.getId(), user.getStatus(), resolveNextStep(user), accessToken, user.getRole());
     }
 
     @Transactional
