@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
+import AuditHeader from "../components/AuditHeader";
 import AuditTable from "../components/AuditTable";
 import AuditToolbar from "../components/AuditToolbar";
 import AuditPagination from "../components/AuditPagination";
@@ -58,10 +59,8 @@ const AuditLogPage = () => {
 
   return (
     <div className="p-6">
-      {/* Page Title */}
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">
-        Audit Logs
-      </h1>
+   
+     <AuditHeader />
 
       {/* Toolbar */}
       <AuditToolbar

@@ -1,4 +1,4 @@
-import React from "react";
+
 import AuditRow from "./AuditRow";
 
 const AuditTable = ({ logs = [], onView }) => {

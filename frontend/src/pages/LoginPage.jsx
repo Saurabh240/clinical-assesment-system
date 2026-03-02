@@ -1,6 +1,8 @@
 
 
 
+
+
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
@@ -33,43 +35,55 @@ function Login() {
     setLoading(true);
 
     try {
-      const { accessToken, userId, status, nextStep } =
-        await authApi.signIn(formData);
+  
 
-      if (!accessToken) throw new Error("No access token returned");
+          const { accessToken, userId, status, nextStep, role } =
+  await authApi.signIn(formData);
 
-      // Save user info (NOT tokens — already handled by tokenManager)
-      localStorage.setItem(
-        "authUser",
-        JSON.stringify({ userId, email: formData.email, status })
-      );
+if (!accessToken) throw new Error("No access token returned");
 
-      // Navigate based on backend instruction
-      switch (nextStep) {
-        case "DASHBOARD":
-          navigate("/dashboard", { replace: true });
-          break;
 
-        case "PHARMACY_SELECTION":
-          navigate("/pharmacy-select", { replace: true });
-          break;
+localStorage.setItem(
+  "authUser",
+  JSON.stringify({ userId, email: formData.email, status, role })
+);
 
-        case "SUBSCRIPTION":
-          navigate("/subscription", { replace: true });
-          break;
 
-        default:
-          if (status === "ACTIVE") {
-            navigate("/dashboard", { replace: true });
-          } else if (status === "PENDING_PHARMACY") {
-            navigate("/pharmacy-select", { replace: true });
-          } else if (status === "PENDING_SUBSCRIPTION") {
-            navigate("/subscription", { replace: true });
-          } else {
-            tokenManager.clearTokens();
-            setError("Account not ready. Please contact support.");
-          }
-      }
+
+
+if (role === "PHARMACY_ADMIN") {
+  navigate("/admin/dashboard", { replace: true });
+  return;
+}
+
+
+switch (nextStep) {
+  case "DASHBOARD":
+    navigate("/dashboard", { replace: true });
+    break;
+
+  case "PHARMACY_SELECTION":
+    navigate("/pharmacy-select", { replace: true });
+    break;
+
+  case "SUBSCRIPTION":
+    navigate("/subscription", { replace: true });
+    break;
+
+  default:
+    if (status === "ACTIVE") {
+      navigate("/dashboard", { replace: true });
+    } else if (status === "PENDING_PHARMACY") {
+      navigate("/pharmacy-select", { replace: true });
+    } else if (status === "PENDING_SUBSCRIPTION") {
+      navigate("/subscription", { replace: true });
+    } else {
+      tokenManager.clearTokens();
+      setError("Account not ready. Please contact support.");
+    }
+}
+
+
     } catch (err) {
       if (!err.response) {
         setError("Unable to connect to server.");

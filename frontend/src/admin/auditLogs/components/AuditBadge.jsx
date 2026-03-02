@@ -7,8 +7,7 @@ const actionStyles = {
     "bg-blue-100 text-blue-700 border border-blue-200",
   DELETE:
     "bg-red-100 text-red-700 border border-red-200",
-  LOGIN:
-    "bg-purple-100 text-purple-700 border border-purple-200",
+  
 };
 
 const AuditBadge = ({ action }) => {

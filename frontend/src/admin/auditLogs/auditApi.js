@@ -1,6 +1,6 @@
 
 
-import api from "@/auditApi"; 
+import api from "../../api/axios";
 
 export const fetchAuditLogs = async ({
   page = 1,

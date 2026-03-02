@@ -1,13 +1,11 @@
 
 
-// Action dropdown options
 export const AUDIT_ACTIONS = [
   { label: "All Actions", value: "" },
   { label: "Create", value: "CREATE" },
   { label: "Update", value: "UPDATE" },
   { label: "Delete", value: "DELETE" },
-  { label: "Login", value: "LOGIN" },
-  { label: "Logout", value: "LOGOUT" },
+ 
 ];
 
 export const DEFAULT_PAGE_SIZE = 10;
