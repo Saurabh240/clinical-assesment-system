@@ -1,8 +1,8 @@
 
 
-const AuditHeader = ({
-  title = "Audit Logs",
-  description = "Track all system activities and changes",
+const CsvImportHeader = ({
+  title = "CSV Import",
+  description = "Bulk import patient and assessment data",
   rightContent,
 }) => {
   return (
@@ -25,4 +25,4 @@ const AuditHeader = ({
   );
 };
 
-export default AuditHeader;
+export default CsvImportHeader;
