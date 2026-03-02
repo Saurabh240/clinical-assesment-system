@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { authApi } from "../../api/axios";
+import { Menu, X } from "lucide-react";
 import {
   LayoutDashboard,
   FileText,
@@ -30,12 +31,23 @@ export default function AdminSidebar() {
 
   return (
     <>
+ 
       <button
-        onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-emerald-600 text-white rounded-lg shadow-md"
-      >
-        ☰
-      </button>
+  onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
+  className="
+    lg:hidden fixed top-4 left-4 z-50
+    p-2 rounded-lg
+    bg-emerald-600 text-white
+    shadow-md hover:bg-emerald-700
+    transition-all duration-200
+  "
+>
+  {isMobileSidebarOpen ? (
+    <X size={22} />
+  ) : (
+    <Menu size={22} />
+  )}
+</button>
 
       <aside
         className={`fixed lg:static inset-y-0 left-0 z-40
