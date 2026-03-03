@@ -1,34 +1,28 @@
-function AdminDashboard() {
+import StatsGrid from "./components/StatsGrid";
+import QuickActions from "./components/QuickActions";
+import UserOverviewTable from "./components/UserOverviewTable";
+import RecentActivity from "./components/RecentActivity";
+
+export default function AdminDashboard() {
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">
-        Admin Dashboard
-      </h1>
+    <div className="space-y-6">
+      {/* Page Header */}
+      <div>
+        <h1 className="text-2xl font-bold text-gray-800">Admin Dashboard</h1>
+        <p className="text-sm text-gray-500 mt-0.5">System overview and management</p>
+      </div>
 
-      <div className="grid grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded-xl shadow">
-          <h2 className="text-lg font-semibold">Audit Logs</h2>
-          <p className="text-gray-500 mt-2">
-            View system activity logs
-          </p>
-        </div>
+      {/* Stats */}
+      <StatsGrid />
 
-        <div className="bg-white p-6 rounded-xl shadow">
-          <h2 className="text-lg font-semibold">CSV Import</h2>
-          <p className="text-gray-500 mt-2">
-            Bulk upload ailment data
-          </p>
-        </div>
+      {/* Quick Actions */}
+      <QuickActions />
 
-        <div className="bg-white p-6 rounded-xl shadow">
-          <h2 className="text-lg font-semibold">Users</h2>
-          <p className="text-gray-500 mt-2">
-            Manage pharmacy users
-          </p>
-        </div>
+      {/* Bottom Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <UserOverviewTable />
+        <RecentActivity />
       </div>
     </div>
   );
 }
-
-export default AdminDashboard;
