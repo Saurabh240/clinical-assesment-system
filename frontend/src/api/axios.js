@@ -119,11 +119,11 @@ api.interceptors.response.use(
 export const authApi = {
   signIn: async (credentials) => {
     const response = await api.post("/auth/signIn", credentials);
-    const { accessToken, userId, status, nextStep } = response.data;
+    const { accessToken, userId, status, nextStep ,role} = response.data;
 
     tokenManager.setTokens(accessToken);
 
-    return { userId, status, nextStep, accessToken };
+    return { userId, status, nextStep, accessToken, role };
   },
 
   getCurrentUser: async () => {
