@@ -33,6 +33,15 @@
             border-bottom: 2px solid #000;
         }
 
+        h2 {
+            font-size: 13px;
+            font-weight: bold;
+            margin: 0;
+            padding: 6px 8px;
+            border-bottom: 1px solid #000;
+            border-top: 2px solid #000;
+        }
+
         .section-header {
             background-color: #d9d9d9;
             font-weight: bold;
@@ -53,6 +62,19 @@
             vertical-align: top;
         }
 
+        .checkbox {
+            font-size: 12px;
+        }
+
+        .field-label {
+            font-weight: bold;
+        }
+
+        .field-value {
+            font-weight: normal;
+        }
+
+        /* Page break before ailment-specific section */
         .page-break {
             page-break-before: always;
             break-before: page;
@@ -64,28 +86,56 @@
 <body>
 <div class="container">
 
-    <h1 th:text="${data['ailment'] != null ? data['ailment']['displayName'] + ' Pharmacy Assessment and Prescription' : 'Pharmacy Assessment'}">
-    </h1>
+    <!-- ================= TITLE ================= -->
+    <h1>ON Minor Ailment Assessment and Prescription</h1>
 
-    <!-- COMMON FRAGMENTS -->
-    <div th:replace="~{assessments/fragments/common/patient-info :: section}"></div>
-    <div th:replace="~{assessments/fragments/common/consent :: section}"></div>
+    <!-- 1. Patient Information + Prescriber Information -->
+    <div th:replace="~{assessments/fragments/common/patient-info :: section(data=${data})}"></div>
 
-    <!-- AILMENT FRAGMENT -->
+    <!-- 2. Informed Consent -->
+    <div th:replace="~{assessments/fragments/common/consent :: section(data=${data})}"></div>
+
+    <!-- 3. Eligibility -->
+    <div th:replace="~{assessments/fragments/common/eligibility-common :: section(data=${data})}"></div>
+
+    <!-- 4. Assessment -->
+    <div th:replace="~{assessments/fragments/common/assessment-common :: section(data=${data})}"></div>
+
+    <!-- ================= PAGE BREAK — Ailment starts on Page 2 ================= -->
+    <div class="page-break"></div>
+
+    <!-- 5. Ailment-Specific Fragment -->
     <div th:switch="${data['ailment'] != null ? data['ailment']['code'] : ''}">
+
         <div th:case="'UTI'"
-             th:replace="~{assessments/fragments/ailments/uti :: section}">
+             th:replace="~{assessments/fragments/ailments/uti :: section(data=${data})}">
         </div>
 
-<!--        <div th:case="'OSELTAMIVIR'"-->
-<!--             th:replace="~{assessments/fragments/ailments/tamiflu :: section}">-->
-<!--        </div>-->
+        <!--        <div th:case="'DERMATITIS'"-->
+        <!--             th:replace="~{assessments/fragments/ailments/dermatitis :: section(data=${data})}">-->
+        <!--        </div>-->
+
+        <!--        <div th:case="'DYSMENORRHEA'"-->
+        <!--             th:replace="~{assessments/fragments/ailments/dysmenorrhea :: section(data=${data})}">-->
+        <!--        </div>-->
+
+        <!--        <div th:case="'OSELTAMIVIR'"-->
+        <!--             th:replace="~{assessments/fragments/ailments/tamiflu :: section(data=${data})}">-->
+        <!--        </div>-->
+
     </div>
 
-    <!-- COMMON FOOTER FRAGMENTS -->
-    <div th:replace="~{assessments/fragments/common/care-plan :: section}"></div>
-    <div th:replace="~{assessments/fragments/common/signature :: section}"></div>
-    <div th:replace="~{assessments/fragments/common/followup :: section}"></div>
+    <!-- 6. Care Plan -->
+    <div th:replace="~{assessments/fragments/common/care-plan :: section(data=${data})}"></div>
+
+    <!-- 7. Medication Order -->
+    <div th:replace="~{assessments/fragments/common/medication-order :: section(data=${data})}"></div>
+
+    <!-- 8. Signature -->
+    <div th:replace="~{assessments/fragments/common/signature :: section(data=${data})}"></div>
+
+    <!-- 9. Monitoring and Follow Up -->
+    <div th:replace="~{assessments/fragments/common/followup :: section(data=${data})}"></div>
 
 </div>
 </body>

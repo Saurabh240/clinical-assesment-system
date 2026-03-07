@@ -4,17 +4,60 @@
 
 <div th:fragment="section">
 
+    <!-- ================= MEDICATION ORDER TITLE ================= -->
     <h2>Medication Order</h2>
 
-    <div th:if="${data['medicationOrder'] != null}">
+    <table>
 
-        <div th:text="${data['medicationOrder']['name'] != null ? data['medicationOrder']['name'] : ''}"></div>
+        <!-- ================= HEADER ROW ================= -->
+        <tr>
+            <th>Name</th>
+            <th>Strength</th>
+            <th>Quantity</th>
+            <th>Direction (dose, frequency, route)</th>
+        </tr>
 
-        <div th:text="${data['medicationOrder']['dose'] != null ? data['medicationOrder']['dose'] : ''}"></div>
+        <!-- ================= DATA ROW 1 ================= -->
+        <tr>
+            <td>
+                <span class="field-value"
+                      th:text="${data['medicationOrder'] != null and data['medicationOrder']['medications'] != null and data['medicationOrder']['medications'].size() > 0 ? data['medicationOrder']['medications'][0]['name'] : ''}"></span>
+            </td>
+            <td>
+                <span class="field-value"
+                      th:text="${data['medicationOrder'] != null and data['medicationOrder']['medications'] != null and data['medicationOrder']['medications'].size() > 0 ? data['medicationOrder']['medications'][0]['strength'] : ''}"></span>
+            </td>
+            <td>
+                <span class="field-value"
+                      th:text="${data['medicationOrder'] != null and data['medicationOrder']['medications'] != null and data['medicationOrder']['medications'].size() > 0 ? data['medicationOrder']['medications'][0]['quantity'] : ''}"></span>
+            </td>
+            <td>
+                <span class="field-value"
+                      th:text="${data['medicationOrder'] != null and data['medicationOrder']['medications'] != null and data['medicationOrder']['medications'].size() > 0 ? data['medicationOrder']['medications'][0]['direction'] : ''}"></span>
+            </td>
+        </tr>
 
-        <div th:text="${data['medicationOrder']['duration'] != null ? data['medicationOrder']['duration'] : ''}"></div>
+        <!-- ================= DATA ROW 2 ================= -->
+        <tr>
+            <td>
+                <span class="field-value"
+                      th:text="${data['medicationOrder'] != null and data['medicationOrder']['medications'] != null and data['medicationOrder']['medications'].size() > 1 ? data['medicationOrder']['medications'][1]['name'] : ''}"></span>
+            </td>
+            <td>
+                <span class="field-value"
+                      th:text="${data['medicationOrder'] != null and data['medicationOrder']['medications'] != null and data['medicationOrder']['medications'].size() > 1 ? data['medicationOrder']['medications'][1]['strength'] : ''}"></span>
+            </td>
+            <td>
+                <span class="field-value"
+                      th:text="${data['medicationOrder'] != null and data['medicationOrder']['medications'] != null and data['medicationOrder']['medications'].size() > 1 ? data['medicationOrder']['medications'][1]['quantity'] : ''}"></span>
+            </td>
+            <td>
+                <span class="field-value"
+                      th:text="${data['medicationOrder'] != null and data['medicationOrder']['medications'] != null and data['medicationOrder']['medications'].size() > 1 ? data['medicationOrder']['medications'][1]['direction'] : ''}"></span>
+            </td>
+        </tr>
 
-    </div>
+    </table>
 
 </div>
 

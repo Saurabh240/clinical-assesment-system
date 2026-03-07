@@ -4,12 +4,37 @@
 
 <div th:fragment="section">
 
-    <h2>Consent</h2>
+    <!-- ================= CONSENT TITLE ================= -->
+    <h2>Informed consent to provide prescribing services</h2>
 
-    <div>
-        <span th:text="${data.consent?.verbalConsent ? '☑' : '☐'}"></span>
-        Verbal Consent Received
-    </div>
+    <table>
+
+        <!-- ================= ROW 1: Verbal consent from individual ================= -->
+        <tr>
+            <td>
+                <span class="checkbox"
+                      th:text="${data['consent'] != null and data['consent']['verbalConsentIndividual'] == true ? '☑' : '☐'}"></span>
+                Verbal consent received from the eligible individual
+            </td>
+        </tr>
+
+        <!-- ================= ROW 2: Verbal consent from substitute decision maker ================= -->
+        <tr>
+            <td>
+                <span class="checkbox"
+                      th:text="${data['consent'] != null and data['consent']['verbalConsentSubstitute'] == true ? '☑' : '☐'}"></span>
+                Verbal consent received from the eligible individual's substitute decision maker &nbsp; Name
+                <span class="field-value"
+                      th:text="${data['consent'] != null ? data['consent']['substituteName'] : ''}"></span>
+                _____________________
+                &nbsp; Relation
+                <span class="field-value"
+                      th:text="${data['consent'] != null ? data['consent']['substituteRelation'] : ''}"></span>
+                _____________________
+            </td>
+        </tr>
+
+    </table>
 
 </div>
 

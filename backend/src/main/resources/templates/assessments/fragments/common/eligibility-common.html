@@ -4,17 +4,122 @@
 
 <div th:fragment="section">
 
-    <h2>Eligibility</h2>
+    <!-- ================= ELIGIBILITY TITLE ================= -->
+    <h2>Eligibility - Must meet criteria to proceed with assessment for minor ailment</h2>
 
-    <div>
-        <span th:text="${data.eligibility?.validHealthNumber ? '☑' : '☐'}"></span>
-        Valid Health Card
-    </div>
+    <table>
 
-    <div>
-        <span th:text="${data.eligibility?.noRedFlags ? '☑' : '☐'}"></span>
-        No Red Flags Present
-    </div>
+        <!-- ================= ROW 1: Valid Ontario health care number ================= -->
+        <tr>
+            <td>
+                <span class="checkbox"
+                      th:text="${data['eligibility'] != null and data['eligibility']['validOntarioHealthNumber'] == true ? '☑' : '☐'}"></span>
+                Has a valid Ontario health care number
+            </td>
+        </tr>
+
+        <!-- ================= ROW 2: Not precluded from receiving services ================= -->
+        <tr>
+            <td>
+                <span class="checkbox"
+                      th:text="${data['eligibility'] != null and data['eligibility']['notPrecluded'] == true ? '☑' : '☐'}"></span>
+                Is not precluded from receiving minor ailment services based on the claim maximums listed in Table 1 in the EO notice
+            </td>
+        </tr>
+
+        <!-- ================= ROW 3: Minor ailments list ================= -->
+        <tr>
+            <td>
+                Presents with one of the minor ailments listed below:<br>
+
+                <span class="checkbox"
+                      th:text="${data['eligibility'] != null and data['eligibility']['allergicRhinitis'] == true ? '☑' : '☐'}"></span>
+                Allergic rhinitis
+
+                <span class="checkbox"
+                      th:text="${data['eligibility'] != null and data['eligibility']['candidalStomatitis'] == true ? '☑' : '☐'}"></span>
+                Candidal stomatitis (oral thrush)
+
+                <span class="checkbox"
+                      th:text="${data['eligibility'] != null and data['eligibility']['conjunctivitis'] == true ? '☑' : '☐'}"></span>
+                Conjunctivitis (bacterial, allergic or viral)
+
+                <span class="checkbox"
+                      th:text="${data['eligibility'] != null and data['eligibility']['dermatitis'] == true ? '☑' : '☐'}"></span>
+                Dermatitis(atopic, eczema, allergic or contact)<br>
+
+                <span class="checkbox"
+                      th:text="${data['eligibility'] != null and data['eligibility']['dysmenorrhea'] == true ? '☑' : '☐'}"></span>
+                Dysmenorrhea
+
+                <span class="checkbox"
+                      th:text="${data['eligibility'] != null and data['eligibility']['gastroesophagealReflux'] == true ? '☑' : '☐'}"></span>
+                Gastroesophageal reflux disease
+
+                <span class="checkbox"
+                      th:text="${data['eligibility'] != null and data['eligibility']['hemorrhoids'] == true ? '☑' : '☐'}"></span>
+                Hemorrhoids
+
+                <span class="checkbox"
+                      th:text="${data['eligibility'] != null and data['eligibility']['herpesLabialis'] == true ? '☑' : '☐'}"></span>
+                Herpes labialis (cold sores)
+
+                <span class="checkbox"
+                      th:text="${data['eligibility'] != null and data['eligibility']['impetigo'] == true ? '☑' : '☐'}"></span>
+                Impetigo
+
+                <span class="checkbox"
+                      th:text="${data['eligibility'] != null and data['eligibility']['insectBites'] == true ? '☑' : '☐'}"></span>
+                Insect bites and urticaria (hives)<br>
+
+                <span class="checkbox"
+                      th:text="${data['eligibility'] != null and data['eligibility']['musculoskeletalSprains'] == true ? '☑' : '☐'}"></span>
+                Musculoskeletal sprains and strains
+
+                <span class="checkbox"
+                      th:text="${data['eligibility'] != null and data['eligibility']['tickBites'] == true ? '☑' : '☐'}"></span>
+                Tick bites, post-exposure prophylaxis to prevent Lyme disease
+
+                <span class="checkbox"
+                      th:text="${data['eligibility'] != null and data['eligibility']['urinaryTractInfections'] == true ? '☑' : '☐'}"></span>
+                Urinary tract infections (uncomplicated)<br>
+
+                <span class="checkbox"
+                      th:text="${data['eligibility'] != null and data['eligibility']['aphthousUlcers'] == true ? '☑' : '☐'}"></span>
+                Aphthous ulcers
+
+                <span class="checkbox"
+                      th:text="${data['eligibility'] != null and data['eligibility']['diaperDermatitis'] == true ? '☑' : '☐'}"></span>
+                Diaper dermatitis
+
+                <span class="checkbox"
+                      th:text="${data['eligibility'] != null and data['eligibility']['acne'] == true ? '☑' : '☐'}"></span>
+                Acne
+
+                <span class="checkbox"
+                      th:text="${data['eligibility'] != null and data['eligibility']['pinworms'] == true ? '☑' : '☐'}"></span>
+                Pinworms
+
+                <span class="checkbox"
+                      th:text="${data['eligibility'] != null and data['eligibility']['nauseaVomitingPregnancy'] == true ? '☑' : '☐'}"></span>
+                Nausea and vomiting of pregnancy
+
+                <span class="checkbox"
+                      th:text="${data['eligibility'] != null and data['eligibility']['vaginalCandidiasis'] == true ? '☑' : '☐'}"></span>
+                Vaginal Candidiasis
+            </td>
+        </tr>
+
+        <!-- ================= ROW 4: No red flags ================= -->
+        <tr>
+            <td>
+                <span class="checkbox"
+                      th:text="${data['eligibility'] != null and data['eligibility']['noRedFlags'] == true ? '☑' : '☐'}"></span>
+                Patient qualifies for minor ailment and presents no red flags that would automatically be referred to another care provider
+            </td>
+        </tr>
+
+    </table>
 
 </div>
 

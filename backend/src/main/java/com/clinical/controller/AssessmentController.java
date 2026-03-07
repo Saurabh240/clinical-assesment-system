@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Map;
 
 @RestController
@@ -50,13 +49,23 @@ public class AssessmentController {
     @PostMapping("/{id}/pdf")
     public Map<String, String> generatePdf(@PathVariable Long id) {
         Assessment a = repo.findById(id).orElseThrow();
-        Map<String, Object> model = mapper.convertValue(a.getAssessmentData(),
-                new TypeReference<>() {
-                });
-//        String html = htmlBuilder.renderTamiflu(model);
+        Map<String, Object> model = mapper.convertValue(
+                a.getAssessmentData(),
+                new TypeReference<>() {}
+        );
         String html = htmlBuilder.renderAssessment(a);
         byte[] pdf = pdfClient.generate(html);
-        String url = s3.upload(pdf, "tamiflu-" + id + ".pdf");
+
+        // Extract ailment code safely
+        String ailmentCode = "assessment";
+        if (model.containsKey("ailment")) {
+            Map<String, Object> ailment = (Map<String, Object>) model.get("ailment");
+            if (ailment != null && ailment.get("code") != null) {
+                ailmentCode = ailment.get("code").toString().toLowerCase();
+            }
+        }
+        String fileName = ailmentCode + "-" + id + ".pdf";
+        String url = s3.upload(pdf, fileName);
         a.setPdfUrl(url);
         repo.save(a);
         return Map.of("url", url);
