@@ -18,4 +18,5 @@ public class FollowupResponse {
     private long overdueDays;
     private Instant lastFollowupDate;
     private FollowupStatus status;
+    private String notes;
 }

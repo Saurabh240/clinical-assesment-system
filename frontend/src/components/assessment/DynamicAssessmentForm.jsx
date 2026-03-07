@@ -10,7 +10,7 @@ export default function DynamicAssessmentForm({ config, onSubmit, submitting = f
     return null;
   }
   
-  console.log("DynamicAssessmentForm received config:", config);
+  
 
   // Extract the pure field key (after the dot if present)
   const getPureKey = (key) => (key.includes(".") ? key.split(".")[1] : key);
@@ -39,7 +39,7 @@ export default function DynamicAssessmentForm({ config, onSubmit, submitting = f
       });
     });
     
-    console.log("Initial form state (section-wise):", JSON.stringify(initial, null, 2));
+    
     return initial;
   });
 
@@ -87,11 +87,11 @@ export default function DynamicAssessmentForm({ config, onSubmit, submitting = f
     const validationErrors = validateForm();
     
     if (Object.keys(validationErrors).length) {
-      console.log("Validation errors:", validationErrors);
+      
       return setErrors(validationErrors);
     }
     
-    console.log("Submitting section-wise data:", JSON.stringify(values, null, 2));
+    
     onSubmit(values);
   };
 

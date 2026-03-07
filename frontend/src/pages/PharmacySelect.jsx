@@ -2,12 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../api/axios";
+
 
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
 import Select from "../components/ui/Select";
-import { logoutUser } from "../utils/logout";
+import api, { authApi } from "../api/axios";
+
 
 const ADD_PHARMACY_VALUE = "__ADD_PHARMACY__";
 
@@ -19,6 +20,17 @@ export default function PharmacySelect() {
   const [selectedPharmacy, setSelectedPharmacy] = useState("");
 
   const hasFetched = useRef(false);
+
+
+
+  const handleLogout = async () => {
+  try {
+    await authApi.logout();
+  } catch (err) {
+    console.error("Logout failed:", err);
+  }
+};
+
 
   /* 
      FETCH PHARMACY LIST
@@ -63,7 +75,7 @@ export default function PharmacySelect() {
   /* HANDLE SELECT*/
   const handlePharmacyChange = (value) => {
 
-    setSelectedPharmacy(value);
+ 
     if (value === ADD_PHARMACY_VALUE) {
       navigate("/pharmacy-profile", {
         state: { mode: "create" },
@@ -121,20 +133,26 @@ export default function PharmacySelect() {
           />
         </Card.Content>
 
+   
         <Card.Footer className="flex gap-4">
-          <Button variant="outline" fullWidth onClick={logoutUser}>
-            Logout
-          </Button>
+  <Button
+    variant="secondary"
+    fullWidth
+    onClick={handleLogout}
+  >
+    Logout
+  </Button>
 
-          <Button
-            variant="secondary"
-            fullWidth
-            disabled={!selectedPharmacy || isAddPharmacySelected}
-            onClick={handleNext}
-          >
-            Next
-          </Button>
-        </Card.Footer>
+  <Button
+    variant="secondary"
+    fullWidth
+    disabled={!selectedPharmacy || isAddPharmacySelected}
+    onClick={handleNext}
+  >
+    Next
+  </Button>
+</Card.Footer>
+
       </Card>
     </div>
   );

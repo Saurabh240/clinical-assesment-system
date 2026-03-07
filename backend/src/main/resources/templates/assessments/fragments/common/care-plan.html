@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section">
+
+    <!-- ================= CARE PLAN TITLE ================= -->
+    <h2>Care Plan</h2>
+
+    <table>
+
+        <!-- ================= ROW 1: Prescription NOT Issued ================= -->
+        <tr>
+            <td>
+                Prescription <strong>Not</strong> Issued by the pharmacist
+
+                <span class="checkbox"
+                      th:text="${data['carePlan'] != null and data['carePlan']['inPersonCareNotIssued'] == true ? '☑' : '☐'}"></span>
+                In-person care
+
+                <span class="checkbox"
+                      th:text="${data['carePlan'] != null and data['carePlan']['virtualCareNotIssued'] == true ? '☑' : '☐'}"></span>
+                Virtual care/telephone<br>
+
+                <span class="checkbox"
+                      th:text="${data['carePlan'] != null and data['carePlan']['referToMD'] == true ? '☑' : '☐'}"></span>
+                Refer to MD/NP/Other
+
+                <span class="checkbox"
+                      th:text="${data['carePlan'] != null and data['carePlan']['recommendOTC'] == true ? '☑' : '☐'}"></span>
+                Recommend OTC
+
+                <span class="checkbox"
+                      th:text="${data['carePlan'] != null and data['carePlan']['recommendNonPharm'] == true ? '☑' : '☐'}"></span>
+                Recommend non-pharm
+
+                <span class="checkbox"
+                      th:text="${data['carePlan'] != null and data['carePlan']['other'] == true ? '☑' : '☐'}"></span>
+                Other:<br>
+
+                <span class="checkbox"
+                      th:text="${data['carePlan'] != null and data['carePlan']['rationalProvided'] == true ? '☑' : '☐'}"></span>
+                Rational must be provided in the notes below
+            </td>
+        </tr>
+
+        <!-- ================= ROW 2: Prescription Issued ================= -->
+        <tr>
+            <td>
+                Prescription Issued by the pharmacist
+
+                <span class="checkbox"
+                      th:text="${data['carePlan'] != null and data['carePlan']['inPersonCareIssued'] == true ? '☑' : '☐'}"></span>
+                In-person care
+
+                <span class="checkbox"
+                      th:text="${data['carePlan'] != null and data['carePlan']['virtualCareIssued'] == true ? '☑' : '☐'}"></span>
+                Virtual care/telephone<br>
+
+                <span class="checkbox"
+                      th:text="${data['carePlan'] != null and data['carePlan']['primaryCareProviderNotified'] == true ? '☑' : '☐'}"></span>
+                Primary care provider notified
+
+                <span class="checkbox"
+                      th:text="${data['carePlan'] != null and data['carePlan']['phone'] == true ? '☑' : '☐'}"></span>
+                Phone
+
+                <span class="checkbox"
+                      th:text="${data['carePlan'] != null and data['carePlan']['fax'] == true ? '☑' : '☐'}"></span>
+                Fax
+
+                <span class="checkbox"
+                      th:text="${data['carePlan'] != null and data['carePlan']['noPrimaryCareProvider'] == true ? '☑' : '☐'}"></span>
+                No primary care provider Date:
+                <span class="field-value"
+                      th:text="${data['carePlan'] != null ? data['carePlan']['date'] : ''}"></span>
+            </td>
+        </tr>
+
+        <!-- ================= ROW 3: Notes ================= -->
+        <tr>
+            <td>
+                Notes:<br>
+                <span class="field-value"
+                      th:text="${data['carePlan'] != null ? data['carePlan']['notes'] : ''}"></span>
+            </td>
+        </tr>
+
+    </table>
+
+</div>
+
+</body>
+</html>

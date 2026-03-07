@@ -1,6 +1,7 @@
 package com.clinical.service;
 
 import com.clinical.dto.FollowUpRequest;
+import com.clinical.dto.FollowupReadResponse;
 import com.clinical.dto.FollowupResponse;
 import com.clinical.dto.FollowupUpdateResponse;
 import com.clinical.model.Assessment;
@@ -14,89 +15,83 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.*;
-import java.time.chrono.ChronoLocalDate;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-import static org.apache.coyote.http11.Constants.a;
+import static com.clinical.model.FollowupStatus.COMPLETED;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class FollowupService {
 
-    private final AssessmentRepository assessmentRepository;
-    private final AuditLogService auditLogService;// assume already exists
-    private final FollowUpRepository followupRepository;
+    private static final long FOLLOWUP_THRESHOLD_DAYS = 14;
 
-    public List<FollowupResponse> getOverdueFollowups() {
+    private final AssessmentRepository assessmentRepository;
+    private final FollowUpRepository followupRepository;
+    private final AuditLogService auditLogService;
+
+    @Transactional(readOnly = true)
+    public List<FollowupReadResponse> getOverdueFollowups() {
+
         Instant now = Instant.now();
+        Instant thresholdDate = now.minus(Duration.ofDays(FOLLOWUP_THRESHOLD_DAYS));
+
         return assessmentRepository
-                .findAllByOrderByLastFollowupDateDesc()
+                .findByLastFollowupDateBeforeOrLastFollowupDateIsNull(thresholdDate)
                 .stream()
-                .map(a -> computeFollowup(a, now))
-                .filter(Objects::nonNull)
+                .map(a -> buildOverdueResponse(a, now))
                 .toList();
     }
 
-    private FollowupResponse computeFollowup(Assessment a, Instant now) {
-        Instant baseDate =
-                a.getLastFollowupDate() != null
-                        ? a.getLastFollowupDate()
-                        : a.getCreatedAt();
-        long days = Duration.between(baseDate, now).toDays();
-        if (days <= 14) {
-            return null; // Not overdue
-        }
-        // Mark overdue (optional persistence)
-        a.setFollowupStatus(FollowupStatus.OVERDUE);
-        String patientName = extractPatientName(a.getAssessmentData());
-        return new FollowupResponse(
+    private FollowupReadResponse buildOverdueResponse(Assessment a, Instant now) {
+
+        Instant baseDate = getBaseFollowupDate(a);
+        long daysSince = Duration.between(baseDate, now).toDays();
+        long overdueDays = Math.max(0, daysSince - FOLLOWUP_THRESHOLD_DAYS);
+
+        return new FollowupReadResponse(
                 a.getId(),
-                patientName,
+                extractPatientName(a.getAssessmentData()),
                 a.getAilmentCode(),
-                days - 14,
+                overdueDays,
                 a.getLastFollowupDate(),
-                a.getFollowupStatus()
+                FollowupStatus.OVERDUE
         );
     }
-    @Transactional
-    public FollowupUpdateResponse addOrUpdateFollowup(
+
+    public FollowupUpdateResponse createFollowup(
             Long assessmentId,
             FollowUpRequest request,
             String updatedBy
     ) {
-        // 1️⃣ Assessment must exist
-        Assessment assessment = assessmentRepository.findById(assessmentId)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Assessment not found"));
-        // 2️⃣ Business validation
-        if (request.nextFollowupDate().isBefore((Instant.now()))) {
-            throw new IllegalArgumentException(
-                    "Next follow-up date cannot be in the past");
-        }
-        // 3️⃣ Insert or update Followup record
-        FollowUp followup = followupRepository
-                .findByAssessmentId(assessmentId)
-                .orElse(FollowUp.builder()
-                        .assessment(assessment)
-                        .build());
-        followup.setNotes(request.notes());
-        followup.setNextFollowupDate(request.nextFollowupDate());
-        followup.setUpdatedAt(
-                Instant.now()
-        );
 
-        followup.setUpdatedBy(updatedBy);
-        followup.setStatus(request.status());
-        followupRepository.save(followup);
-        // 4️⃣ Update Assessment fields (ONLY allowed ones)
+        Assessment assessment = assessmentRepository.findById(assessmentId)
+                .orElseThrow(() -> new IllegalArgumentException("Assessment not found"));
+
+        validateFollowupRequest(request);
+
         FollowupStatus oldStatus = assessment.getFollowupStatus();
-        assessment.setLastFollowupDate((Instant.now()));
+
+        if (COMPLETED.equals(oldStatus) && !COMPLETED.equals(request.status())) {
+            throw new IllegalStateException("Cannot revert completed follow-up");
+        }
+
+        FollowUp followup = FollowUp.builder()
+                .assessment(assessment)
+                .notes(request.notes())
+                .status(request.status())
+                .nextFollowupDate(request.nextFollowupDate())
+                .createdAt(Instant.now())
+                .createdBy(updatedBy)
+                .build();
+
+        followupRepository.save(followup);
+
+        assessment.setLastFollowupDate(Instant.now());
         assessment.setFollowupStatus(request.status());
-        assessmentRepository.save(assessment);
-        // 5️⃣ Audit logging (status change)
-        if (oldStatus != request.status()) {
+
+        if (!Objects.equals(oldStatus, request.status())) {
             auditLogService.log(
                     "ASSESSMENT",
                     assessmentId,
@@ -112,45 +107,71 @@ public class FollowupService {
                 assessment.getFollowupStatus(),
                 assessment.getLastFollowupDate(),
                 followup.getNextFollowupDate(),
-                "Follow-up updated successfully"
+                followup.getNotes(),
+                "Follow-up created successfully"
         );
     }
-    private String extractPatientName(JsonNode data) {
-        if (data == null) return "";
-        JsonNode patient = data.get("patient");
-        if (patient == null) return "";
-        return patient.path("firstName").asText("") + " " +
-                patient.path("lastName").asText("");
-    }
 
-    public FollowupResponse getFollowupByAssessmentId(Long assessmentId) {
+    @Transactional(readOnly = true)
+    public FollowupResponse getLatestFollowup(Long assessmentId) {
 
         Assessment assessment = assessmentRepository.findById(assessmentId)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Assessment not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Assessment not found"));
 
         FollowUp followup = followupRepository
-                .findByAssessmentId(assessmentId)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Follow-up not found"));
-        Instant now = Instant.now();
-        Instant baseDate = assessment.getLastFollowupDate() != null
-                ? assessment.getLastFollowupDate()
-                : assessment.getCreatedAt();
-        long days = Duration.between(baseDate, now).toDays();
-        long overdueDays = days > 14 ? days - 14 : 0;
+                .findTopByAssessmentIdOrderByCreatedAtDesc(assessmentId)
+                .orElseThrow(() -> new IllegalArgumentException("Follow-up not found"));
 
-        String patientName = extractPatientName(assessment.getAssessmentData());
+        Instant now = Instant.now();
+        Instant baseDate = getBaseFollowupDate(assessment);
+
+        long daysSince = Duration.between(baseDate, now).toDays();
+        long overdueDays = Math.max(0, daysSince - FOLLOWUP_THRESHOLD_DAYS);
 
         return new FollowupResponse(
                 assessment.getId(),
-                patientName,
+                extractPatientName(assessment.getAssessmentData()),
                 assessment.getAilmentCode(),
                 overdueDays,
                 assessment.getLastFollowupDate(),
-                assessment.getFollowupStatus()
+                assessment.getFollowupStatus(),
+                followup.getNotes()
         );
     }
 
+    private Instant getBaseFollowupDate(Assessment a) {
+        return a.getLastFollowupDate() != null
+                ? a.getLastFollowupDate()
+                : a.getCreatedAt();
+    }
 
+    private void validateFollowupRequest(FollowUpRequest request) {
+
+        if (request == null) {
+            throw new IllegalArgumentException("Follow-up request cannot be null");
+        }
+
+        if (request.status() == null) {
+            throw new IllegalArgumentException("Follow-up status is required");
+        }
+
+        if (request.nextFollowupDate() != null &&
+                request.nextFollowupDate().isBefore(Instant.now())) {
+            throw new IllegalArgumentException("Next follow-up date cannot be in the past");
+        }
+    }
+
+    private String extractPatientName(JsonNode data) {
+
+        if (data == null) return "";
+
+        JsonNode patient = data.path("patient");
+
+        String firstName = patient.path("firstName").asText("");
+        String lastName = patient.path("lastName").asText("");
+
+        return (firstName + " " + lastName).trim();
+    }
 }
+
+

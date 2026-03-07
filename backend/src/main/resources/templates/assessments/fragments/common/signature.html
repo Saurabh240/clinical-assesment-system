@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section">
+
+    <h2>Signature</h2>
+
+    <table>
+        <tr>
+            <td>Pharmacist:</td>
+            <td th:text="${data['signature'] != null and data['signature']['pharmacistName'] != null ? data['signature']['pharmacistName'] : ''}"></td>
+        </tr>
+        <tr>
+            <td>OCP #:</td>
+            <td th:text="${data['signature'] != null and data['signature']['ocpNumber'] != null ? data['signature']['ocpNumber'] : ''}"></td>
+        </tr>
+        <tr>
+            <td>Date:</td>
+            <td th:text="${data['signature'] != null and data['signature']['date'] != null ? data['signature']['date'] : ''}"></td>
+        </tr>
+    </table>
+
+</div>
+
+</body>
+</html>
