@@ -1,6 +1,6 @@
 package com.clinical.model;
 
 public enum UserStatus {
-    PENDING,
+    INACTIVE,
     ACTIVE
 }

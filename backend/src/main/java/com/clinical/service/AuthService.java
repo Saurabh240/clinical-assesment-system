@@ -54,7 +54,7 @@ public class AuthService {
         newUser.setLastName(signupRequest.lastName());
         newUser.setPassword(passwordEncoder.encode(signupRequest.password()));
         newUser.setRole(Role.PHARMACIST);
-        newUser.setStatus(UserStatus.PENDING);
+        newUser.setStatus(UserStatus.INACTIVE);
 
         userRepository.save(newUser);
 
