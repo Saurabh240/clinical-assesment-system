@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section(data)">
+
+    <div style="text-align:center; font-weight:bold; font-size:11px; margin:3px 0 4px 0;">
+        Minor Ailment Assessment &amp; Treatment Options - Atopic and Contact Dermatitis
+    </div>
+
+    <!-- RATIONALE FOR PRESCRIBING -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                RATIONALE FOR PRESCRIBING
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient presents with the following symptoms consistent with atopic dermatitis (Check all that apply)
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 3px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['pruritus'] == true ? 'checked' : ''}" class="cb"></span>Pruritus<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['drySkin'] == true ? 'checked' : ''}" class="cb"></span>Dry skin<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['rednessPatches'] == true ? 'checked' : ''}" class="cb"></span>Redness/red patches/scratches<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['other'] == true ? 'checked' : ''}" class="cb"></span>Other:
+                <span th:text="${data['ailment']['clinicalBlock']['symptoms']['otherDetail'] != null ? data['ailment']['clinicalBlock']['symptoms']['otherDetail'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient meets the following criteria for minor ailment prescribing (Must check all)
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 3px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['lesionsBelow30BSA'] == true ? 'checked' : ''}" class="cb"></span>Lesions are &lt; 30% BSA<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['notSignificantlyInterfering'] == true ? 'checked' : ''}" class="cb"></span>Not significantly interfering with activities of daily life or sleep patterns<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noSignsOfInfection'] == true ? 'checked' : ''}" class="cb"></span>No signs of bacterial, fungal or viral infection<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['palmsNotAffected'] == true ? 'checked' : ''}" class="cb"></span>Palms of hands and feet are not affected<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noBleeding'] == true ? 'checked' : ''}" class="cb"></span>No bleeding, oozing or cracking of skin<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noRecentContact'] == true ? 'checked' : ''}" class="cb"></span>No recent contact with plant, chemical or person with similar rash
+            </td>
+        </tr>
+    </table>
+
+    <!-- PRESCRIPTION TREATMENT -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Prescription Treatment
+            </td>
+        </tr>
+
+        <!-- Low Potency -->
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">Corticosteroids, Low Potency</td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 3px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['desonide005'] == true ? 'checked' : ''}" class="cb"></span>Desonide 0.05% <span th:text="${data['ailment']['clinicalBlock']['treatment']['desonide005g'] != null ? data['ailment']['clinicalBlock']['treatment']['desonide005g'] : ''}"></span> ____ g apply BID x 2 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['hydrocortisone'] == true ? 'checked' : ''}" class="cb"></span>Hydrocortisone<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['hydrocortisone1'] == true ? 'checked' : ''}" class="cb"></span>1% <span th:text="${data['ailment']['clinicalBlock']['treatment']['hydrocortisone1g'] != null ? data['ailment']['clinicalBlock']['treatment']['hydrocortisone1g'] : ''}"></span> _____ g apply QD - BID x 2 weeks<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['hydrocortisone2'] == true ? 'checked' : ''}" class="cb"></span>2% <span th:text="${data['ailment']['clinicalBlock']['treatment']['hydrocortisone2g'] != null ? data['ailment']['clinicalBlock']['treatment']['hydrocortisone2g'] : ''}"></span> _____ g apply QD - BID x 2 weeks<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['hydrocortisone25'] == true ? 'checked' : ''}" class="cb"></span>2.5% <span th:text="${data['ailment']['clinicalBlock']['treatment']['hydrocortisone25g'] != null ? data['ailment']['clinicalBlock']['treatment']['hydrocortisone25g'] : ''}"></span> _____ g apply QD - BID x 2 weeks
+                </div>
+            </td>
+        </tr>
+
+        <!-- Medium Potency -->
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">Corticosteroids, Medium Potency</td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 3px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['beclomethasone'] == true ? 'checked' : ''}" class="cb"></span>Beclomethasone dipropionate 0.025% <span th:text="${data['ailment']['clinicalBlock']['treatment']['beclomethasoneG'] != null ? data['ailment']['clinicalBlock']['treatment']['beclomethasoneG'] : ''}"></span> _____ g apply QD - BID x 2 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['betamethasoneValerate'] == true ? 'checked' : ''}" class="cb"></span>Betamethasone valerate<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['betamethasone005'] == true ? 'checked' : ''}" class="cb"></span>0.05% <span th:text="${data['ailment']['clinicalBlock']['treatment']['betamethasone005g'] != null ? data['ailment']['clinicalBlock']['treatment']['betamethasone005g'] : ''}"></span> _____ g apply BID x 2 weeks<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['betamethasone01'] == true ? 'checked' : ''}" class="cb"></span>0.1% <span th:text="${data['ailment']['clinicalBlock']['treatment']['betamethasone01g'] != null ? data['ailment']['clinicalBlock']['treatment']['betamethasone01g'] : ''}"></span> _____ g apply BID x 2 weeks
+                </div>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['clobetasone'] == true ? 'checked' : ''}" class="cb"></span>Clobetasone butyrate 0.05% <span th:text="${data['ailment']['clinicalBlock']['treatment']['clobetasoneG'] != null ? data['ailment']['clinicalBlock']['treatment']['clobetasoneG'] : ''}"></span> _____ g apply BID - TID x 2 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['desonide002'] == true ? 'checked' : ''}" class="cb"></span>Desonide 0.05% <span th:text="${data['ailment']['clinicalBlock']['treatment']['desonide002g'] != null ? data['ailment']['clinicalBlock']['treatment']['desonide002g'] : ''}"></span> ____g apply Daily - BID x 2 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['fluocinolone'] == true ? 'checked' : ''}" class="cb"></span>Fluocinolone acetonide 0.01% <span th:text="${data['ailment']['clinicalBlock']['treatment']['fluocinoloneG'] != null ? data['ailment']['clinicalBlock']['treatment']['fluocinoloneG'] : ''}"></span> _____ g apply BID - TID x 2 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['hydrocortisoneValerate'] == true ? 'checked' : ''}" class="cb"></span>Hydrocortisone valerate 0.2% <span th:text="${data['ailment']['clinicalBlock']['treatment']['hydrocortisoneValerateG'] != null ? data['ailment']['clinicalBlock']['treatment']['hydrocortisoneValerateG'] : ''}"></span> _____ g apply BID - TID x 2 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['prednicarbate'] == true ? 'checked' : ''}" class="cb"></span>Prednicarbate 0.1% <span th:text="${data['ailment']['clinicalBlock']['treatment']['prednicarbateG'] != null ? data['ailment']['clinicalBlock']['treatment']['prednicarbateG'] : ''}"></span> _____ g apply BID x 2 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['triamcinolone'] == true ? 'checked' : ''}" class="cb"></span>Triamcinolone acetonide<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['triamcinolone01'] == true ? 'checked' : ''}" class="cb"></span>0.1% <span th:text="${data['ailment']['clinicalBlock']['treatment']['triamcinolone01g'] != null ? data['ailment']['clinicalBlock']['treatment']['triamcinolone01g'] : ''}"></span> _____ g apply BID x 2 weeks<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['triamcinolone05'] == true ? 'checked' : ''}" class="cb"></span>0.5% <span th:text="${data['ailment']['clinicalBlock']['treatment']['triamcinolone05g'] != null ? data['ailment']['clinicalBlock']['treatment']['triamcinolone05g'] : ''}"></span> _____ g apply BID x 2 weeks
+                </div>
+                <span style="font-style:italic;">**Indicate cream or ointment**</span>
+            </td>
+        </tr>
+
+        <!-- Other -->
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">Other</td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 3px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['crisaborole'] == true ? 'checked' : ''}" class="cb"></span>Crisaborole (&gt;2 yo): 2% <span th:text="${data['ailment']['clinicalBlock']['treatment']['crisaboroleG'] != null ? data['ailment']['clinicalBlock']['treatment']['crisaboroleG'] : ''}"></span> _____ g apply BID x 2 weeks
+            </td>
+        </tr>
+
+    </table>
+
+</div>
+
+</body>
+</html>

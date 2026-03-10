@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section(data)">
+
+    <div style="text-align:center; font-weight:bold; font-size:13px; margin:2px 0 3px 0;">
+        Minor Ailment Assessment &amp; Treatment Options - Dysmenorrhea
+    </div>
+
+    <!-- RATIONALE FOR PRESCRIBING -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                RATIONALE FOR PRESCRIBING
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient presents with the following symptoms consistent with dysmenorrhea (Check all that apply)
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:2px 6px 3px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['lowerAbdominalPain'] == true ? 'checked' : ''}" class="cb"></span>Lower mid-abdominal pain ± pelvic pain/cramping<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['painRadiating'] == true ? 'checked' : ''}" class="cb"></span>Pain radiating to lower back and upper thigh<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['painWithMenses'] == true ? 'checked' : ''}" class="cb"></span>Pain begins with onset of menses<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['painLasts2to3Days'] == true ? 'checked' : ''}" class="cb"></span>Pain lasts 2-3 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['other'] == true ? 'checked' : ''}" class="cb"></span>Other:
+                <span th:text="${data['ailment']['clinicalBlock']['symptoms']['otherDetail'] != null ? data['ailment']['clinicalBlock']['symptoms']['otherDetail'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient meets the following criteria for minor ailment prescribing (Must check all)
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:2px 6px 3px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['initialOnsetWithMenstruation'] == true ? 'checked' : ''}" class="cb"></span>Initial onset of pain is within hours or onset of menstruation<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noSystemicInfection'] == true ? 'checked' : ''}" class="cb"></span>No signs of systemic infections (e.g. fever, chills)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noIUDLastYear'] == true ? 'checked' : ''}" class="cb"></span>No IUD inserted in the last 1 year<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noPainOutsideMenses'] == true ? 'checked' : ''}" class="cb"></span>No pain at other times of menstrual cycle<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['ageAbove12'] == true ? 'checked' : ''}" class="cb"></span>Age &gt; 12 years old<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noHistoryOfComplications'] == true ? 'checked' : ''}" class="cb"></span>No history of endometriosis, ovarian cysts, fibroids, cardiovascular or GI disease/disorder, renal impairment or bleeding disorder
+            </td>
+        </tr>
+
+    </table>
+
+    <!-- PRESCRIPTION TREATMENT -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Prescription Treatment
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:2px 6px 3px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['selected'] == 'Ibuprofen' ? 'checked' : ''}" class="cb"></span>
+                Ibuprofen 400 mg, loading dose of 800mg PO, then 400 mg PO Q6H x 3 days. Refills x 3<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['selected'] == 'Naproxen500' ? 'checked' : ''}" class="cb"></span>
+                Naproxen 500 mg BID x 3 days. Refills x 3<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['selected'] == 'NaproxenSodium' ? 'checked' : ''}" class="cb"></span>
+                Naproxen sodium 550 mg PO BID x 3 days. Refills x 3<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['selected'] == 'Diclofenac' ? 'checked' : ''}" class="cb"></span>
+                Diclofenac potassium 50mg, loading dose 100 mg PO, then 50 mg Q6-8H PRN x 3 days. Refills x 3<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['selected'] == 'Celecoxib' ? 'checked' : ''}" class="cb"></span>
+                Celecoxib 200 mg QD x 3 days. Refill x 3<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['selected'] == 'Mefenamic' ? 'checked' : ''}" class="cb"></span>
+                Mefenamic 250mg, loading dose of 500mg PO then 250 mg PO Q6H x 3 days. Refills x 3<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['selected'] == 'Ketoprofen' ? 'checked' : ''}" class="cb"></span>
+                Ketoprofen 50 mg PO TID x 3 days. Refills x 3<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['selected'] == 'Flurbiprofen' ? 'checked' : ''}" class="cb"></span>
+                Flurbiprofen 50 mg PO QID x 3 days. Refills x 3
+            </td>
+        </tr>
+
+    </table>
+
+</div>
+
+</body>
+</html>

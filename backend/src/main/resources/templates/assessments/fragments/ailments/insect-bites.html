@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section(data)">
+
+    <div style="text-align:center; font-weight:bold; font-size:13px; margin:2px 0 3px 0;">
+        Minor Ailment Assessment &amp; Treatment Options - Insect Bites and Urticaria
+    </div>
+
+    <!-- RATIONALE FOR PRESCRIBING -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                RATIONALE FOR PRESCRIBING
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient presents with the following symptoms consistent with Insect Bites (Non-Tick) &nbsp;(Check all that apply)
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:2px 6px 3px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['areaOfBites'] == true ? 'checked' : ''}" class="cb"></span>Area of bites expected after exposure to insects<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['inflammation'] == true ? 'checked' : ''}" class="cb"></span>Inflammation<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['redness'] == true ? 'checked' : ''}" class="cb"></span>Redness<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['itch'] == true ? 'checked' : ''}" class="cb"></span>Itch<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['pain'] == true ? 'checked' : ''}" class="cb"></span>Pain<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['hives'] == true ? 'checked' : ''}" class="cb"></span>Hives<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['other'] == true ? 'checked' : ''}" class="cb"></span>Other:
+                <span th:text="${data['ailment']['clinicalBlock']['symptoms']['otherDetail'] != null ? data['ailment']['clinicalBlock']['symptoms']['otherDetail'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient meets the following criteria for minor ailment prescribing (Must check all)
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:2px 6px 3px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noRednessExpanded'] == true ? 'checked' : ''}" class="cb"></span>No redness around the bite that has expanded over the course of a few days and / or resembles a bulls-eye<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noAnaphylacticReaction'] == true ? 'checked' : ''}" class="cb"></span>No signs of an anaphylactic reaction<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noExtensiveSkinSymptoms'] == true ? 'checked' : ''}" class="cb"></span>No extensive skin symptoms such as hives on areas other than the bite site<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noLesionsOver7Days'] == true ? 'checked' : ''}" class="cb"></span>No lesions worsening / present for longer than 7 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noLesionsInfected'] == true ? 'checked' : ''}" class="cb"></span>No lesions appear infected<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noSwollenLymphNodes'] == true ? 'checked' : ''}" class="cb"></span>No swollen lymph nodes or flu-like symptoms
+            </td>
+        </tr>
+
+    </table>
+
+    <!-- PRESCRIPTION TREATMENT -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                PRESCRIPTION TREATMENT
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:2px 6px 3px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['desonide'] == true ? 'checked' : ''}" class="cb"></span>Desonide 0.05%: Apply daily-BID PRN (maximum 7 days)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['hydrocortisone'] == true ? 'checked' : ''}" class="cb"></span>Hydrocortisone 0.5% - 2.5%: Apply daily-BID PRN (maximum 7 days)<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['bilastine'] == true ? 'checked' : ''}" class="cb"></span>Bilastine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['bilastineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;12 y: 20 mg once daily PO<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['bilastineChild'] == true ? 'checked' : ''}" class="cb"></span>Children 4&#8211;11 y (body wt &#8805;16 kg): 10 mg once daily PO
+                </div>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['cetirizine'] == true ? 'checked' : ''}" class="cb"></span>Cetirizine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['cetirizineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;6 y: 5&#8211;10 mg Q24H PO; maximum 20 mg/day<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['cetirizineChild6to12m'] == true ? 'checked' : ''}" class="cb"></span>Children: 6&#8211;12 months: 2.5 mg Q24H PO<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['cetirizineChild12to23m'] == true ? 'checked' : ''}" class="cb"></span>12&#8211;23 months: 2.5 mg Q24H PO; maximum 2.5 mg Q12H<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['cetirizineChild2to5'] == true ? 'checked' : ''}" class="cb"></span>2&#8211;5 y: 2.5 mg Q24H PO; maximum 5 mg/day in 1&#8211;2 doses
+                </div>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['rupatadine'] == true ? 'checked' : ''}" class="cb"></span>Rupatadine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['rupatadineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;12 y: 10 mg Q24H PO<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['rupatadineChild2to11'] == true ? 'checked' : ''}" class="cb"></span>Children 2&#8211;11 y: oral solution<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['rupatadine10to25kg'] == true ? 'checked' : ''}" class="cb"></span>10&#8211;25 kg: 2.5 mg Q24H PO; maximum 2.5 mg/day<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['rupatadineOver25kg'] == true ? 'checked' : ''}" class="cb"></span>&gt;25 kg: 5 mg Q24H PO; maximum 5 mg/day
+                </div>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['hydroxyzine'] == true ? 'checked' : ''}" class="cb"></span>Hydroxyzine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['hydroxyzineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults: 25 mg TID to QID PO; maximum 100 mg/day<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['hydroxyzineChild6to40kg'] == true ? 'checked' : ''}" class="cb"></span>Children (up to 40 kg): 50&#8211;80 mg (or 2 mg/kg) daily, divided TID to QID; if &gt;40 kg, adult dosing<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['hydroxyzineChildUnder6'] == true ? 'checked' : ''}" class="cb"></span>Children &lt;6 years: 30&#8211;50 mg (or 2 mg/kg) daily, divided TID to QID
+                </div>
+
+            </td>
+        </tr>
+
+    </table>
+
+    <!-- OTC TREATMENT -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                OTC TREATMENT
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:2px 6px 3px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+
+                <!-- Topical OTC -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['benzocaine'] == true ? 'checked' : ''}" class="cb"></span>Benzocaine 7.5% - 20%: apply TID&#8211;QID PRN for itching (maximum 7 days)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['pramoxine'] == true ? 'checked' : ''}" class="cb"></span>Pramoxine 1%: apply QID PRN<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['camphor'] == true ? 'checked' : ''}" class="cb"></span>Camphor or menthol-containing products: 0.13&#8211;10.5%: apply sparingly PRN<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['calamine'] == true ? 'checked' : ''}" class="cb"></span>Calamine lotion 1&#8211;16%: apply liberally PRN<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['ammoniaBakingSoda'] == true ? 'checked' : ''}" class="cb"></span>Ammonia/baking soda 3.5% ammonia: apply sparingly PRN<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['lidocaine'] == true ? 'checked' : ''}" class="cb"></span>Lidocaine 0.5&#8211;9.6%: apply as needed up to 3 times daily. Use sprays no more than twice per hour<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['zincOxide'] == true ? 'checked' : ''}" class="cb"></span>Zinc Oxide 10%&#8211;40%: Apply as needed PRN<br>
+
+                <!-- OTC Antihistamines -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['desloratadine'] == true ? 'checked' : ''}" class="cb"></span>Desloratadine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['desloratadineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;12 y: 5 mg Q24H PO<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['desloratadineChild6to11m'] == true ? 'checked' : ''}" class="cb"></span>Children 6&#8211;11 months: 1 mg Q24H PO<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['desloratadineChild1to5'] == true ? 'checked' : ''}" class="cb"></span>1&#8211;5 y: 1.25 mg Q24H PO<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['desloratadineChild6to11'] == true ? 'checked' : ''}" class="cb"></span>6&#8211;11 y: 2.5 mg Q24H PO
+                </div>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['fexofenadine'] == true ? 'checked' : ''}" class="cb"></span>Fexofenadine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['fexofenadineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults: 60 mg Q12H PO; maximum 180 mg/day (12-h formulation) or 120 mg/day (24-h formulation)<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['fexofenadineChild2to11'] == true ? 'checked' : ''}" class="cb"></span>Children 2&#8211;11 y: 30 mg Q12H PO
+                </div>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['loratadine'] == true ? 'checked' : ''}" class="cb"></span>Loratadine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['loratadineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &gt;5 y: 10 mg Q24H PO<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['loratadineChild2to5'] == true ? 'checked' : ''}" class="cb"></span>Children 2&#8211;5 y: 5 mg Q24H PO
+                </div>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['chlorpheniramine'] == true ? 'checked' : ''}" class="cb"></span>Chlorpheniramine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['chlorpheniramineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults: 4 mg Q4&#8211;6H PO; maximum 24 mg/day<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['chlorpheniramineChild'] == true ? 'checked' : ''}" class="cb"></span>Children: 0.35 mg/kg/day PO given in 4 divided doses
+                </div>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['diphenhydramine'] == true ? 'checked' : ''}" class="cb"></span>Diphenhydramine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['diphenhydramineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults: 25&#8211;50 mg Q6&#8211;8H PO; maximum 300 mg/day<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['diphenhydramineChild'] == true ? 'checked' : ''}" class="cb"></span>Children: 5 mg/kg/day PO given in divided doses
+                </div>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['cyproheptadine'] == true ? 'checked' : ''}" class="cb"></span>Cyproheptadine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['cyproheptadineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults: Initially 4 mg Q8H PO; then 0.5 mg/kg/day, usually 12&#8211;16 mg/day; max 32 mg daily<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['cyproheptadineChild2to6'] == true ? 'checked' : ''}" class="cb"></span>Children 2&#8211;6 years: 2 mg Q8&#8211;12H; max 12 mg daily<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['cyproheptadineChild7to14'] == true ? 'checked' : ''}" class="cb"></span>Children 7&#8211;14 years: 0.25 mg/kg/day PO or 8 mg/m&#178;/day in 2&#8211;3 divided doses OR 4 mg Q8&#8211;12H; max 16 mg daily
+                </div>
+
+            </td>
+        </tr>
+
+    </table>
+
+</div>
+
+</body>
+</html>

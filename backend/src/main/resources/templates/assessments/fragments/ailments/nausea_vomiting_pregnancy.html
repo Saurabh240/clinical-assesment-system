@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section(data)">
+
+    <div style="text-align:center; font-weight:bold; font-size:13px; margin:2px 0 3px 0;">
+        Minor Ailment Assessment &amp; Treatment Options - Nausea and Vomiting of Pregnancy
+    </div>
+
+    <!-- ======================== RATIONALE FOR PRESCRIBING ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                RATIONALE FOR PRESCRIBING
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient presents with the following symptoms consistent with nausea and vomiting of pregnancy (Check all that apply)
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['confirmedPregnancy'] == true ? 'checked' : ''}" class="cb"></span>Confirmed pregnancy<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['onsetFirst9Weeks'] == true ? 'checked' : ''}" class="cb"></span>Onset in the first 9 weeks of gestation<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['mildNausea'] == true ? 'checked' : ''}" class="cb"></span>Mild nausea with or without occasional vomiting<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['personalHistoryGERD'] == true ? 'checked' : ''}" class="cb"></span>Personal history of GERD<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['other'] == true ? 'checked' : ''}" class="cb"></span>Other:
+                <span th:text="${data['ailment']['clinicalBlock']['symptoms']['otherDetail'] != null ? data['ailment']['clinicalBlock']['symptoms']['otherDetail'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient meets the following criteria for minor ailment prescribing (Must check all)
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noRedFlags'] == true ? 'checked' : ''}" class="cb"></span>No red flags present (dehydration for &gt;12 hours, unable to keep food down for &gt;12 hours, signs of hyperemesis gravidarum - weight loss, relentless vomiting, excessive thirst, infrequent urination, dizziness, dark-coloured urine, extreme fatigue, confusion, yellow or bloody vomit)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noDiabetes'] == true ? 'checked' : ''}" class="cb"></span>Patient does not have diabetes<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noFeverOrOtherSymptoms'] == true ? 'checked' : ''}" class="cb"></span>No fever, headache, vision changes, diarrhea, changes in bowel habits or vaginal bleeding<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noAbdominalPain'] == true ? 'checked' : ''}" class="cb"></span>No abdominal pain or tenderness (besides discomfort attributed to retching)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['mildToModerateNVP'] == true ? 'checked' : ''}" class="cb"></span>Presents with mild to moderate NVP based on PUQE score - see page 2 for assessment<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noIronDeficiencyAnemia'] == true ? 'checked' : ''}" class="cb"></span>Not diagnosed iron deficiency anemia and unable to take iron supplement<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['ableToKeepDownMeds'] == true ? 'checked' : ''}" class="cb"></span>Able to keep down oral medications to manage other medical conditions and able to maintain nutritional requirements
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== NVP PHARMACOLOGICAL TREATMENT ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                NVP Pharmacological Treatment
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['doxylaminePyridoxine'] == true ? 'checked' : ''}" class="cb"></span>Doxylamine succinate/pyridoxine hydrochloride 10mg/10mg start with 2 tablets PO QHS, add 1 tablet QAM plus 1 tablet mid-afternoon as required<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['pyridoxine25mg'] == true ? 'checked' : ''}" class="cb"></span>Pyridoxine 25 mg PO Q8H<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['gingerTablet'] == true ? 'checked' : ''}" class="cb"></span>Ginger tablet 250 mg PO Q6H<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['dimenhydrinate50mg'] == true ? 'checked' : ''}" class="cb"></span>Dimenhydrinate 50 mg PO or PR Q4&#8211;6H PRN<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['diphenhydramine25mg'] == true ? 'checked' : ''}" class="cb"></span>Diphenhydramine 25 mg PO Q4&#8211;6H PRN<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['promethazine'] == true ? 'checked' : ''}" class="cb"></span>Promethazine 12.5 mg&#8211;25 mg PO Q4&#8211;6H PRN
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== OTHER RECOMMENDATIONS ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Other Recommendations to Consider
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['otherRecommendations']['fluidAndElectrolyte'] == true ? 'checked' : ''}" class="cb"></span>Maintenance of fluid and electrolyte status<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['otherRecommendations']['smallBlandMeals'] == true ? 'checked' : ''}" class="cb"></span>Eat small, bland, frequent meals of pregnancy safe foods the patient finds appealing<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['otherRecommendations']['eatWhenNauseaLess'] == true ? 'checked' : ''}" class="cb"></span>Eat at times of day when nausea is less severe<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['otherRecommendations']['avoidStrongFoodOdours'] == true ? 'checked' : ''}" class="cb"></span>Avoid strong food odours
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== PUQE SCORE ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+
+        <!-- Header -->
+        <tr>
+            <td colspan="5" style="font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none; border-top:none;">
+                Modified Pregnancy Unique-Quantification of Emesis (PUQE) Score:
+            </td>
+        </tr>
+
+        <!-- Instruction -->
+        <tr>
+            <td colspan="5" style="padding:3px 6px; border:1px solid #000; border-left:none; border-right:none; font-size:8.5px; line-height:1.4;">
+                <strong>Circle the answer that best suits your situation from the beginning of your pregnancy.</strong> Total score (sum of replies to 1, 2, and 3): mild NVP, &#8804;6; moderate NVP, 7-12; severe NVP, &#8805;13
+            </td>
+        </tr>
+
+        <!-- ---- Q1 ---- -->
+        <tr>
+            <td colspan="5" style="padding:3px 6px; border:1px solid #000; border-left:none; border-right:none; font-size:8.5px;">
+                1. On average in a day, for how long do you feel nauseated or sick to your stomach?
+            </td>
+        </tr>
+        <tr>
+            <td th:style="${data['ailment']['clinicalBlock']['puqe']['q1'] == 1 ? 'background:#000; color:#fff;' : 'background:#fff; color:#000;'} + 'text-align:center; padding:3px 4px; border:1px solid #000; border-left:none; font-size:8.5px; width:20%;'">
+                Not at all (1)
+            </td>
+            <td th:style="${data['ailment']['clinicalBlock']['puqe']['q1'] == 2 ? 'background:#000; color:#fff;' : 'background:#fff; color:#000;'} + 'text-align:center; padding:3px 4px; border:1px solid #000; font-size:8.5px; width:20%;'">
+                &#8804; 1 hr (2)
+            </td>
+            <td th:style="${data['ailment']['clinicalBlock']['puqe']['q1'] == 3 ? 'background:#000; color:#fff;' : 'background:#fff; color:#000;'} + 'text-align:center; padding:3px 4px; border:1px solid #000; font-size:8.5px; width:20%;'">
+                2-3 hr (3)
+            </td>
+            <td th:style="${data['ailment']['clinicalBlock']['puqe']['q1'] == 4 ? 'background:#000; color:#fff;' : 'background:#fff; color:#000;'} + 'text-align:center; padding:3px 4px; border:1px solid #000; font-size:8.5px; width:20%;'">
+                4-6 hr (4)
+            </td>
+            <td th:style="${data['ailment']['clinicalBlock']['puqe']['q1'] == 5 ? 'background:#000; color:#fff;' : 'background:#fff; color:#000;'} + 'text-align:center; padding:3px 4px; border:1px solid #000; border-right:none; font-size:8.5px; width:20%;'">
+                &gt;6 hr (5)
+            </td>
+        </tr>
+
+        <!-- ---- Q2 ---- -->
+        <tr>
+            <td colspan="5" style="padding:3px 6px; border:1px solid #000; border-left:none; border-right:none; font-size:8.5px;">
+                2. On average in a day, how many times do you vomit or throw up?
+            </td>
+        </tr>
+        <tr>
+            <td th:style="${data['ailment']['clinicalBlock']['puqe']['q2'] == 5 ? 'background:#000; color:#fff;' : 'background:#fff; color:#000;'} + 'text-align:center; padding:3px 4px; border:1px solid #000; border-left:none; font-size:8.5px; width:20%;'">
+                &#8805; 7 times (5)
+            </td>
+            <td th:style="${data['ailment']['clinicalBlock']['puqe']['q2'] == 4 ? 'background:#000; color:#fff;' : 'background:#fff; color:#000;'} + 'text-align:center; padding:3px 4px; border:1px solid #000; font-size:8.5px; width:20%;'">
+                5-6 times (4)
+            </td>
+            <td th:style="${data['ailment']['clinicalBlock']['puqe']['q2'] == 3 ? 'background:#000; color:#fff;' : 'background:#fff; color:#000;'} + 'text-align:center; padding:3px 4px; border:1px solid #000; font-size:8.5px; width:20%;'">
+                3-4 times (3)
+            </td>
+            <td th:style="${data['ailment']['clinicalBlock']['puqe']['q2'] == 2 ? 'background:#000; color:#fff;' : 'background:#fff; color:#000;'} + 'text-align:center; padding:3px 4px; border:1px solid #000; font-size:8.5px; width:20%;'">
+                1-2 times (2)
+            </td>
+            <td th:style="${data['ailment']['clinicalBlock']['puqe']['q2'] == 1 ? 'background:#000; color:#fff;' : 'background:#fff; color:#000;'} + 'text-align:center; padding:3px 4px; border:1px solid #000; border-right:none; font-size:8.5px; width:20%;'">
+                I did not throw up (1)
+            </td>
+        </tr>
+
+        <!-- ---- Q3 ---- -->
+        <tr>
+            <td colspan="5" style="padding:3px 6px; border:1px solid #000; border-left:none; border-right:none; font-size:8.5px;">
+                3. On average in a day, how many times do you have retching or dry heaves without bringing anything up?
+            </td>
+        </tr>
+        <tr>
+            <td th:style="${data['ailment']['clinicalBlock']['puqe']['q3'] == 1 ? 'background:#000; color:#fff;' : 'background:#fff; color:#000;'} + 'text-align:center; padding:3px 4px; border:1px solid #000; border-left:none; font-size:8.5px; width:20%;'">
+                None (1)
+            </td>
+            <td th:style="${data['ailment']['clinicalBlock']['puqe']['q3'] == 2 ? 'background:#000; color:#fff;' : 'background:#fff; color:#000;'} + 'text-align:center; padding:3px 4px; border:1px solid #000; font-size:8.5px; width:20%;'">
+                1-2 times (2)
+            </td>
+            <td th:style="${data['ailment']['clinicalBlock']['puqe']['q3'] == 3 ? 'background:#000; color:#fff;' : 'background:#fff; color:#000;'} + 'text-align:center; padding:3px 4px; border:1px solid #000; font-size:8.5px; width:20%;'">
+                3-4 times (3)
+            </td>
+            <td th:style="${data['ailment']['clinicalBlock']['puqe']['q3'] == 4 ? 'background:#000; color:#fff;' : 'background:#fff; color:#000;'} + 'text-align:center; padding:3px 4px; border:1px solid #000; font-size:8.5px; width:20%;'">
+                5-6 times (4)
+            </td>
+            <td th:style="${data['ailment']['clinicalBlock']['puqe']['q3'] == 5 ? 'background:#000; color:#fff;' : 'background:#fff; color:#000;'} + 'text-align:center; padding:3px 4px; border:1px solid #000; border-right:none; font-size:8.5px; width:20%;'">
+                &#8805; 7 times (5)
+            </td>
+        </tr>
+
+        <!-- Total score row -->
+        <tr>
+            <td colspan="4" style="padding:3px 6px; border:1px solid #000; border-left:none; font-size:8.5px; line-height:1.4;">
+                Reprinted from American Journal of Obstetrics and Gynecology, 198/1, Lacasse A, Rey E, Ferreira E, et al. Validity of a modified Pregnancy-Unique Quantification of Emesis and Nausea (PUQE) scoring index to assess severity of nausea and vomiting of pregnancy, 71.e1-7, 2008, with permission from Elsevier.
+            </td>
+            <td style="padding:3px 6px; border:1px solid #000; border-right:none; font-size:8.5px; text-align:center; vertical-align:middle; font-weight:bold;">
+                Total Score:<br>
+                <span th:text="${data['ailment']['clinicalBlock']['puqe']['totalScore'] != null ? data['ailment']['clinicalBlock']['puqe']['totalScore'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            </td>
+        </tr>
+
+    </table>
+
+</div>
+
+</body>
+</html>

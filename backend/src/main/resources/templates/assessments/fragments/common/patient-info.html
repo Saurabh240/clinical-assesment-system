@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section(data)">
+
+    <table>
+        <tr>
+            <td colspan="3" class="section-header">Patient Information</td>
+            <td colspan="2" class="section-header">Prescriber Information</td>
+        </tr>
+
+        <tr>
+            <td style="width:20%;">
+                <span class="field-label">First Name:</span><br>
+                <span class="field-value"
+                      th:text="${data['patient'] != null ? data['patient']['firstName'] : ''}"></span>
+            </td>
+
+            <td style="width:20%;">
+                <span class="field-label">Last Name:</span><br>
+                <span class="field-value"
+                      th:text="${data['patient'] != null ? data['patient']['lastName'] : ''}"></span>
+            </td>
+
+            <td style="width:15%;">
+                <span class="field-label">Gender:</span><br>
+                <span class="checkbox"
+                      th:text="${data['patient'] != null and data['patient']['gender'] == 'M' ? '☑' : '☐'}"></span> M
+                <span class="checkbox"
+                      th:text="${data['patient'] != null and data['patient']['gender'] == 'F' ? '☑' : '☐'}"></span> F
+            </td>
+
+            <td style="width:22.5%;">
+                <span class="field-label">First Name:</span><br>
+                <span class="field-value"
+                      th:text="${data['prescriber'] != null ? data['prescriber']['firstName'] : ''}"></span>
+            </td>
+
+            <td style="width:22.5%;">
+                <span class="field-label">Last Name:</span><br>
+                <span class="field-value"
+                      th:text="${data['prescriber'] != null ? data['prescriber']['lastName'] : ''}"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="field-label">DOB:</span><br>
+                <span class="field-value"
+                      th:text="${data['patient'] != null ? data['patient']['dob'] : ''}"></span>
+            </td>
+
+            <td>
+                <span class="field-label">Height:</span><br>
+                <span class="field-value"
+                      th:text="${data['patient'] != null ? data['patient']['height'] : ''}"></span>
+            </td>
+
+            <td>
+                <span class="field-label">Weight:</span><br>
+                <span class="field-value"
+                      th:text="${data['patient'] != null ? data['patient']['weight'] : ''}"></span>
+            </td>
+
+            <td>
+                <span class="field-label">License No.:</span><br>
+                <span class="field-value"
+                      th:text="${data['prescriber'] != null ? data['prescriber']['licenseNo'] : ''}"></span>
+            </td>
+
+            <td rowspan="2">
+                <span class="field-label">Fax No.:</span><br>
+                <span class="field-value"
+                      th:text="${data['prescriber'] != null ? data['prescriber']['faxNo'] : ''}"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="field-label">Phone No.:</span><br>
+                <span class="field-value"
+                      th:text="${data['patient'] != null ? data['patient']['phone'] : ''}"></span>
+            </td>
+
+            <td colspan="2">
+                <span class="field-label">Health Card No.:</span><br>
+                <span class="field-value"
+                      th:text="${data['patient'] != null ? data['patient']['healthCardNo'] : ''}"></span>
+            </td>
+
+            <td>
+                <span class="field-label">Phone No.:</span><br>
+                <span class="field-value"
+                      th:text="${data['prescriber'] != null ? data['prescriber']['phone'] : ''}"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <span class="field-label">Address:</span><br>
+                <span class="field-value"
+                      th:text="${data['patient'] != null ? data['patient']['address'] : ''}"></span>
+            </td>
+
+            <td colspan="3">
+                <span class="field-label">Address:</span><br>
+                <span class="field-value"
+                      th:text="${data['prescriber'] != null ? data['prescriber']['address'] : ''}"></span>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+</body>
+</html>

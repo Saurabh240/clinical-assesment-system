@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section(data)">
+
+    <div style="text-align:center; font-weight:bold; font-size:13px; margin:2px 0 3px 0;">
+        Minor Ailment Assessment &amp; Treatment Options - Threadworms Or Pinworms
+    </div>
+
+    <!-- ======================== RATIONALE FOR PRESCRIBING ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                RATIONALE FOR PRESCRIBING
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient presents with the following symptoms consistent with threadworms or pinworms <em>(Check all that apply)</em>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['perianalPruritus'] == true ? 'checked' : ''}" class="cb"></span>Perianal or perineal pruritus and scratching<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['firstEpisodeOrReinfection'] == true ? 'checked' : ''}" class="cb"></span>First episode or &gt; 2 weeks since completed pinworm treatment and confirmed reinfection<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['sleeplessness'] == true ? 'checked' : ''}" class="cb"></span>Sleeplessness due to pruritus, irritability, teeth grinding, etc&#8230;<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['confirmedDiagnosis'] == true ? 'checked' : ''}" class="cb"></span>Confirmed diagnosis via testing (flashlight test, scotch-tape test, or microscopic analysis of subungual sample)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['caregiverOrHouseholdContact'] == true ? 'checked' : ''}" class="cb"></span>Caregiver of confirmed infected person, household member of confirmed infected person, symptomatic and confirmed close contact (e.g., letter sent home from daycare or school), or recent refugee or immigrant to Canada<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['asymptomatic'] == true ? 'checked' : ''}" class="cb"></span>Asymptomatic<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['other'] == true ? 'checked' : ''}" class="cb"></span>Other:
+                <span th:text="${data['ailment']['clinicalBlock']['symptoms']['otherDetail'] != null ? data['ailment']['clinicalBlock']['symptoms']['otherDetail'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient meets the following criteria for minor ailment prescribing <em>(Must check all)</em>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['under2WeeksSinceCompletedTreatment'] == true ? 'checked' : ''}" class="cb"></span>&lt; 2 weeks since completed pinworm treatment and symptomatic<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noSystemicSymptoms'] == true ? 'checked' : ''}" class="cb"></span>No systemic symptoms present (fever, poor appetite/weight loss, night sweats, heat/cold intolerance, fatigue, etc.)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noGastrointestinalSymptoms'] == true ? 'checked' : ''}" class="cb"></span>No gastrointestinal symptoms (abdominal pain, severe diarrhea, blood in stool, dysuria (painful urination), decreased urine output, change in colour of stool or urine, etc.)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noRashOrSkinLesions'] == true ? 'checked' : ''}" class="cb"></span>No rash or broken skin/lesions (potentially from excessive scratching or secondary bacterial infection)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['normalBowelHabits'] == true ? 'checked' : ''}" class="cb"></span>Patient has normal bowel habits<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noBurningSwellingRectalBleeding'] == true ? 'checked' : ''}" class="cb"></span>No burning, swelling, or rectal bleeding<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['notPregnant'] == true ? 'checked' : ''}" class="cb"></span>Patient is not pregnant<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['ageOver2Years'] == true ? 'checked' : ''}" class="cb"></span>Patient is &gt; 2 years old
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== PRESCRIPTION TREATMENT ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Prescription Treatment
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['mebendazole'] == true ? 'checked' : ''}" class="cb"></span>Mebendazole: Adults and Children &#8805; 2 years old: 100mg as a single dose, repeat after two and four weeks (Days 0, 14, 28; Total 3 doses)
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== OTC TREATMENT ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                OTC Treatment
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['pyrantelPamoate'] == true ? 'checked' : ''}" class="cb"></span>Pyrantel Pamoate: Adults and Children &#8805; 2 years old: 11 mg/kg base as a single dose, repeat in two weeks maximum: 1 g (Days 0 and 14; Total 2 doses)
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== NOTE ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="padding:3px 6px; border:1px solid #000; border-left:none; border-right:none; font-size:8.5px; line-height:1.45;">
+                ***Note: Since pinworms can be passed from one person to another, some experts suggest treating all close contacts of a person with pinworms even if they are asymptomatic to prevent reinfection and spread of pinworms. This is especially important in households where more than one member is infected or where repeated, symptomatic infections occur.
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+</body>
+</html>

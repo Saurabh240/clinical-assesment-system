@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section(data)">
+
+    <!-- ================= TITLE ================= -->
+    <div class="ailment-title">
+        Minor Ailment Assessment &amp; Treatment Options – UTI
+    </div>
+
+    <!-- ================= RATIONALE FOR PRESCRIBING ================= -->
+    <table class="section-table" style="margin-bottom:4px;">
+
+        <tr class="header-row">
+            <td>RATIONALE FOR PRESCRIBING</td>
+        </tr>
+
+        <tr class="subheader-row">
+            <td>Patient presents with the following symptoms consistent with UTI (Check all that apply)</td>
+        </tr>
+
+        <tr class="content-row">
+            <td>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['dysuria'] == true ? 'checked' : ''}"
+                      class="cb"></span>
+                Dysuria<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['frequency'] == true ? 'checked' : ''}"
+                      class="cb"></span>
+                Frequency/Urgency<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['suprapubicDiscomfort'] == true ? 'checked' : ''}"
+                      class="cb"></span>
+                Suprapubic discomfort<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['noVaginalDischarge'] == true ? 'checked' : ''}"
+                      class="cb"></span>
+                No vaginal discharge
+            </td>
+        </tr>
+
+        <tr class="subheader-row">
+            <td>Patient meets the following criteria for minor ailment prescribing (Must check all)</td>
+        </tr>
+
+        <tr class="content-row">
+            <td>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['previousDiagnosisUTI'] == true ? 'checked' : ''}"
+                      class="cb"></span>
+                Previous diagnosis of UTI<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['ageAbove12'] == true ? 'checked' : ''}"
+                      class="cb"></span>
+                Age &gt; 12, not pregnant or breastfeeding<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noRecentUTI'] == true ? 'checked' : ''}"
+                      class="cb"></span>
+                No previous UTI within a month<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noRedFlags'] == true ? 'checked' : ''}"
+                      class="cb"></span>
+                No red flags present (abnormal urinary tract function/structure, symptoms lasting &gt; 2 weeks, renal impairment, poorly
+                controlled diabetes, immunocompromised)<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noRedFlagSymptoms'] == true ? 'checked' : ''}"
+                      class="cb"></span>
+                No red flag symptoms present (fever, chills, malaise, flank or back pain, significant hematuria)<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['notMale'] == true ? 'checked' : ''}"
+                      class="cb"></span>
+                Not male
+            </td>
+        </tr>
+
+    </table>
+
+    <!-- ================= PRESCRIPTION TREATMENT ================= -->
+    <table class="section-table" style="margin-bottom:4px;">
+
+        <tr class="header-row">
+            <td><strong>Prescription Treatment</strong></td>
+        </tr>
+
+        <tr class="subheader-row">
+            <td>First Line</td>
+        </tr>
+
+        <tr class="content-row">
+            <td>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['selected'] == 'Nitrofurantoin' ? 'checked' : ''}"
+                      class="cb"></span>
+                Nitrofurantoin (MacroBID) 100mg PO BID x 5 days
+            </td>
+        </tr>
+
+        <tr class="subheader-row">
+            <td>Second Line</td>
+        </tr>
+
+        <tr class="content-row">
+            <td>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['selected'] == 'SMX_TMP' ? 'checked' : ''}"
+                      class="cb"></span>
+                Sulfamethoxazole/trimethoprim (SMX/TMP) 800/160mg BID x 3 days<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['selected'] == 'Trimethoprim' ? 'checked' : ''}"
+                      class="cb"></span>
+                Trimethoprim 100mg BID x 3 days<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['selected'] == 'Fosfomycin' ? 'checked' : ''}"
+                      class="cb"></span>
+                Fosfomycin 3g dissolved in 1/2 cup of cold water OD x 1 day
+            </td>
+        </tr>
+
+    </table>
+
+</div>
+
+</body>
+</html>

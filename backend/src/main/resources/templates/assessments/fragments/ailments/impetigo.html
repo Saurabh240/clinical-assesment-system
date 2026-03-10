@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section(data)">
+
+    <div style="text-align:center; font-weight:bold; font-size:13px; margin:2px 0 3px 0;">
+        Minor Ailment Assessment &amp; Treatment Options - Impetigo
+    </div>
+
+    <!-- ======================== RATIONALE FOR PRESCRIBING ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                RATIONALE FOR PRESCRIBING
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient presents with the following symptoms consistent with non-bullous impetigo (Check all that apply)
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['smallVesicles'] == true ? 'checked' : ''}" class="cb"></span>Small vesicles (blisters) surrounded by erythema<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['honeyCrust'] == true ? 'checked' : ''}" class="cb"></span>Lesions that burst, leaving a yellow-honey coloured, adherent crust with erosions and erythema surrounding the lesions<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['tenderItchy'] == true ? 'checked' : ''}" class="cb"></span>Tender, Itchy<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['multipleVesicles'] == true ? 'checked' : ''}" class="cb"></span>Multiple vesicles but localized to central face or arms and legs<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['other'] == true ? 'checked' : ''}" class="cb"></span>Other:
+                <span th:text="${data['ailment']['clinicalBlock']['symptoms']['otherDetail'] != null ? data['ailment']['clinicalBlock']['symptoms']['otherDetail'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient meets the following criteria for minor ailment prescribing (Must check all)
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['nonBullousBlister'] == true ? 'checked' : ''}" class="cb"></span>Non-bullous blister/lesions<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noSystemicSymptoms'] == true ? 'checked' : ''}" class="cb"></span>No systemic symptoms (e.g fever, malaise, chills)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['immunocompetent'] == true ? 'checked' : ''}" class="cb"></span>Immunocompetent<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noExtensiveSkinLesions'] == true ? 'checked' : ''}" class="cb"></span>No extensive skin lesions (&lt; 3 lesion area)
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== PRESCRIPTION TREATMENT ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Prescription Treatment
+            </td>
+        </tr>
+
+        <!-- First Line -->
+        <tr>
+            <td style="font-weight:bold; padding:2px 6px; border:1px solid #000; border-left:none; border-right:none; border-top:none;">
+                First Line
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['firstLine']['fucidinCream'] == true ? 'checked' : ''}" class="cb"></span>Fucidin Cream 15 g. Apply BID&#8211;TID x 7&#8211;14 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['firstLine']['mupirocinOintment'] == true ? 'checked' : ''}" class="cb"></span>Mupirocin Ointment 15 g. Apply BID&#8211;TID x 5 days
+            </td>
+        </tr>
+
+        <!-- Second Line -->
+        <tr>
+            <td style="font-weight:bold; padding:2px 6px; border:1px solid #000; border-left:none; border-right:none; border-top:1px solid #000;">
+                Second Line
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['secondLine']['ozenoxacin'] == true ? 'checked' : ''}" class="cb"></span>Ozenoxacin 10g. Apply BID x 5 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['secondLine']['bacitracin'] == true ? 'checked' : ''}" class="cb"></span>Bacitracin/gramicidin/polymyxin (Polysporin) 15g Apply TID for up to 7 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['secondLine']['bacitracin15g'] == true ? 'checked' : ''}" class="cb"></span>Bacitracin 15g Apply 1&#8211;3 times daily for up to 7 days
+            </td>
+        </tr>
+
+    </table>
+
+</div>
+
+</body>
+</html>

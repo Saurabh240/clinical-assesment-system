@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section">
+
+    <!-- ================= ASSESSMENT TITLE ================= -->
+    <h2>Assessment</h2>
+
+    <table>
+
+        <!-- ================= ROW 1: Two Column Layout ================= -->
+        <tr>
+
+            <!-- ================= LEFT COLUMN ================= -->
+            <td>
+
+                <span class="checkbox"
+                      th:text="${data['assessment'] != null and data['assessment']['historyOfPresentingComplaint'] == true ? '☑' : '☐'}"></span>
+                History of presenting complaint<br>
+
+                <span class="checkbox"
+                      th:text="${data['assessment'] != null and data['assessment']['medicalConditions'] == true ? '☑' : '☐'}"></span>
+                Medical Conditions<br>
+
+                <span class="checkbox"
+                      th:text="${data['assessment'] != null and data['assessment']['attachCurrentMedication'] == true ? '☑' : '☐'}"></span>
+                Attach current medication, herbal, OTC list<br>
+
+                Is the patient taking medications from another pharmacy?
+
+                <span class="checkbox"
+                      th:text="${data['assessment'] != null and data['assessment']['medicationsFromAnotherPharmacyYes'] == true ? '☑' : '☐'}"></span>
+                Yes
+
+                <span class="checkbox"
+                      th:text="${data['assessment'] != null and data['assessment']['medicationsFromAnotherPharmacyNo'] == true ? '☑' : '☐'}"></span>
+                No<br>
+
+                <span class="checkbox"
+                      th:text="${data['assessment'] != null and data['assessment']['drugInteractions'] == true ? '☑' : '☐'}"></span>
+                Drug Interactions
+                <span class="field-value"
+                      th:text="${data['assessment'] != null ? data['assessment']['drugInteractionsDetail'] : ''}"></span>
+                ___________________
+
+                <span class="checkbox"
+                      th:text="${data['assessment'] != null and data['assessment']['none'] == true ? '☑' : '☐'}"></span>
+                None<br>
+
+                <span class="checkbox"
+                      th:text="${data['assessment'] != null and data['assessment']['allergies'] == true ? '☑' : '☐'}"></span>
+                Allergies
+                <span class="field-value"
+                      th:text="${data['assessment'] != null ? data['assessment']['allergiesDetail'] : ''}"></span>
+                ___________________
+
+                <span class="checkbox"
+                      th:text="${data['assessment'] != null and data['assessment']['nka'] == true ? '☑' : '☐'}"></span>
+                NKA
+
+            </td>
+
+            <!-- ================= RIGHT COLUMN ================= -->
+            <td>
+
+                Is the patient pregnant or breastfeeding?
+
+                <span class="checkbox"
+                      th:text="${data['assessment'] != null and data['assessment']['pregnantYes'] == true ? '☑' : '☐'}"></span>
+                Yes
+
+                <span class="checkbox"
+                      th:text="${data['assessment'] != null and data['assessment']['pregnantNo'] == true ? '☑' : '☐'}"></span>
+                No
+
+                <span class="checkbox"
+                      th:text="${data['assessment'] != null and data['assessment']['pregnantNA'] == true ? '☑' : '☐'}"></span>
+                N/A<br>
+
+                Existing liver impairment:
+
+                <span class="checkbox"
+                      th:text="${data['assessment'] != null and data['assessment']['liverImpairmentYes'] == true ? '☑' : '☐'}"></span>
+                Yes
+
+                <span class="checkbox"
+                      th:text="${data['assessment'] != null and data['assessment']['liverImpairmentNo'] == true ? '☑' : '☐'}"></span>
+                No
+
+                <span class="checkbox"
+                      th:text="${data['assessment'] != null and data['assessment']['liverImpairmentUnknown'] == true ? '☑' : '☐'}"></span>
+                Unknown<br>
+
+                Existing renal impairment:
+
+                <span class="checkbox"
+                      th:text="${data['assessment'] != null and data['assessment']['renalImpairmentYes'] == true ? '☑' : '☐'}"></span>
+                Yes
+
+                <span class="checkbox"
+                      th:text="${data['assessment'] != null and data['assessment']['renalImpairmentNo'] == true ? '☑' : '☐'}"></span>
+                No
+
+                <span class="checkbox"
+                      th:text="${data['assessment'] != null and data['assessment']['renalImpairmentUnknown'] == true ? '☑' : '☐'}"></span>
+                Unknown<br>
+
+                &nbsp;&nbsp;&nbsp; If YES, enter SCr and eGFR if available<br>
+
+                &nbsp;&nbsp;&nbsp;
+                <span class="checkbox"
+                      th:text="${data['assessment'] != null and data['assessment']['scrProvided'] == true ? '☑' : '☐'}"></span>
+                SCr (&#956;mol/L):
+                <span class="field-value"
+                      th:text="${data['assessment'] != null ? data['assessment']['scrValue'] : ''}"></span>
+                _________
+                &nbsp; Date:
+                <span class="field-value"
+                      th:text="${data['assessment'] != null ? data['assessment']['scrDate'] : ''}"></span>
+                ___________<br>
+
+                &nbsp;&nbsp;&nbsp;
+                <span class="checkbox"
+                      th:text="${data['assessment'] != null and data['assessment']['egfrProvided'] == true ? '☑' : '☐'}"></span>
+                eGFR (ml/min):
+                <span class="field-value"
+                      th:text="${data['assessment'] != null ? data['assessment']['egfrValue'] : ''}"></span>
+                _________
+                &nbsp; Date:
+                <span class="field-value"
+                      th:text="${data['assessment'] != null ? data['assessment']['egfrDate'] : ''}"></span>
+                ___________
+
+            </td>
+
+        </tr>
+
+        <!-- ================= ROW 2: Notes ================= -->
+        <tr>
+            <td colspan="2">
+                Notes:<br>
+                <span class="field-value"
+                      th:text="${data['assessment'] != null ? data['assessment']['notes'] : ''}"></span>
+            </td>
+        </tr>
+
+    </table>
+
+</div>
+
+</body>
+</html>

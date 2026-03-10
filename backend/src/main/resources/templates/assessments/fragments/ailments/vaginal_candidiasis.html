@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section(data)">
+
+    <div style="text-align:center; font-weight:bold; font-size:13px; margin:2px 0 3px 0;">
+        Minor Ailment Assessment &amp; Treatment Options - Vaginal Candidiasis
+    </div>
+
+    <!-- ======================== RATIONALE FOR PRESCRIBING ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                RATIONALE FOR PRESCRIBING
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient presents with the following symptoms consistent with Vaginal Candidiasis (Check all that apply)
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['vulvarPruritusIrritation'] == true ? 'checked' : ''}" class="cb"></span>Vulvar and/or vaginal pruritis and irritation<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['thickCurdDischarge'] == true ? 'checked' : ''}" class="cb"></span>Thick, white, "curd-like" vaginal discharge<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['perceivedDysuria'] == true ? 'checked' : ''}" class="cb"></span>Perceived external (not urethral) dysuria (painful urination) and/or dyspareunia (painful intercourse)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['vulvarBurning'] == true ? 'checked' : ''}" class="cb"></span>Vulvar burning/pain/discomfort<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['vulvarEdema'] == true ? 'checked' : ''}" class="cb"></span>Vulvar edema/erythema<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['sporadicOrInfrequent'] == true ? 'checked' : ''}" class="cb"></span>Sporadic or infrequent (&#8804; 3 episodes in the last 365 days, including this episode)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['mildToModerate'] == true ? 'checked' : ''}" class="cb"></span>Mild to Moderate symptoms<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['other'] == true ? 'checked' : ''}" class="cb"></span>Other:
+                <span th:text="${data['ailment']['clinicalBlock']['symptoms']['otherDetail'] != null ? data['ailment']['clinicalBlock']['symptoms']['otherDetail'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient meets the following criteria for minor ailment prescribing (Must check all)
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['notHighRisk'] == true ? 'checked' : ''}" class="cb"></span>Not a high-risk patient (e.g., immunocompromised or pregnant)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noFeverPelvicPain'] == true ? 'checked' : ''}" class="cb"></span>No fever, pelvic pain, coloured or foul-smelling discharge<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noSevereDisease'] == true ? 'checked' : ''}" class="cb"></span>No severe disease: extensive redness, severe edema, excoriation, fissure<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noThinWhitenedVulvarSkin'] == true ? 'checked' : ''}" class="cb"></span>No thin and whitened vulvar skin (i.e., Lichen sclerosus), purple, itchy flat bumps on skin; white lacy patches on genital mucosa (i.e., Lichen planus),<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noVaginalAtrophy'] == true ? 'checked' : ''}" class="cb"></span>No symptoms of vaginal atrophy (e.g., spotting/bleeding, dryness, frequent urination, etc.)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noHypoestrogenicState'] == true ? 'checked' : ''}" class="cb"></span>No hypoestrogenic state (e.g., peri/menopause (without HRT), oophorectomy, primary ovarian insufficiency, ovarian insufficiency, severe lupus erythematosus)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noPotentialForSTI'] == true ? 'checked' : ''}" class="cb"></span>No potential for STI or co-infection (e.g., unprotected sex, multiple partners, anonymous partners, etc.)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noForeignBody'] == true ? 'checked' : ''}" class="cb"></span>No foreign body present (e.g., tampon or condom)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noAllergicReactionOrDermatitis'] == true ? 'checked' : ''}" class="cb"></span>No allergic reaction or contact dermatitis brought on by products (e.g., soaps, vaginal preparations)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['previousDiagnosisVaginalCandidiasis'] == true ? 'checked' : ''}" class="cb"></span>Patient has previous diagnosis of vaginal candidiasis<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['over12YearsPostPuberty'] == true ? 'checked' : ''}" class="cb"></span>Patient is over 12 years of age (post-puberty) and not symptomatic prior to first menses<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['notBornWithoutVagina'] == true ? 'checked' : ''}" class="cb"></span>Not an individual born without a vagina<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noPreviousEpisodeWithin8Weeks'] == true ? 'checked' : ''}" class="cb"></span>No previous episode within the last 8 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noTreatmentFailureCurrentEpisode'] == true ? 'checked' : ''}" class="cb"></span>No treatment failure of current episode
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== PRESCRIPTION TREATMENT ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Prescription Treatment
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['terconazole'] == true ? 'checked' : ''}" class="cb"></span>Terconazole 0.4% Cream: One applicatorful (5g) vaginally + apply cream externally QHS x 7 days
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== OTC TREATMENT ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                OTC Treatment
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+
+                <!-- Fluconazole -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['fluconazole'] == true ? 'checked' : ''}" class="cb"></span>Fluconazole<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['fluconazole150mg'] == true ? 'checked' : ''}" class="cb"></span>Fluconazole 150 mg PO as a single dose
+                </div>
+
+                <!-- Clotrimazole -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['clotrimazole'] == true ? 'checked' : ''}" class="cb"></span>Clotrimazole:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['clotrimazole200mgTablet3Days'] == true ? 'checked' : ''}" class="cb"></span>200 mg tablet vaginally daily for 3 days<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['clotrimazole500mgTabletSingle'] == true ? 'checked' : ''}" class="cb"></span>500 mg tablet vaginally as a single dose<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['clotrimazole1PercentCream7Days'] == true ? 'checked' : ''}" class="cb"></span>1% cream 1 applicatorful vaginally daily for 7 days<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['clotrimazole2PercentCream3Days'] == true ? 'checked' : ''}" class="cb"></span>2% cream 1 applicatorful vaginally daily for 3 days<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['clotrimazole10PercentCreamSingle'] == true ? 'checked' : ''}" class="cb"></span>10% cream 1 applicatorful vaginally as a single dose
+                </div>
+
+                <!-- Miconazole -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['miconazole'] == true ? 'checked' : ''}" class="cb"></span>Miconazole<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['miconazole100mgOvule7Days'] == true ? 'checked' : ''}" class="cb"></span>100 mg ovule vaginally daily for 7 days<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['miconazole2PercentCream7Days'] == true ? 'checked' : ''}" class="cb"></span>2% cream 1 applicatorful vaginally daily for 7 days<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['miconazole4PercentCream3Days'] == true ? 'checked' : ''}" class="cb"></span>4% cream 1 applicatorful vaginally daily for 3 days
+                </div>
+
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+</body>
+</html>

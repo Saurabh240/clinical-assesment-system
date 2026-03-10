@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oseltamivir Pharmacy Assessment and Prescription</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            font-size: 11px;
+        }
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 15mm;
+            margin: 0 auto;
+            background: white;
+            page-break-after: always;
+        }
+
+        @media print {
+            .page {
+                margin: 0;
+                page-break-after: always;
+            }
+        }
+
+        .container {
+            border: 2px solid #000;
+            overflow: hidden;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 14px;
+            margin: 8px 0;
+            padding: 8px;
+            background-color: #f0f0f0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        td, th {
+            border: 1px solid #000;
+            padding: 4px;
+            vertical-align: top;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .section-header {
+            background-color: #d0d0d0;
+            font-weight: bold;
+            padding: 5px;
+        }
+
+        .checkbox-group {
+            margin: 4px 0;
+        }
+
+        .field-label {
+            font-weight: bold;
+            display: inline-block;
+            margin-right: 3px;
+        }
+
+        .field-value {
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            min-width: 60px;
+            max-width: 100%;
+            padding: 2px 4px;
+            word-break: break-word;
+        }
+
+        .checkbox {
+            font-family: monospace;
+            font-size: 12px;
+            margin-right: 2px;
+        }
+
+        ul {
+            margin: 4px 0;
+            padding-left: 18px;
+        }
+
+        li {
+            margin: 2px 0;
+            font-size: 10px;
+        }
+
+        .criteria-section {
+            padding: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .notes-area {
+            width: 100%;
+            min-height: 50px;
+            border: 1px solid #ccc;
+            padding: 4px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==================== PAGE 1 - ASSESSMENT ==================== -->
+<div class="page">
+    <div class="container">
+        <h1>Oseltamivir Pharmacy Assessment and Prescription</h1>
+
+        <table>
+            <tr>
+                <td colspan="3" class="section-header">Patient Information</td>
+                <td colspan="2" class="section-header">Prescriber Information</td>
+            </tr>
+            <tr>
+                <td style="width: 20%;">
+                    <span class="field-label">First Name:</span><br>
+                    <span class="field-value"
+                          th:if="${patient != null and patient.firstName != null}"
+                          th:text="${patient.firstName}">_____</span>
+                    <span class="field-value"
+                          th:unless="${patient != null and patient.firstName != null}">_____</span>
+                </td>
+                <td style="width: 20%;">
+                    <span class="field-label">Last Name:</span><br>
+                    <span class="field-value"
+                          th:if="${patient != null and patient.lastName != null}"
+                          th:text="${patient.lastName}">_____</span>
+                    <span class="field-value"
+                          th:unless="${patient != null and patient.lastName != null}">_____</span>
+                </td>
+                <td style="width: 15%;">
+                    <span class="field-label">Gender:</span><br>
+                    <span class="checkbox"
+                          th:text="${patient != null and patient.gender == 'M' ? '☑' : '☐'}">☐</span> M
+                    <span class="checkbox"
+                          th:text="${patient != null and patient.gender == 'F' ? '☑' : '☐'}">☐</span> F
+                </td>
+                <td style="width: 22.5%;">
+                    <span class="field-label">First Name:</span><br>
+                    <span class="field-value"
+                          th:if="${prescriber != null and prescriber.firstName != null}"
+                          th:text="${prescriber.firstName}">_____</span>
+                    <span class="field-value"
+                          th:unless="${prescriber != null and prescriber.firstName != null}">_____</span>
+                </td>
+                <td style="width: 22.5%;">
+                    <span class="field-label">Last Name:</span><br>
+                    <span class="field-value"
+                          th:if="${prescriber != null and prescriber.lastName != null}"
+                          th:text="${prescriber.lastName}">_____</span>
+                    <span class="field-value"
+                          th:unless="${prescriber != null and prescriber.lastName != null}">_____</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="field-label">DOB:</span><br>
+                    <span class="field-value"
+                          th:if="${patient != null and patient.dob != null}"
+                          th:text="${patient.dob}">_____</span>
+                    <span class="field-value"
+                          th:unless="${patient != null and patient.dob != null}">_____</span>
+                </td>
+                <td>
+                    <span class="field-label">Height:</span><br>
+                    <span class="field-value"
+                          th:if="${patient != null and patient.height != null}"
+                          th:text="${patient.height}">_____</span>
+                    <span class="field-value"
+                          th:unless="${patient != null and patient.height != null}">_____</span>
+                </td>
+                <td>
+                    <span class="field-label">Weight:</span><br>
+                    <span class="field-value"
+                          th:if="${patient != null and patient.weight != null}"
+                          th:text="${patient.weight}">_____</span>
+                    <span class="field-value"
+                          th:unless="${patient != null and patient.weight != null}">_____</span>
+                </td>
+                <td>
+                    <span class="field-label">License No.:</span><br>
+                    <span class="field-value"
+                          th:if="${prescriber != null and prescriber.licenseNo != null}"
+                          th:text="${prescriber.licenseNo}">_____</span>
+                    <span class="field-value"
+                          th:unless="${prescriber != null and prescriber.licenseNo != null}">_____</span>
+                </td>
+                <td rowspan="2">
+                    <span class="field-label">Fax No.:</span><br>
+                    <span class="field-value"
+                          th:if="${prescriber != null and prescriber.faxNo != null}"
+                          th:text="${prescriber.faxNo}">_____</span>
+                    <span class="field-value"
+                          th:unless="${prescriber != null and prescriber.faxNo != null}">_____</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="field-label">Phone No.:</span><br>
+                    <span class="field-value"
+                          th:if="${patient != null and patient.phone != null}"
+                          th:text="${patient.phone}">_____</span>
+                    <span class="field-value"
+                          th:unless="${patient != null and patient.phone != null}">_____</span>
+                </td>
+                <td colspan="2">
+                    <span class="field-label">Health Card No.:</span><br>
+                    <span class="field-value"
+                          th:if="${patient != null and patient.healthCardNo != null}"
+                          th:text="${patient.healthCardNo}">_____</span>
+                    <span class="field-value"
+                          th:unless="${patient != null and patient.healthCardNo != null}">_____</span>
+                </td>
+                <td>
+                    <span class="field-label">Phone No.:</span><br>
+                    <span class="field-value"
+                          th:if="${prescriber != null and prescriber.phone != null}"
+                          th:text="${prescriber.phone}">_____</span>
+                    <span class="field-value"
+                          th:unless="${prescriber != null and prescriber.phone != null}">_____</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <span class="field-label">Address:</span><br>
+                    <span class="field-value"
+                          th:if="${patient != null and patient.address != null}"
+                          th:text="${patient.address}">_____</span>
+                    <span class="field-value"
+                          th:unless="${patient != null and patient.address != null}">_____</span>
+                </td>
+                <td colspan="3">
+                    <span class="field-label">Address:</span><br>
+                    <span class="field-value"
+                          th:if="${prescriber != null and prescriber.address != null}"
+                          th:text="${prescriber.address}">_____</span>
+                    <span class="field-value"
+                          th:unless="${prescriber != null and prescriber.address != null}">_____</span>
+                </td>
+            </tr>
+        </table>
+
+        <div class="section-header" style="margin-top: 10px; padding: 6px;">
+            Individual Eligibility - Must meet criteria to proceed with treatment or prophylaxis
+        </div>
+
+        <div class="criteria-section">
+            <div style="margin-bottom: 8px;">
+                <span class="field-label">Date of</span> Positive lab-confirmed influenza test:
+                <span class="field-value"
+                      th:if="${eligibility != null and eligibility.positiveTestDate != null}"
+                      th:text="${eligibility.positiveTestDate}">_____</span>
+                <span class="field-value"
+                      th:unless="${eligibility != null and eligibility.positiveTestDate != null}">_____</span>
+                <strong>OR</strong><br>
+                <span class="checkbox"
+                      th:text="${eligibility != null and eligibility.clinicalJudgment == true ? '☑' : '☐'}">☐</span>
+                Has suspicion of an influenza A or influenza B infection based on clinical judgment, which includes a negative COVID-19 test result OR<br>
+                <span class="checkbox"
+                      th:text="${eligibility != null and eligibility.outbreakDiagnosis == true ? '☑' : '☐'}">☐</span>
+                Has been diagnosed with the influenza and the diagnosis was confirmed by the local Public Health Unit or institutional Infection Prevention and Control (IPAC) in response to an outbreak
+            </div>
+
+            <div style="margin-bottom: 8px;">
+                <span class="field-label">Date of</span> symptom onset (symptom onset day is considered day zero, must be 2 days or less):
+                <span class="field-value"
+                      th:if="${eligibility != null and eligibility.symptomOnsetDate != null}"
+                      th:text="${eligibility.symptomOnsetDate}">_____</span>
+                <span class="field-value"
+                      th:unless="${eligibility != null and eligibility.symptomOnsetDate != null}">_____</span>
+            </div>
+
+            <div style="margin-bottom: 6px;">
+                <strong>Patient presents with the following symptoms consistent with influenza infection</strong> (Check all that apply)
+            </div>
+
+            <div class="checkbox-group">
+                <span class="checkbox"
+                      th:text="${symptoms != null and (symptoms.fever ?: false) ? '☑' : '☐'}">☐</span>
+                Fever: abrupt onset ≥ 38.5°C (may be slight or absent in children &lt;5 years or adults ≥ 65 years)<br>
+                <span class="checkbox"
+                      th:text="${symptoms != null and (symptoms.cough ?: false) ? '☑' : '☐'}">☐</span>
+                Cough (non-productive)<br>
+                <span class="checkbox"
+                      th:text="${symptoms != null and (symptoms.chills ?: false) ? '☑' : '☐'}">☐</span>
+                Chills<br>
+                <span class="checkbox"
+                      th:text="${symptoms != null and (symptoms.myalgia ?: false) ? '☑' : '☐'}">☐</span>
+                Myalgia<br>
+                <span class="checkbox"
+                      th:text="${symptoms != null and (symptoms.soreThroat ?: false) ? '☑' : '☐'}">☐</span>
+                Sore throat<br>
+                <span class="checkbox"
+                      th:text="${symptoms != null and (symptoms.headache ?: false) ? '☑' : '☐'}">☐</span>
+                Headache: frontal (forehead) or retro-orbital (behind the eye)
+            </div>
+
+            <div style="margin: 8px 0;">
+                <strong>Patient meets the following criteria that none of the red flags below are present:</strong>
+                <span class="checkbox"
+                      th:text="${eligibility != null and eligibility.noRedFlags == true ? '☑' : '☐'}">☐</span> Yes
+                <span class="checkbox"
+                      th:text="${eligibility != null and eligibility.noRedFlags == false ? '☑' : '☐'}">☐</span> No
+            </div>
+
+            <ul>
+                <li>Difficulty breathing (particularly severe exertional dyspnea, chest pain when breathing, tachycardia)</li>
+                <li>Altered level of consciousness</li>
+                <li>Severe dehydration (decreased urination, very dry mouth, no tears, sunken eyes/cheeks in young children)</li>
+                <li>Seizures</li>
+                <li>Severe chest pain or severe abdominal pain</li>
+                <li>Any patient with moderate to severe or progressive influenza symptoms</li>
+                <li>Respiratory distress or increased work of breathing (tachypnea, retractions, grunting)</li>
+                <li>Fever ≥ 3 days or worsening after a few days of initial improvement</li>
+            </ul>
+        </div>
+
+        <div class="section-header" style="margin-top: 10px; padding: 6px;">
+            Informed consent to provide prescribing services
+        </div>
+
+        <table style="margin-top: 0;">
+            <tr>
+                <td>
+                    <span class="checkbox"
+                          th:text="${consent != null and consent.verbalConsent == true ? '☑' : '☐'}">☐</span>
+                    Verbal consent received from the eligible individual
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="checkbox"
+                          th:text="${consent != null and consent.substituteConsent == true ? '☑' : '☐'}">☐</span>
+                    Verbal consent received from the eligible individual's substitute decision maker. Name:
+                    <span class="field-value"
+                          th:if="${consent != null and consent.substituteName != null}"
+                          th:text="${consent.substituteName}">_____</span>
+                    <span class="field-value"
+                          th:unless="${consent != null and consent.substituteName != null}">_____</span>
+                    Relation:
+                    <span class="field-value"
+                          th:if="${consent != null and consent.substituteRelation != null}"
+                          th:text="${consent.substituteRelation}">_____</span>
+                    <span class="field-value"
+                          th:unless="${consent != null and consent.substituteRelation != null}">_____</span>
+                </td>
+            </tr>
+        </table>
+
+        <div class="section-header" style="margin-top: 10px; padding: 6px;">
+            Assessment
+        </div>
+
+        <table style="margin-top: 0;">
+            <tr>
+                <td style="width: 50%;">
+                    <span class="checkbox"
+                          th:text="${assessment != null and assessment.medicationListAttached == true ? '☑' : '☐'}">☐</span>
+                    Attach current medication, herbal, OTC list<br>
+
+                    <strong>Is the patient taking medications from another pharmacy?</strong>
+                    <span class="checkbox"
+                          th:text="${assessment != null and assessment.otherPharmacy == true ? '☑' : '☐'}">☐</span> Yes
+                    <span class="checkbox"
+                          th:text="${assessment != null and assessment.otherPharmacy == false ? '☑' : '☐'}">☐</span> No<br>
+
+                    <span class="checkbox"
+                          th:text="${assessment != null and assessment.hasAllergies == true ? '☑' : '☐'}">☐</span> Allergies
+                    <span class="field-value"
+                          th:if="${assessment != null and assessment.allergies != null}"
+                          th:text="${assessment.allergies}">_____</span>
+                    <span class="field-value"
+                          th:unless="${assessment != null and assessment.allergies != null}">_____</span>
+                    <span class="checkbox"
+                          th:text="${assessment != null and assessment.nka == true ? '☑' : '☐'}">☐</span> NKA<br>
+
+                    <span class="checkbox"
+                          th:text="${assessment != null and assessment.knownPregnant == true ? '☑' : '☐'}">☐</span> Known pregnant?
+                    <span class="checkbox"
+                          th:text="${assessment != null and assessment.knownPregnant == true ? '☑' : '☐'}">☐</span> Yes
+                    <span class="checkbox"
+                          th:text="${assessment != null and assessment.knownPregnant == false ? '☑' : '☐'}">☐</span> No
+                    <span class="checkbox"
+                          th:text="${assessment != null and assessment.knownPregnant == null ? '☑' : '☐'}">☐</span> N/A
+                </td>
+                <td style="width: 50%;">
+                    Existing liver impairment:
+                    <span class="checkbox"
+                          th:text="${assessment != null and assessment.liverImpairment == true ? '☑' : '☐'}">☐</span> Yes
+                    <span class="checkbox"
+                          th:text="${assessment != null and assessment.liverImpairment == false ? '☑' : '☐'}">☐</span> No
+                    <span class="checkbox"
+                          th:text="${assessment != null and assessment.liverImpairment == null ? '☑' : '☐'}">☐</span> Unknown<br>
+
+                    Existing renal impairment:
+                    <span class="checkbox"
+                          th:text="${assessment != null and assessment.renalImpairment == true ? '☑' : '☐'}">☐</span> Yes
+                    <span class="checkbox"
+                          th:text="${assessment != null and assessment.renalImpairment == false ? '☑' : '☐'}">☐</span> No
+                    <span class="checkbox"
+                          th:text="${assessment != null and assessment.renalImpairment == null ? '☑' : '☐'}">☐</span> Unknown<br>
+
+                    <span class="checkbox"
+                          th:text="${assessment != null and assessment.sCr != null ? '☑' : '☐'}">☐</span>
+                    sCr (μmol/L):
+                    <span class="field-value"
+                          th:if="${assessment != null and assessment.sCr != null}"
+                          th:text="${assessment.sCr}">___</span>
+                    <span class="field-value"
+                          th:unless="${assessment != null and assessment.sCr != null}">___</span>
+                    Date:
+                    <span class="field-value"
+                          th:if="${assessment != null and assessment.sCrDate != null}"
+                          th:text="${assessment.sCrDate}">___</span>
+                    <span class="field-value"
+                          th:unless="${assessment != null and assessment.sCrDate != null}">___</span><br>
+
+                    <span class="checkbox"
+                          th:text="${assessment != null and assessment.eGFR != null ? '☑' : '☐'}">☐</span>
+                    eGFR (mL/min):
+                    <span class="field-value"
+                          th:if="${assessment != null and assessment.eGFR != null}"
+                          th:text="${assessment.eGFR}">___</span>
+                    <span class="field-value"
+                          th:unless="${assessment != null and assessment.eGFR != null}">___</span>
+                    Date:
+                    <span class="field-value"
+                          th:if="${assessment != null and assessment.eGFRDate != null}"
+                          th:text="${assessment.eGFRDate}">___</span>
+                    <span class="field-value"
+                          th:unless="${assessment != null and assessment.eGFRDate != null}">___</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <strong>Notes:</strong><br>
+                    <div class="notes-area"
+                         th:if="${assessment != null and assessment.notes != null}"
+                         th:text="${assessment.notes}"></div>
+                    <div class="notes-area"
+                         th:unless="${assessment != null and assessment.notes != null}"></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- ==================== PAGE 2 - PRESCRIPTION ==================== -->
+<div class="page">
+    <div class="container">
+        <div class="section-header" style="padding: 6px;">
+            Care Plan
+        </div>
+
+        <table style="margin-top: 0;">
+            <tr>
+                <td>
+                    <span class="checkbox"
+                          th:text="${carePlan != null and carePlan.prescriptionIssued == true ? '☑' : '☐'}">☐</span>
+                    Oseltamivir Prescription issued by the pharmacist
+                    <span class="checkbox"
+                          th:text="${carePlan != null and carePlan.inPersonCare == true ? '☑' : '☐'}">☐</span> In-person care (PIN 5858321)
+                    <span class="checkbox"
+                          th:text="${carePlan != null and carePlan.virtualCareTelephone == true ? '☑' : '☐'}">☐</span> Virtual care/telephone (PIN 6858322)<br>
+
+                    <span class="checkbox"
+                          th:text="${carePlan != null and carePlan.prescriptionNotIssued == true ? '☑' : '☐'}">☐</span>
+                    Oseltamivir Prescription Not issued by the pharmacist
+                    <span class="checkbox"
+                          th:text="${carePlan != null and carePlan.inPersonCareNotIssued == true ? '☑' : '☐'}">☐</span> In-person care (PIN5858325)
+                    <span class="checkbox"
+                          th:text="${carePlan != null and carePlan.virtualCareTelephoneNotIssued == true ? '☑' : '☐'}">☐</span> Virtual care/telephone (PIN 5858326)<br>
+
+                    <span class="checkbox"
+                          th:text="${carePlan != null and carePlan.referToMDNP == true ? '☑' : '☐'}">☐</span> Refer to MD/NP/Other
+                    <span class="checkbox"
+                          th:text="${carePlan != null and carePlan.recommendOTC == true ? '☑' : '☐'}">☐</span> Recommend OTC
+                    <span class="checkbox"
+                          th:text="${carePlan != null and carePlan.recommendNonPharm == true ? '☑' : '☐'}">☐</span> Recommend non-pharm<br>
+
+                    <strong>Notes:</strong>
+                    <div class="notes-area" style="min-height: 35px;"
+                         th:if="${carePlan != null and carePlan.notes != null}"
+                         th:text="${carePlan.notes}"></div>
+                    <div class="notes-area" style="min-height: 35px;"
+                         th:unless="${carePlan != null and carePlan.notes != null}"></div>
+                </td>
+            </tr>
+        </table>
+
+        <div class="section-header" style="margin-top: 10px; padding: 6px;">
+            Medication Order
+        </div>
+
+        <table style="margin-top: 0;">
+            <tr>
+                <td>
+                    <strong>Treatment:</strong><br>
+
+                    <span class="checkbox"
+                          th:text="${medication != null and (medication.treatmentOseltamivir ?: false) ? '☑' : '☐'}">☐</span>
+                    <strong>Oseltamivir:</strong><br>
+
+                    <div style="margin-left: 15px;">
+                        <span class="checkbox"
+                              th:text="${medication != null and (medication.adultsChildren13Plus ?: false) ? '☑' : '☐'}">☐</span>
+                        Adults and Children ≥ 13 years of age: 75 mg TWICE daily for 5 days<br>
+
+                        <span class="checkbox"
+                              th:text="${medication != null and (medication.children1to12 ?: false) ? '☑' : '☐'}">☐</span>
+                        Children 1 to 12 years of age<br>
+
+                        <div style="margin-left: 30px;">
+                            <span class="checkbox"
+                                  th:text="${medication != null and (medication.weightOver40kg ?: false) ? '☑' : '☐'}">☐</span>
+                            >23 to 40 kg: 60 mg PO TWICE daily for 5 days<br>
+
+                            <span class="checkbox"
+                                  th:text="${medication != null and (medication.weight23to40kg ?: false) ? '☑' : '☐'}">☐</span>
+                            ≥ 15 to 23 kg: 45 mg PO TWICE daily for 5 days<br>
+
+                            <span class="checkbox"
+                                  th:text="${medication != null and (medication.weightUnder15kg ?: false) ? '☑' : '☐'}">☐</span>
+                            > 15 kg: 30 mg PO TWICE daily for 5 days<br>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <strong>Prevention:</strong><br>
+
+                    <span class="checkbox"
+                          th:text="${medication != null and (medication.preventionOseltamivir ?: false) ? '☑' : '☐'}">☐</span>
+                    <strong>Oseltamivir:</strong><br>
+
+                    <div style="margin-left: 15px;">
+                        <span class="checkbox"
+                              th:text="${medication != null and (medication.prevAdults13Plus ?: false) ? '☑' : '☐'}">☐</span>
+                        Adults and Children ≥ 13 years of age: 75 mg ONCE daily for 14 days<br>
+
+                        <span class="checkbox"
+                              th:text="${medication != null and (medication.prevChildren1to12 ?: false) ? '☑' : '☐'}">☐</span>
+                        Children 1 to 12 years of age<br>
+
+                        <div style="margin-left: 30px;">
+                            <span class="checkbox"
+                                  th:text="${medication != null and (medication.prevWeightOver40kg ?: false) ? '☑' : '☐'}">☐</span>
+                            >23 to 40 kg: 60 mg PO ONCE daily for 14 days<br>
+
+                            <span class="checkbox"
+                                  th:text="${medication != null and (medication.prevWeight23to40kg ?: false) ? '☑' : '☐'}">☐</span>
+                            ≥ 15 to 23 kg: 45 mg PO ONCE daily for 14 days<br>
+
+                            <span class="checkbox"
+                                  th:text="${medication != null and (medication.prevWeightUnder15kg ?: false) ? '☑' : '☐'}">☐</span>
+                            > 15 kg: 30 mg PO ONCE daily for 14 days<br>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <span class="checkbox"
+                          th:text="${medication != null and (medication.renalImpairmentTreatment ?: false) ? '☑' : '☐'}">☐</span>
+                    <strong>Oseltamivir Treatment (Renal Impairment):</strong><br>
+
+                    <div style="margin-left: 15px;">
+                        <span class="checkbox"
+                              th:text="${medication != null and (medication.renalAdults18Plus ?: false) ? '☑' : '☐'}">☐</span>
+                        Adults ≥ 18 years of age:<br>
+
+                        <div style="margin-left: 30px;">
+                            <span class="checkbox"
+                                  th:text="${medication != null and (medication.creatinineOver30 ?: false) ? '☑' : '☐'}">☐</span>
+                            Creatinine Clearance >30–59: 30 mg PO TWICE daily for 5 days<br>
+
+                            <span class="checkbox"
+                                  th:text="${medication != null and (medication.creatinine10to30 ?: false) ? '☑' : '☐'}">☐</span>
+                            Creatinine Clearance >10–29: 30 mg PO ONCE daily for 5 days<br>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <span class="checkbox"
+                          th:text="${medication != null and (medication.renalImpairmentPrevention ?: false) ? '☑' : '☐'}">☐</span>
+                    <strong>Oseltamivir Prevention (Renal Impairment):</strong><br>
+
+                    <div style="margin-left: 15px;">
+                        <span class="checkbox"
+                              th:text="${medication != null and (medication.renalPrevAdults18Plus ?: false) ? '☑' : '☐'}">☐</span>
+                        Adults ≥ 18 years of age:<br>
+
+                        <div style="margin-left: 30px;">
+                            <span class="checkbox"
+                                  th:text="${medication != null and (medication.renalPrevCreatinineOver30 ?: false) ? '☑' : '☐'}">☐</span>
+                            Creatinine Clearance >30–59: 30 mg PO ONCE daily for 14 days<br>
+
+                            <span class="checkbox"
+                                  th:text="${medication != null and (medication.renalPrevCreatinine10to30 ?: false) ? '☑' : '☐'}">☐</span>
+                            Creatinine Clearance >10–29: 30 mg PO every other day for 14 days<br>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <table style="margin-top: 10px;">
+            <tr>
+                <td style="width: 25%; text-align: center;">
+                    Pharmacist Name<br><br>
+                    <span class="field-value"
+                          th:if="${signature != null and signature.pharmacistName != null}"
+                          th:text="${signature.pharmacistName}">_____</span>
+                    <span class="field-value"
+                          th:unless="${signature != null and signature.pharmacistName != null}">_____</span>
+                </td>
+                <td style="width: 25%; text-align: center;">
+                    OCP Number<br><br>
+                    <span class="field-value"
+                          th:if="${signature != null and signature.ocpNumber != null}"
+                          th:text="${signature.ocpNumber}">_____</span>
+                    <span class="field-value"
+                          th:unless="${signature != null and signature.ocpNumber != null}">_____</span>
+                </td>
+                <td style="width: 25%; text-align: center;">
+                    Signature<br><br>
+                    <span class="field-value">_____</span>
+                </td>
+                <td style="width: 25%; text-align: center;">
+                    Date<br><br>
+                    <span class="field-value"
+                          th:if="${signature != null and signature.date != null}"
+                          th:text="${signature.date}">_____</span>
+                    <span class="field-value"
+                          th:unless="${signature != null and signature.date != null}">_____</span>
+                </td>
+            </tr>
+        </table>
+
+        <table style="margin-top: 8px;">
+            <tr>
+                <td style="width: 40%;">
+                    Follow-up with patient completed (safety, efficacy)<br>
+                    Date:
+                    <span class="field-value"
+                          th:if="${followUp != null and followUp.date != null}"
+                          th:text="${followUp.date}">_____</span>
+                    <span class="field-value"
+                          th:unless="${followUp != null and followUp.date != null}">_____</span><br>
+
+                    In-person
+                    <span class="checkbox"
+                          th:text="${followUp != null and (followUp.inPerson ?: false) ? '☑' : '☐'}">☐</span>
+                    Phone
+                    <span class="checkbox"
+                          th:text="${followUp != null and (followUp.phone ?: false) ? '☑' : '☐'}">☐</span>
+                </td>
+
+                <td style="width: 30%;">
+                    Primary care provider notified
+                </td>
+
+                <td style="width: 30%;">
+                    Date:
+                    <span class="field-value"
+                          th:if="${followUp != null and followUp.pcpNotifiedDate != null}"
+                          th:text="${followUp.pcpNotifiedDate}">_____</span>
+                    <span class="field-value"
+                          th:unless="${followUp != null and followUp.pcpNotifiedDate != null}">_____</span><br>
+
+                    <span class="checkbox"
+                          th:text="${followUp != null and (followUp.pcpPhone ?: false) ? '☑' : '☐'}">☐</span> Phone
+                    <span class="checkbox"
+                          th:text="${followUp != null and (followUp.pcpFax ?: false) ? '☑' : '☐'}">☐</span> Fax
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

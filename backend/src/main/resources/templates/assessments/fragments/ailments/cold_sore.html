@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section(data)">
+
+    <div style="text-align:center; font-weight:bold; font-size:13px; margin:2px 0 3px 0;">
+        Minor Ailment Assessment &amp; Treatment Options - Cold Sores
+    </div>
+
+    <!-- ======================== RATIONALE FOR PRESCRIBING ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                RATIONALE FOR PRESCRIBING
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient present with the following symptoms of cold sores (Check all that apply)
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['prodromalSymptoms'] == true ? 'checked' : ''}" class="cb"></span>Prodromal symptoms (itching, tingling, burning sensation) within 48 hours &#8594; prescribe antiviral
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                If any of the following are present, suggest OTC treatment
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['lesionsUnder14Days'] == true ? 'checked' : ''}" class="cb"></span>Lesions present &lt; 14 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['singlePainfulLesion'] == true ? 'checked' : ''}" class="cb"></span>Single painful lesion with multiple vesicles on the vermilion border of the lip and around the nostrils<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['other'] == true ? 'checked' : ''}" class="cb"></span>Other:
+                <span th:text="${data['ailment']['clinicalBlock']['symptoms']['otherDetail'] != null ? data['ailment']['clinicalBlock']['symptoms']['otherDetail'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient meets the following criteria for minor ailment prescribing &nbsp;(Check all that apply)
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['atLeast1PreviousColdSore'] == true ? 'checked' : ''}" class="cb"></span>Had at least 1 previous diagnosed cold sore<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noLesionsNoseOrOcular'] == true ? 'checked' : ''}" class="cb"></span>No lesions present on or around the nose or ocular area<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noSystemicIllness'] == true ? 'checked' : ''}" class="cb"></span>No systemic illness (e.g fever)
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== PRESCRIPTION TREATMENT ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Prescription Treatment
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['valacyclovir2000mg'] == true ? 'checked' : ''}" class="cb"></span>Valacyclovir 2000 mg BID PO x 1 day<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['acyclovir400mg'] == true ? 'checked' : ''}" class="cb"></span>Acyclovir 400mg 5 times daily PO x 5 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['famciclovir750mg'] == true ? 'checked' : ''}" class="cb"></span>Famciclovir 750 mg BID PO x 1 day<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['famciclovir1500mg'] == true ? 'checked' : ''}" class="cb"></span>Famciclovir 1500 mg PO x 1 dose<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['acyclovirTopical'] == true ? 'checked' : ''}" class="cb"></span>Acyclovir (Zovirax Cream or Ointment) Start within 1 hr of onset of symptoms. Apply 5 times daily x 4 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['acyclovirHydrocortisone'] == true ? 'checked' : ''}" class="cb"></span>Acyclovir 5%/hydrocortisone 1% (Xerese) Adults and children &gt;12 y: apply 5 times daily during waking hours x 5d starting immediately after onset of signs or symptoms
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== OTC TREATMENT ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['docosanol'] == true ? 'checked' : ''}" class="cb"></span><strong>OTC Treatment</strong> Docosanol (Abreva) Apply to affected area at the onset of symptoms every 3 hours x 5&#8211;10 days
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+</body>
+</html>

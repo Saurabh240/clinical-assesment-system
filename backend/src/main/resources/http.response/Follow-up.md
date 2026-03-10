@@ -10,11 +10,22 @@
 ```json
 [
   {
-    "assessmentId": 2,
-    "patientName": "New User",
-    "ailment": "TAMIFLU",
-    "overdueDays": 8,
-    "lastFollowupDate": null
+    "assessmentId": 14,
+    "patientName": "Saurabh Gupta",
+    "ailment": "OSELTAMIVIR",
+    "overdueDays": 10,
+    "lastFollowupDate": null,
+    "status": "OVERDUE",
+    "notes": null
+  },
+  {
+    "assessmentId": 29,
+    "patientName": "",
+    "ailment": "DEN",
+    "overdueDays": 0,
+    "lastFollowupDate": null,
+    "status": "OVERDUE",
+    "notes": null
   }
 ]
 ```
@@ -28,20 +39,39 @@
 ### 📤 Request Body (JSON)
 ```json
 {
-  "notes": "Patient contacted, symptoms improving",
-  "nextFollowupDate": "2026-02-15T00:00:00Z",
+  "nextFollowupDate": "2026-02-21T11:06:06.394Z",
+  "notes": "test notes 3",
   "status": "COMPLETED"
 }
 ```
 ### 📤 Response Body (JSON)
 ```json
 {
-  "assessmentId": 1,
+  "assessmentId": 22,
   "status": "COMPLETED",
-  "lastFollowupDate": "2026-02-10T14:08:27.809771400Z",
-  "nextFollowupDate": "2026-02-15T00:00:00Z",
-  "message": "Follow-up updated successfully"
+  "lastFollowupDate": "2026-02-18T17:42:14.177832600Z",
+  "nextFollowupDate": "2026-02-21T11:06:06.394Z",
+  "notes": "test notes 3",
+  "message": "Follow-up created successfully"
 }
 ```
 - **Response Status**: 200 OK
 - ----
+### ✅ Request Details
+
+- **Type**: GET
+- **URL**: http://localhost:8080/assessments/:assessmentId/followup
+- **Request Name**: Get latest Follow-ups
+### 📤 Response Body (JSON)
+```json
+{
+  "assessmentId": 22,
+  "patientName": "Test User",
+  "ailment": "DENGUE_002",
+  "overdueDays": 17,
+  "lastFollowupDate": "2026-01-18T17:31:11.081Z",
+  "status": "COMPLETED",
+  "notes": "test notes 3"
+}
+```
+- **Response Status**: 200 OK

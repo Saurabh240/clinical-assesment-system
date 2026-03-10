@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section(data)">
+
+    <div style="text-align:center; font-weight:bold; font-size:13px; margin:2px 0 3px 0;">
+        Minor Ailment Assessment &amp; Treatment Options - Diaper Dermatitis
+    </div>
+
+    <!-- ======================== RATIONALE FOR PRESCRIBING ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                RATIONALE FOR PRESCRIBING
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient presents with the following symptoms consistent with dermatitis <em>(Check all that apply)</em>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['rashInCreases'] == true ? 'checked' : ''}" class="cb"></span>Rash in creases / folds for &gt; 3 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['brightRedPatches'] == true ? 'checked' : ''}" class="cb"></span>Bright red or "beefy" red patches with a well demarcated scaly border or maceration of skin<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['satellitePapulesPustules'] == true ? 'checked' : ''}" class="cb"></span>Satellite papules and pustules<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['presentInDiaperArea'] == true ? 'checked' : ''}" class="cb"></span>Present in areas bound by the specific boundaries of the diaper: around the lower abdomen and the lumbar back at the level of the umbilicus and below, around the upper thighs, encompassing the genitalia, perineum and buttocks.<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['painfulCrying'] == true ? 'checked' : ''}" class="cb"></span>Painful: crying when changing, during urination, or defecation
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient meets the following criteria for minor ailment prescribing &nbsp;<em>(Must check all)</em>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noAcuteOnsetOozing'] == true ? 'checked' : ''}" class="cb"></span>No acute onset with oozing, pus, vesicles or ulceration<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noModerateOrSeverePresentation'] == true ? 'checked' : ''}" class="cb"></span>No moderate or severe presentation (e.g. complicated, bleeding, skin erosion, etc.)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noSystemicSigns'] == true ? 'checked' : ''}" class="cb"></span>No systemic signs or symptoms (e.g. fever, nausea, vomiting)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['notImmunocompromised'] == true ? 'checked' : ''}" class="cb"></span>Patient is not immunocompromised<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noSignsOfAbuseOrNeglect'] == true ? 'checked' : ''}" class="cb"></span>No signs of abuse or neglect<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noFrequentRecurrences'] == true ? 'checked' : ''}" class="cb"></span>No frequent recurrences especially with no intermittent rash-free period<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noBehaviorChanges'] == true ? 'checked' : ''}" class="cb"></span>No behavior changes (e.g. significant sleep disruption, crying, lethargy, etc.)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noComplicatedSecondaryInfection'] == true ? 'checked' : ''}" class="cb"></span>No complicated secondary infection, infection of genetalia, or co-morbid UTI<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noRashOutsideDiaperArea'] == true ? 'checked' : ''}" class="cb"></span>No rash present outside of the diaper and immediate surrounding area
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== TREATMENT ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Treatment - Diaper Dermatitis
+            </td>
+        </tr>
+
+        <!-- OTC Antifungal subheader -->
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none; font-weight:normal;">
+                OTC antifungal
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 24px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['clotrimazole1Percent'] == true ? 'checked' : ''}" class="cb"></span>Clotrimazole 1% cream: apply to affected area and surrounding skin BID x 14 days minimum<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['miconazole2Percent'] == true ? 'checked' : ''}" class="cb"></span>Miconazole 2% cream: apply to affected area and surrounding skin BID x 14 days minimum<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['nystatin100000'] == true ? 'checked' : ''}" class="cb"></span>Nystatin 100,000 Units/g cream: apply to affected area and surrounding skin BID-TID x 14 days minimum
+            </td>
+        </tr>
+
+        <!-- Ketoconazole -->
+        <tr>
+            <td style="padding:2px 6px 2px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['ketoconazole2Percent'] == true ? 'checked' : ''}" class="cb"></span>Ketoconazole 2% cream (Over 12 yo): OD - BID x 14 days
+            </td>
+        </tr>
+
+        <!-- Ciclopirox -->
+        <tr>
+            <td style="padding:2px 6px 2px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['ciclopirox1Percent'] == true ? 'checked' : ''}" class="cb"></span>Ciclopirox olamine 1% apply to affected area and surrounding skin BID x 28 days minimum
+            </td>
+        </tr>
+
+        <!-- Hydrocortisone acetate -->
+        <tr>
+            <td style="padding:2px 6px 2px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['hydrocortisoneAcetate'] == true ? 'checked' : ''}" class="cb"></span>Hydrocortisone acetate:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['hydrocortisone05Percent'] == true ? 'checked' : ''}" class="cb"></span>0.5%
+                    <span th:text="${data['ailment']['clinicalBlock']['treatment']['hydrocortisone05PercentGrams'] != null ? data['ailment']['clinicalBlock']['treatment']['hydrocortisone05PercentGrams'] : ''}"></span>
+                    <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> g apply a thin layer to the affected area up to TID for no more than 2 weeks<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['hydrocortisone1Percent'] == true ? 'checked' : ''}" class="cb"></span>1%
+                    <span th:text="${data['ailment']['clinicalBlock']['treatment']['hydrocortisone1PercentGrams'] != null ? data['ailment']['clinicalBlock']['treatment']['hydrocortisone1PercentGrams'] : ''}"></span>
+                    <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> g apply a thin layer to the affected area up to TID for no more than 2 weeks (Rx &lt;2 yo)<br>
+                    <div style="margin-left:16px; line-height:1.55;">
+                        &gt;30g
+                        <span th:text="${data['ailment']['clinicalBlock']['treatment']['hydrocortisone1PercentOver30g'] != null ? data['ailment']['clinicalBlock']['treatment']['hydrocortisone1PercentOver30g'] : ''}"></span>
+                    </div>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['hydrocortisoneOther'] == true ? 'checked' : ''}" class="cb"></span>Other:
+                    <span th:text="${data['ailment']['clinicalBlock']['treatment']['hydrocortisoneOtherDetail'] != null ? data['ailment']['clinicalBlock']['treatment']['hydrocortisoneOtherDetail'] : ''}"></span>
+                    <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none; font-size:8.5px; font-style:italic;">
+                **Indicate cream or ointment**
+            </td>
+        </tr>
+
+        <!-- OTC Barrier Products -->
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none; font-weight:normal;">
+                OTC Barrier Products:
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['zincOxide'] == true ? 'checked' : ''}" class="cb"></span>Zinc oxide 10&#8211;40%: apply generously PRN<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['barrierOther'] == true ? 'checked' : ''}" class="cb"></span>Other
+                <span th:text="${data['ailment']['clinicalBlock']['treatment']['barrierOtherDetail'] != null ? data['ailment']['clinicalBlock']['treatment']['barrierOtherDetail'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            </td>
+        </tr>
+
+    </table>
+
+</div>
+
+</body>
+</html>

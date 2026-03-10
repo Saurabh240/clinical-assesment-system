@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section(data)">
+
+    <div style="text-align:center; font-weight:bold; font-size:13px; margin:2px 0 3px 0;">
+        Minor Ailment Assessment &amp; Treatment Options - Hemorrhoids
+    </div>
+
+    <!-- ======================== RATIONALE FOR PRESCRIBING ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                RATIONALE FOR PRESCRIBING
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient presents with the following symptoms consistent with hemorrhoids (Check all that apply)
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['constipation'] == true ? 'checked' : ''}" class="cb"></span>Constipation<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['strainingWithDefecation'] == true ? 'checked' : ''}" class="cb"></span>Straining with defecation<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['pruritus'] == true ? 'checked' : ''}" class="cb"></span>Pruritus or irritation in perianal area<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['minimalBleeding'] == true ? 'checked' : ''}" class="cb"></span>Minimal bright red bleeding in rectal area, following a bowel movement<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['minorAnalPain'] == true ? 'checked' : ''}" class="cb"></span>Minor anal pain<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['other'] == true ? 'checked' : ''}" class="cb"></span>Other:
+                <span th:text="${data['ailment']['clinicalBlock']['symptoms']['otherDetail'] != null ? data['ailment']['clinicalBlock']['symptoms']['otherDetail'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient meets the following criteria for minor ailment prescribing (Must check all)
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['ageOver12AndOver50NoNewOnset'] == true ? 'checked' : ''}" class="cb"></span>Age &gt; 12 and age &gt; 50 with no new onset of symptoms<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noRecentPhysicalTrauma'] == true ? 'checked' : ''}" class="cb"></span>No recent physical trauma<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noDarkRedRectalBleeding'] == true ? 'checked' : ''}" class="cb"></span>No dark red rectal bleeding, blood mixed with stool, black tarry stool, severe pain upon defecation, abdominal pain or tenderness, perianal swelling, unexplained weight loss.<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noPersonalFamilyHistoryPolyps'] == true ? 'checked' : ''}" class="cb"></span>No personal or family history of polyps, colorectal cancer or IBD<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noPreviousTherapiesWithin7Days'] == true ? 'checked' : ''}" class="cb"></span>No previous therapies tried within past 7 days
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== PRESCRIPTION TREATMENT ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Prescription Treatment
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['proctosedylOintment'] == true ? 'checked' : ''}" class="cb"></span>Proctosedyl 1% ointment
+                <span th:text="${data['ailment']['clinicalBlock']['treatment']['proctosedylOintmentGrams'] != null ? data['ailment']['clinicalBlock']['treatment']['proctosedylOintmentGrams'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> g . Apply BID and after each bowel movement x 7 days<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['proctosedylSuppositories'] == true ? 'checked' : ''}" class="cb"></span>Proctosedyl suppositories
+                <span th:text="${data['ailment']['clinicalBlock']['treatment']['proctosedylSuppositoriesQty'] != null ? data['ailment']['clinicalBlock']['treatment']['proctosedylSuppositoriesQty'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> Insert BID and after each bowel movement x 7 days<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['anusolvHCOintment'] == true ? 'checked' : ''}" class="cb"></span>Anusol HC ointment 0.5%
+                <span th:text="${data['ailment']['clinicalBlock']['treatment']['anusolvHCOintmentGrams'] != null ? data['ailment']['clinicalBlock']['treatment']['anusolvHCOintmentGrams'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> g. Apply BID and after each bowel movement x 7 days<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['anusolvHCSuppositories'] == true ? 'checked' : ''}" class="cb"></span>Anusol HC suppositories &nbsp;Insert BID and after each bowel movement x 7 days
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== OTC TREATMENT ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                OTC Treatment
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['anusolvPlusOintment'] == true ? 'checked' : ''}" class="cb"></span>Anusol Plus 1% ointment
+                <span th:text="${data['ailment']['clinicalBlock']['otcTreatment']['anusolvPlusOintmentGrams'] != null ? data['ailment']['clinicalBlock']['otcTreatment']['anusolvPlusOintmentGrams'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> g. Apply BID and after each bowel movement x 7 days<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['anusolvPlusSuppositories'] == true ? 'checked' : ''}" class="cb"></span>Anusol Plus suppositories
+                <span th:text="${data['ailment']['clinicalBlock']['otcTreatment']['anusolvPlusSuppositoriesQty'] != null ? data['ailment']['clinicalBlock']['otcTreatment']['anusolvPlusSuppositoriesQty'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> Insert BID and after each bowel movement x 7 days<br>
+
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['preparationHPEGel'] == true ? 'checked' : ''}" class="cb"></span>Preparation H-PE gel
+                <span th:text="${data['ailment']['clinicalBlock']['otcTreatment']['preparationHPEGelGrams'] != null ? data['ailment']['clinicalBlock']['otcTreatment']['preparationHPEGelGrams'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> g Apply BID and after each bowel movement x 7 days
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+</body>
+</html>

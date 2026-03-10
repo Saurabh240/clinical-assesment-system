@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section">
+
+  <!-- ================= MONITORING AND FOLLOW UP TITLE ================= -->
+  <h2>Monitoring and Follow up</h2>
+
+  <table>
+
+    <!-- ================= ROW 1: Monitoring Parameters/Next Steps ================= -->
+    <tr>
+      <td colspan="2">
+        Monitoring Parameters/Next Steps:<br>
+        <span class="field-value"
+              th:text="${data['followUp'] != null ? data['followUp']['monitoringParameters'] : ''}"></span>
+      </td>
+    </tr>
+
+    <!-- ================= ROW 2: Follow-up with patient ================= -->
+    <tr>
+      <td>
+        Follow-up with patient completed (safety, efficacy):
+      </td>
+      <td>
+        Date:
+        <span class="field-value"
+              th:text="${data['followUp'] != null and data['followUp']['date'] != null ? data['followUp']['date'] : ''}"></span>
+
+        <span class="checkbox"
+              th:text="${data['followUp'] != null and data['followUp']['phone'] == true ? '☑' : '☐'}"></span>
+        Phone
+
+        <span class="checkbox"
+              th:text="${data['followUp'] != null and data['followUp']['inPerson'] == true ? '☑' : '☐'}"></span>
+        In-person
+      </td>
+    </tr>
+
+  </table>
+
+</div>
+
+</body>
+</html>

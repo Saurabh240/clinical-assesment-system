@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pharmacy Assessment</title>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        @page {
+            size: A4;
+            margin: 10mm 12mm 10mm 12mm;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #000;
+        }
+
+        /* =====================================================
+           PAGE 1 — Spacious
+           ===================================================== */
+        .page1 {
+            width: 100%;
+            border: 2px solid #000;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .page1 h1 {
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            margin: 0;
+            padding: 7px 8px;
+            background-color: #e5e5e5;
+            border-bottom: 2px solid #000;
+        }
+
+        .page1 h2 {
+            font-size: 11px;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px 7px;
+            border-top: 1.5px solid #000;
+            border-bottom: 1px solid #000;
+            border-left: none;
+            border-right: none;
+        }
+
+        .page1 .section-header {
+            background-color: #d9d9d9;
+            font-weight: bold;
+            padding: 5px 7px;
+            border-top: 1.5px solid #000;
+            border-bottom: 1px solid #000;
+            border-left: none;
+            border-right: none;
+        }
+
+        .page1 table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        .page1 td, .page1 th {
+            border: 1px solid #000;
+            padding: 4px 6px;
+            vertical-align: top;
+        }
+
+        .page1 tr td:first-child, .page1 tr th:first-child { border-left: none; }
+        .page1 tr td:last-child,  .page1 tr th:last-child  { border-right: none; }
+        .page1 tr:first-child td, .page1 tr:first-child th  { border-top: none; }
+
+        /* =====================================================
+           PAGE 2 — Compact
+           ===================================================== */
+        .page2 {
+            width: 100%;
+            border: 2px solid #000;
+            font-size: 9px;
+            line-height: 1.25;
+        }
+
+        .page2 h2 {
+            font-size: 9.5px;
+            font-weight: bold;
+            margin: 0;
+            padding: 2px 5px;
+            border-top: 1.5px solid #000;
+            border-bottom: 1px solid #000;
+            border-left: none;
+            border-right: none;
+        }
+
+        .page2 .section-header {
+            background-color: #d9d9d9;
+            font-weight: bold;
+            padding: 2px 5px;
+            border-top: 1.5px solid #000;
+            border-bottom: 1px solid #000;
+            border-left: none;
+            border-right: none;
+        }
+
+        .page2 table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        .page2 td, .page2 th {
+            border: 1px solid #000;
+            padding: 2px 4px;
+            vertical-align: top;
+        }
+
+        .page2 tr td:first-child, .page2 tr th:first-child { border-left: none; }
+        .page2 tr td:last-child,  .page2 tr th:last-child  { border-right: none; }
+        .page2 tr:first-child td, .page2 tr:first-child th  { border-top: none; }
+
+        /* =====================================================
+           SHARED
+           ===================================================== */
+        .field-label { font-weight: bold; }
+        .field-value { font-weight: normal; }
+
+        /* AILMENT styles — page 2 tight */
+        .ailment-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 10px;
+            margin: 2px 0 3px 0;
+        }
+
+        .section-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2px;
+        }
+
+        .section-table td {
+            border: 1px solid #000;
+            padding: 2px 5px;
+            font-size: 9px;
+            line-height: 1.25;
+        }
+
+        .section-table tr td:first-child { border-left: none; }
+        .section-table tr td:last-child  { border-right: none; }
+        .section-table tr:first-child td { border-top: none; }
+
+        .header-row td {
+            background-color: #000;
+            color: #fff;
+            font-weight: bold;
+            padding: 2px 5px;
+            border: 1px solid #000;
+            font-size: 9px;
+        }
+        .header-row td:first-child { border-left: none; }
+        .header-row td:last-child  { border-right: none; }
+
+        .subheader-row td {
+            padding: 2px 5px;
+            border: 1px solid #000;
+            background-color: #fff;
+            font-size: 9px;
+        }
+        .subheader-row td:first-child { border-left: none; }
+        .subheader-row td:last-child  { border-right: none; }
+
+        .content-row td {
+            padding: 2px 5px 2px 10px;
+            border: 1px solid #000;
+            line-height: 1.45;
+            font-size: 9px;
+        }
+        .content-row td:first-child { border-left: none; }
+        .content-row td:last-child  { border-right: none; }
+
+        .bold-subheader {
+            font-weight: bold;
+            padding: 2px 5px;
+            border-top: 1px solid #000;
+            border-bottom: 1px solid #000;
+            border-left: none;
+            border-right: none;
+        }
+
+        .indent { margin-left: 14px; }
+
+        /* CSS Checkbox */
+        .cb {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border: 1.5px solid #000;
+            margin-right: 3px;
+            vertical-align: middle;
+            position: relative;
+            top: -1px;
+            background-color: #fff;
+        }
+
+        .cb.checked::after {
+            content: '✓';
+            position: absolute;
+            top: -4px;
+            left: 0px;
+            font-size: 10px;
+            color: #000;
+            font-weight: bold;
+        }
+
+        /* Page break */
+        .page-break {
+            page-break-before: always;
+            break-before: page;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- ===================== PAGE 1 ===================== -->
+<div class="page1">
+
+    <h1>ON Minor Ailment Assessment and Prescription</h1>
+
+    <!-- 1. Patient Information + Prescriber Information -->
+    <div th:replace="~{assessments/fragments/common/patient-info :: section(data=${data})}"></div>
+
+    <!-- 2. Informed Consent -->
+    <div th:replace="~{assessments/fragments/common/consent :: section(data=${data})}"></div>
+
+    <!-- 3. Eligibility -->
+    <div th:replace="~{assessments/fragments/common/eligibility-common :: section(data=${data})}"></div>
+
+    <!-- 4. Assessment -->
+    <div th:replace="~{assessments/fragments/common/assessment-common :: section(data=${data})}"></div>
+
+</div>
+
+<!-- ===================== PAGE BREAK ===================== -->
+<div class="page-break"></div>
+
+<!-- ===================== PAGE 2 ===================== -->
+<div class="page2">
+
+    <!-- 5. Ailment-Specific Fragment -->
+    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'UTI'}">
+        <div th:replace="~{assessments/fragments/ailments/uti :: section(data=${data})}"></div>
+    </th:block>
+
+    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'DERMATITIS'}">
+        <div th:replace="~{assessments/fragments/ailments/dermatitis :: section(data=${data})}"></div>
+    </th:block>
+
+    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'DYSMENORRHEA'}">
+        <div th:replace="~{assessments/fragments/ailments/dysmenorrhea :: section(data=${data})}"></div>
+    </th:block>
+    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'INSECT_BITES'}">
+        <div th:replace="~{assessments/fragments/ailments/insect-bites :: section(data=${data})}"></div>
+    </th:block>
+    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'CONJUNCTIVITIS'}">
+        <div th:replace="~{assessments/fragments/ailments/conjunctivitis :: section(data=${data})}"></div>
+    </th:block>
+    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'HEMORRHOIDS'}">
+        <div th:replace="~{assessments/fragments/ailments/hemorrhoids :: section(data=${data})}"></div>
+    </th:block>
+    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'IMPETIGO'}">
+        <div th:replace="~{assessments/fragments/ailments/impetigo :: section(data=${data})}"></div>
+    </th:block>
+    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'TICK_BITES'}">
+        <div th:replace="~{assessments/fragments/ailments/tickbites :: section(data=${data})}"></div>
+    </th:block>
+    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'ALLERGIC_RHINITIS'}">
+        <div th:replace="~{assessments/fragments/ailments/allergic_rhinitis :: section(data=${data})}"></div>
+    </th:block>
+    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'COLD_SORE'}">
+    <div th:replace="~{assessments/fragments/ailments/cold_sore :: section(data=${data})}"></div>
+    </th:block>
+    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'GERD'}">
+        <div th:replace="~{assessments/fragments/ailments/gerd :: section(data=${data})}"></div>
+    </th:block>
+    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'MUSCULOSKELETAL_SPRAINS'}">
+        <div th:replace="~{assessments/fragments/ailments/musculoskeletal_sprains :: section(data=${data})}"></div>
+    </th:block>
+    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'CANDIDAL_STOMATITIS'}">
+        <div th:replace="~{assessments/fragments/ailments/candidal_stomatitis :: section(data=${data})}"></div>
+    </th:block>
+    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'ACNE'}">
+        <div th:replace="~{assessments/fragments/ailments/acne :: section(data=${data})}"></div>
+    </th:block>
+    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'APHTHOUS_ULCERS'}">
+        <div th:replace="~{assessments/fragments/ailments/aphthous_ulcers :: section(data=${data})}"></div>
+    </th:block>
+    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'NAUSEA_VOMITING_PREGNANCY'}">
+        <div th:replace="~{assessments/fragments/ailments/nausea_vomiting_pregnancy:: section(data=${data})}"></div>
+    </th:block>
+    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'PINWORMS'}">
+        <div th:replace="~{assessments/fragments/ailments/pinworms:: section(data=${data})}"></div>
+    </th:block>
+    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'VAGINAL_CANDIDIASIS'}">
+        <div th:replace="~{assessments/fragments/ailments/vaginal_candidiasis:: section(data=${data})}"></div>
+    </th:block>
+    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'DIAPER_DERMATITIS'}">
+        <div th:replace="~{assessments/fragments/ailments/diaper_dermatitis:: section(data=${data})}"></div>
+    </th:block>
+
+    <!--        <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'OSELTAMIVIR'}">-->
+    <!--            <div th:replace="~{assessments/fragments/ailments/tamiflu :: section(data=${data})}"></div>-->
+    <!--        </th:block>-->
+
+    <!-- 6. Care Plan -->
+    <div th:replace="~{assessments/fragments/common/care-plan :: section(data=${data})}"></div>
+
+    <!-- 7. Medication Order -->
+    <div th:replace="~{assessments/fragments/common/medication-order :: section(data=${data})}"></div>
+
+    <!-- 8. Signature -->
+    <div th:replace="~{assessments/fragments/common/signature :: section(data=${data})}"></div>
+
+    <!-- 9. Monitoring and Follow Up -->
+    <div th:replace="~{assessments/fragments/common/followup :: section(data=${data})}"></div>
+
+</div>
+
+</body>
+</html>

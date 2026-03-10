@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section(data)">
+
+    <div style="text-align:center; font-weight:bold; font-size:13px; margin:2px 0 3px 0;">
+        Minor Ailment Assessment &amp; Treatment Options - Tick Bites
+    </div>
+
+    <!-- ======================== RATIONALE FOR PRESCRIBING ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                RATIONALE FOR PRESCRIBING
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient presents with the following symptoms consistent with a tick bite. (Check all that apply)
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['inflammation'] == true ? 'checked' : ''}" class="cb"></span>Inflammation<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['redness'] == true ? 'checked' : ''}" class="cb"></span>Redness<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['itch'] == true ? 'checked' : ''}" class="cb"></span>Itch<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['pain'] == true ? 'checked' : ''}" class="cb"></span>Pain<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['other'] == true ? 'checked' : ''}" class="cb"></span>Other:
+                <span th:text="${data['ailment']['clinicalBlock']['symptoms']['otherDetail'] != null ? data['ailment']['clinicalBlock']['symptoms']['otherDetail'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient meets the following criteria for minor ailment prescribing &nbsp;(Check all that apply)
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noErythemaMigrainesBullsEye'] == true ? 'checked' : ''}" class="cb"></span>No erythema, migraines, bull's-eye" rash<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noSystemicSymptoms'] == true ? 'checked' : ''}" class="cb"></span>No fever, chills, headache, stiff neck, fatigue, decreased appetite, muscle and joint aches, joint swelling, swollen lymph nodes<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['mustMeetAll3'] == true ? 'checked' : ''}" class="cb"></span>Must meet ALL 3 of the following criteria:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['tickRemovedWithin72Hours'] == true ? 'checked' : ''}" class="cb"></span>Tick has been removed within the past 72 hours. (If the tick is still attached, advise the patient to safely remove.<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['tickBiteInBlackleggedArea'] == true ? 'checked' : ''}" class="cb"></span>Tick bite occurred in an area where blacklegged ticks have been identified<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['tickAttached36HoursOrMore'] == true ? 'checked' : ''}" class="cb"></span>Tick was likely attached for 36 hours or more
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== PRESCRIPTION TREATMENT ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Prescription Treatment
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['doxycycline'] == true ? 'checked' : ''}" class="cb"></span>Doxycycline:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['doxycyclineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults: 200 mg PO x 1 dose<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['doxycyclineChild'] == true ? 'checked' : ''}" class="cb"></span>Children: doxycycline 4 mg/kg (maximum dose of 200 mg) PO x 1 dose (no age restriction)
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+</body>
+</html>
