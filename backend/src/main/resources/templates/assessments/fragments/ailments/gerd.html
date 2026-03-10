@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section(data)">
+
+    <div style="text-align:center; font-weight:bold; font-size:13px; margin:2px 0 3px 0;">
+        Minor Ailment Assessment &amp; Treatment Options - GERD
+    </div>
+
+    <!-- ======================== RATIONALE FOR PRESCRIBING ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                RATIONALE FOR PRESCRIBING
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient presents with the following symptoms consistent with GERD (Check all that apply)
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['burningThroat'] == true ? 'checked' : ''}" class="cb"></span>Burning sensation back of throat<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['worseLyingDown'] == true ? 'checked' : ''}" class="cb"></span>Worse when lying down, bending or after a meal<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['regurgitation'] == true ? 'checked' : ''}" class="cb"></span>Regurgitation of acid or bile<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['other'] == true ? 'checked' : ''}" class="cb"></span>Other:
+                <span th:text="${data['ailment']['clinicalBlock']['symptoms']['otherDetail'] != null ? data['ailment']['clinicalBlock']['symptoms']['otherDetail'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            </td>
+        </tr>
+
+        <!-- Symptom Category -->
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient has <u>one</u> of the following symptom category
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['mild'] == true ? 'checked' : ''}" class="cb"></span>Mild (low intensity, no nocturnal symptoms, no affect on daily activities)<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['mildInfrequent'] == true ? 'checked' : ''}" class="cb"></span>Infrequent (&lt; 2 times per week)<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['mildFrequent'] == true ? 'checked' : ''}" class="cb"></span>Frequent (&#8805; 2 times per week)
+                </div>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['moderate'] == true ? 'checked' : ''}" class="cb"></span>Moderate (intense symptoms a few times a week, &#177; nocturnal symptoms)
+            </td>
+        </tr>
+
+        <!-- Criteria -->
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient meets the following criteria for minor ailment prescribing &nbsp;(Check all that apply)
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noRedFlags'] == true ? 'checked' : ''}" class="cb"></span>No red flags present (abdominal mass, chest pain, choking, dysphagia, pain when swallowing, unintentional weight loss, vomiting, black tarry stool)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['ageOver18Or50NoNewOnset'] == true ? 'checked' : ''}" class="cb"></span>Age &gt;18 years or age &gt; 50 with no new onset of symptoms or worsening severity or frequency<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noGICancer'] == true ? 'checked' : ''}" class="cb"></span>No GI cancer in 1 degree relative<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noRecurrenceWithin90Days'] == true ? 'checked' : ''}" class="cb"></span>No recurrence &#8804; 90 days of discontinuing successful acid suppression
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== TREATMENT ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                TREATMENT
+            </td>
+        </tr>
+
+        <!-- Mild and Infrequent -->
+        <tr>
+            <td style="font-weight:bold; padding:2px 6px; border:1px solid #000; border-left:none; border-right:none; border-top:none;">
+                Mild and Infrequent
+            </td>
+        </tr>
+
+        <!-- First Line -->
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none; border-top:1px solid #000;">
+                First Line
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['mildInfrequent']['firstLine']['otcH2RA'] == true ? 'checked' : ''}" class="cb"></span>OTC H2RA &#177; Antacid or Alginate PRN x 2 weeks<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    Indicate the recommended OTC product:
+                    <span th:text="${data['ailment']['clinicalBlock']['treatment']['mildInfrequent']['firstLine']['otcH2RAProduct'] != null ? data['ailment']['clinicalBlock']['treatment']['mildInfrequent']['firstLine']['otcH2RAProduct'] : ''}"></span>
+                    <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+                </div>
+            </td>
+        </tr>
+
+        <!-- Second Line -->
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none; border-top:1px solid #000;">
+                Second Line
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['mildInfrequent']['secondLine']['cimetidine'] == true ? 'checked' : ''}" class="cb"></span>Cimetidine 300mg QID x 2 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['mildInfrequent']['secondLine']['famotidine'] == true ? 'checked' : ''}" class="cb"></span>Famotidine 20mg BID x 2 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['mildInfrequent']['secondLine']['nizatidine'] == true ? 'checked' : ''}" class="cb"></span>Nizatidine 150mg BID x 2 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['mildInfrequent']['secondLine']['ranitidine'] == true ? 'checked' : ''}" class="cb"></span>Ranitidine 150mg BID x 2 weeks
+            </td>
+        </tr>
+
+        <!-- Third Line -->
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none; border-top:1px solid #000;">
+                Third Line
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['mildInfrequent']['thirdLine']['dexlansoprazole'] == true ? 'checked' : ''}" class="cb"></span>Dexlansoprazole 30 - 60 mg PO daily x 4 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['mildInfrequent']['thirdLine']['esomeprazole'] == true ? 'checked' : ''}" class="cb"></span>Esomeprazole 20 - 40 mg PO daily x 4 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['mildInfrequent']['thirdLine']['lansoprazole'] == true ? 'checked' : ''}" class="cb"></span>Lansoprazole 15 - 30 mg PO daily x 4 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['mildInfrequent']['thirdLine']['omeprazole'] == true ? 'checked' : ''}" class="cb"></span>Omeprazole 20 - 40 mg PO daily x 4 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['mildInfrequent']['thirdLine']['pantoprazoleSodium'] == true ? 'checked' : ''}" class="cb"></span>Pantoprazole sodium 20 - 40 mg PO daily x 4 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['mildInfrequent']['thirdLine']['pantoprazoleMagnesium'] == true ? 'checked' : ''}" class="cb"></span>Pantoprazole magnesium 40 mg PO daily x 4 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['mildInfrequent']['thirdLine']['rabeprazole'] == true ? 'checked' : ''}" class="cb"></span>Rabeprazole 20 mg PO daily x 4 weeks
+            </td>
+        </tr>
+
+        <!-- Moderate and Frequent -->
+        <tr>
+            <td style="font-weight:bold; padding:2px 6px; border:1px solid #000; border-left:none; border-right:none; border-top:1px solid #000;">
+                Moderate and Frequent
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['moderateFrequent']['dexlansoprazole'] == true ? 'checked' : ''}" class="cb"></span>Dexlansoprazole 30 - 60 mg PO daily x 4 weeks + 1 refill<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['moderateFrequent']['esomeprazole'] == true ? 'checked' : ''}" class="cb"></span>Esomeprazole 20 - 40 mg PO daily x 4 weeks + 1 refill<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['moderateFrequent']['lansoprazole'] == true ? 'checked' : ''}" class="cb"></span>Lansoprazole 15 - 30 mg PO daily x 4 weeks + 1 refill<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['moderateFrequent']['omeprazole'] == true ? 'checked' : ''}" class="cb"></span>Omeprazole 20 - 40 mg PO daily x 4 weeks + 1 refill<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['moderateFrequent']['pantoprazoleSodium'] == true ? 'checked' : ''}" class="cb"></span>Pantoprazole sodium 20 - 40 mg PO daily x 4 weeks + 1 refill<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['moderateFrequent']['pantoprazoleMagnesium'] == true ? 'checked' : ''}" class="cb"></span>Pantoprazole magnesium 40 mg PO daily x 4 weeks + 1 refill<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['moderateFrequent']['rabeprazole'] == true ? 'checked' : ''}" class="cb"></span>Rabeprazole 20 mg PO daily x 4 weeks + 1 refill
+            </td>
+        </tr>
+
+    </table>
+
+</div>
+
+</body>
+</html>

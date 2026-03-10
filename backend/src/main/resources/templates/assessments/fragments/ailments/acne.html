@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section(data)">
+
+    <div style="text-align:center; font-weight:bold; font-size:13px; margin:2px 0 3px 0;">
+        Minor Ailment Assessment &amp; Treatment Options - Acne
+    </div>
+
+    <!-- ======================== RATIONALE FOR PRESCRIBING ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                RATIONALE FOR PRESCRIBING
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient presents with the following symptoms consistent with acne <em>(Check all that apply)</em>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['comedonal'] == true ? 'checked' : ''}" class="cb"></span>Comedonal acne (white &amp; blackheads)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['mildInflammatory'] == true ? 'checked' : ''}" class="cb"></span>Mild inflammatory acne (papules, pustules)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['previousDiagnosis'] == true ? 'checked' : ''}" class="cb"></span>Previous diagnosis of acne<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['other'] == true ? 'checked' : ''}" class="cb"></span>Other:
+                <span th:text="${data['ailment']['clinicalBlock']['symptoms']['otherDetail'] != null ? data['ailment']['clinicalBlock']['symptoms']['otherDetail'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient meets the following criteria for minor ailment prescribing <em>(Must check all)</em>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['ageOver12'] == true ? 'checked' : ''}" class="cb"></span>&gt; 12 yo<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noSuspectedDrugInduced'] == true ? 'checked' : ''}" class="cb"></span>Not suspected drug-induced acne<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noFamilyHistoryScarring'] == true ? 'checked' : ''}" class="cb"></span>No family history of scarring acne<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noAlarmSigns'] == true ? 'checked' : ''}" class="cb"></span>No alarm signs or symptoms (fever/arthralgia, hyperandrogenism eg. scalp hair loss, facial hair, irregular menstrual cycle)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noNodulesOrCysts'] == true ? 'checked' : ''}" class="cb"></span>No presence of nodules or cysts<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['under20Comedones'] == true ? 'checked' : ''}" class="cb"></span>Approximately &lt; 20 comedones present<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['under15InflammatoryPapules'] == true ? 'checked' : ''}" class="cb"></span>Approximately &lt; 15 inflammatory papules present<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['totalLesionUnder30'] == true ? 'checked' : ''}" class="cb"></span>Total lesion count &lt; 30<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noErythemaPapulesWithoutComedones'] == true ? 'checked' : ''}" class="cb"></span>No erythema, papules, pustules in the absence of comedones (other conditions must be ruled out)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noWidespreadInflammatory'] == true ? 'checked' : ''}" class="cb"></span>No widespread inflammatory lesions (i.e. involving areas beyond the face)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noHighAnxietyLowSelfEsteem'] == true ? 'checked' : ''}" class="cb"></span>No high levels of anxiety/low self-esteem<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['newOnsetAgeUnder30'] == true ? 'checked' : ''}" class="cb"></span>New onset age &lt; 30
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== PRESCRIPTION TREATMENT ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Prescription Treatment
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['clindamycin1Sol'] == true ? 'checked' : ''}" class="cb"></span>Clindamycin 1% Sol: Apply to entire affected area BID x 8&#8211;12 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['azelaicAcid15Gel'] == true ? 'checked' : ''}" class="cb"></span>Azelaic Acid 15% Gel (Finacea): Apply to entire affected area BID x 8&#8211;12 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['adapalene01or03'] == true ? 'checked' : ''}" class="cb"></span>Adapalene 0.1% or 0.3% (Differin): Apply to entire affected area QHS x 8&#8211;12 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['tazarotene'] == true ? 'checked' : ''}" class="cb"></span>Tazarotene 0.045% cream or gel (Arazlo): Apply to entire affected area QHS x 8&#8211;12 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['tretinoin'] == true ? 'checked' : ''}" class="cb"></span>Tretinoin 0.01% or 0.025% or 0.05% or 0.1% Gel or Cream: Apply to entire affected area QHS x 8&#8211;12 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['trifarotene'] == true ? 'checked' : ''}" class="cb"></span>Trifarotene 0.005% (Aklief): Apply to entire affected area QHS x 8&#8211;12 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['dapsone5Gel'] == true ? 'checked' : ''}" class="cb"></span>Dapsone 5% Gel (Aczone): Apply to entire affected area BID x 8&#8211;12 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['benzoylPeroxide10'] == true ? 'checked' : ''}" class="cb"></span>Benzoyl Peroxide 10% Gel or Lotion or Wash: Apply to entire affected area QHS or BID x 8&#8211;12 weeks<br>
+                <br>
+                Combination products:<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['adapaleneBenzoylPeroxide'] == true ? 'checked' : ''}" class="cb"></span>Adapalene 0.1% or 0.3% &amp; Benzoyl Peroxide 2.5% Gel (TactuPump): Apply to entire affected area QHS x 8&#8211;12 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['clindamycinBenzoylPeroxide'] == true ? 'checked' : ''}" class="cb"></span>Clindamycin 1% &amp; Benzoyl Peroxide 3% or 5% Gel (BenzaClin/Clindoxyl): Apply to entire affected area QHS x 8&#8211;12 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['erythromycinBenzoylPeroxide'] == true ? 'checked' : ''}" class="cb"></span>Erythromycin 3%/Benzoyl Peroxide 5% Gel (Benzamycin): Apply to entire affected area BID x 8&#8211;12 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['tretinoinClindamycin'] == true ? 'checked' : ''}" class="cb"></span>Tretinoin 0.025%/Clindamycin 1.2% Gel (Biacna): Apply to entire affected area QHS x 8&#8211;12 weeks
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== OTC TREATMENT ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                OTC Treatment
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['benzoylPeroxide25to5'] == true ? 'checked' : ''}" class="cb"></span>Benzoyl Peroxide 2.5&#8211;5% Gel or Lotion or Wash: Apply to entire affected area BID x 8&#8211;12 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['glycolicAcid'] == true ? 'checked' : ''}" class="cb"></span>Glycolic acid 2&#8211;15% Gel or Lotion or Cream: Apply to entire affected area BID x 8&#8211;12 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['salicylicAcid'] == true ? 'checked' : ''}" class="cb"></span>Salicylic Acid 0.5&#8211;2%: Apply to entire affected area BID x 8&#8211;12 weeks
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+</body>
+</html>

@@ -1,162 +1,70 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 12px;
-            color: #000;
-            margin: 20px;
-        }
-
-        .page-title {
-            text-align: center;
-            font-weight: bold;
-            font-size: 13px;
-            margin-bottom: 14px;
-        }
-
-        .section-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 16px;
-        }
-
-        .section-table td {
-            border: 1px solid #000;
-            padding: 6px 10px;
-            line-height: 1.9;
-            vertical-align: top;
-        }
-
-        .header-cell {
-            background-color: #000;
-            color: #fff;
-            font-weight: bold;
-            padding: 5px 10px;
-            border: 1px solid #000;
-        }
-
-        .subheader-cell {
-            background-color: #fff;
-            padding: 5px 10px;
-            border: 1px solid #000;
-        }
-
-        .bold-subheader {
-            font-weight: bold;
-            padding: 6px 10px;
-            border: 1px solid #000;
-        }
-
-        /* Checkbox */
-        .cb {
-            display: inline-block;
-            width: 11px;
-            height: 11px;
-            border: 1.5px solid #000;
-            margin-right: 5px;
-            vertical-align: middle;
-            position: relative;
-            top: -1px;
-            background-color: #fff;
-        }
-
-        .cb.checked::after {
-            content: '✓';
-            position: absolute;
-            top: -4px;
-            left: 0;
-            font-size: 12px;
-            font-weight: bold;
-            color: #000;
-        }
-    </style>
-</head>
 <body>
 
-<div th:fragment="section">
+<div th:fragment="section(data)">
 
-    <!-- ================= TITLE ================= -->
-    <div class="page-title">
-        Minor Ailment Assessment &amp; Treatment Options - &nbsp;Dysmenorrhea
+    <div style="text-align:center; font-weight:bold; font-size:13px; margin:2px 0 3px 0;">
+        Minor Ailment Assessment &amp; Treatment Options - Dysmenorrhea
     </div>
 
-    <!-- ================= RATIONALE FOR PRESCRIBING ================= -->
-    <table class="section-table">
+    <!-- RATIONALE FOR PRESCRIBING -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
 
         <tr>
-            <td class="header-cell">RATIONALE FOR PRESCRIBING</td>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                RATIONALE FOR PRESCRIBING
+            </td>
         </tr>
 
         <tr>
-            <td class="subheader-cell">
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
                 Patient presents with the following symptoms consistent with dysmenorrhea (Check all that apply)
             </td>
         </tr>
 
         <tr>
-            <td>
-                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['lowerAbdominalPain'] == true ? 'checked' : ''}" class="cb"></span>
-                Lower mid-abdominal pain ± pelvic pain/cramping<br>
-
-                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['painRadiating'] == true ? 'checked' : ''}" class="cb"></span>
-                Pain radiating to lower back and upper thigh<br>
-
-                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['painWithMenses'] == true ? 'checked' : ''}" class="cb"></span>
-                Pain begins with onset of menses<br>
-
-                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['painLasts2to3Days'] == true ? 'checked' : ''}" class="cb"></span>
-                Pain lasts 2-3 days<br>
-
-                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['other'] == true ? 'checked' : ''}" class="cb"></span>
-                Other:
-                <span class="field-value"
-                      th:text="${data['ailment']['clinicalBlock']['symptoms']['otherDetail'] != null ? data['ailment']['clinicalBlock']['symptoms']['otherDetail'] : ''}"></span>
-                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            <td style="padding:2px 6px 3px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['lowerAbdominalPain'] == true ? 'checked' : ''}" class="cb"></span>Lower mid-abdominal pain ± pelvic pain/cramping<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['painRadiating'] == true ? 'checked' : ''}" class="cb"></span>Pain radiating to lower back and upper thigh<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['painWithMenses'] == true ? 'checked' : ''}" class="cb"></span>Pain begins with onset of menses<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['painLasts2to3Days'] == true ? 'checked' : ''}" class="cb"></span>Pain lasts 2-3 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['other'] == true ? 'checked' : ''}" class="cb"></span>Other:
+                <span th:text="${data['ailment']['clinicalBlock']['symptoms']['otherDetail'] != null ? data['ailment']['clinicalBlock']['symptoms']['otherDetail'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
             </td>
         </tr>
 
         <tr>
-            <td class="subheader-cell">
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
                 Patient meets the following criteria for minor ailment prescribing (Must check all)
             </td>
         </tr>
 
         <tr>
-            <td>
-                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['initialOnsetWithMenstruation'] == true ? 'checked' : ''}" class="cb"></span>
-                Initial onset of pain is within hours or onset of menstruation<br>
-
-                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noSystemicInfection'] == true ? 'checked' : ''}" class="cb"></span>
-                No signs of systemic infections (e.g. fever, chills)<br>
-
-                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noIUDLastYear'] == true ? 'checked' : ''}" class="cb"></span>
-                No IUD inserted in the last 1 year<br>
-
-                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noPainOutsideMenses'] == true ? 'checked' : ''}" class="cb"></span>
-                No pain at other times of menstrual cycle<br>
-
-                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['ageAbove12'] == true ? 'checked' : ''}" class="cb"></span>
-                Age &gt; 12 years old<br>
-
-                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noHistoryOfComplications'] == true ? 'checked' : ''}" class="cb"></span>
-                No history of endometriosis, ovarian cysts, fibroids, cardiovascular or GI disease/disorder, renal impairment or bleeding
-                disorder
+            <td style="padding:2px 6px 3px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['initialOnsetWithMenstruation'] == true ? 'checked' : ''}" class="cb"></span>Initial onset of pain is within hours or onset of menstruation<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noSystemicInfection'] == true ? 'checked' : ''}" class="cb"></span>No signs of systemic infections (e.g. fever, chills)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noIUDLastYear'] == true ? 'checked' : ''}" class="cb"></span>No IUD inserted in the last 1 year<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noPainOutsideMenses'] == true ? 'checked' : ''}" class="cb"></span>No pain at other times of menstrual cycle<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['ageAbove12'] == true ? 'checked' : ''}" class="cb"></span>Age &gt; 12 years old<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noHistoryOfComplications'] == true ? 'checked' : ''}" class="cb"></span>No history of endometriosis, ovarian cysts, fibroids, cardiovascular or GI disease/disorder, renal impairment or bleeding disorder
             </td>
         </tr>
 
     </table>
 
-    <!-- ================= PRESCRIPTION TREATMENT ================= -->
-    <table class="section-table">
+    <!-- PRESCRIPTION TREATMENT -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
 
         <tr>
-            <td class="bold-subheader"><strong>Prescription Treatment</strong></td>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Prescription Treatment
+            </td>
         </tr>
 
         <tr>
-            <td>
+            <td style="padding:2px 6px 3px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
                 <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['selected'] == 'Ibuprofen' ? 'checked' : ''}" class="cb"></span>
                 Ibuprofen 400 mg, loading dose of 800mg PO, then 400 mg PO Q6H x 3 days. Refills x 3<br>
 

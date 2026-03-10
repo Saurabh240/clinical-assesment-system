@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section(data)">
+
+    <div style="text-align:center; font-weight:bold; font-size:13px; margin:2px 0 3px 0;">
+        Minor Ailment Assessment &amp; Treatment Options - Candidal Stomatitis
+    </div>
+
+    <!-- ======================== RATIONALE FOR PRESCRIBING ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                RATIONALE FOR PRESCRIBING
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient presents with the following symptoms consistent with oral thrush (Check all that apply)
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['curdLikeSpots'] == true ? 'checked' : ''}" class="cb"></span>Superficial, gray-to-white curd-like spots on lips, buccal mucosa, tongue or palate<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['plaqueRemoval'] == true ? 'checked' : ''}" class="cb"></span>Plaque removal reveals erythematous base and cause mild bleeding<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['fuzzyFeeling'] == true ? 'checked' : ''}" class="cb"></span>Fuzzy feeling in the mouth and/or loss of taste<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['other'] == true ? 'checked' : ''}" class="cb"></span>Other:
+                <span th:text="${data['ailment']['clinicalBlock']['symptoms']['otherDetail'] != null ? data['ailment']['clinicalBlock']['symptoms']['otherDetail'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient meets the following criteria for minor ailment prescribing &nbsp;(Check all that apply)
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noRecentAntibioticOrCorticosteroid'] == true ? 'checked' : ''}" class="cb"></span>No recent broad spectrum antibiotic or used inhaled corticosteroids<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noDenturesOrSwelling'] == true ? 'checked' : ''}" class="cb"></span>No dentures or significant swelling in the area<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['lesionsUnder3Weeks'] == true ? 'checked' : ''}" class="cb"></span>Lesions present &lt; 3 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['lesionsNotUlcerousOrVesicular'] == true ? 'checked' : ''}" class="cb"></span>Lesions not ulcerous or vesicular
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== PRESCRIPTION TREATMENT ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Prescription Treatment
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['nystatinAdult'] == true ? 'checked' : ''}" class="cb"></span>Nystatin 100,000 units/mL Swish &amp; swallow 400 000 &#8211; 600 000 units QID PO &#215; 7&#8211;14 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['nystatinInfant'] == true ? 'checked' : ''}" class="cb"></span>Nystatin 100,000 units/mL Swish &amp; swallow 100 000 units QID PO &#215; 7&#8211;14 days <em>(infant &lt; 1 year old)</em>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+</body>
+</html>

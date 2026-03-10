@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section(data)">
+
+    <div style="text-align:center; font-weight:bold; font-size:13px; margin:2px 0 3px 0;">
+        Minor Ailment Assessment &amp; Treatment Options - Conjunctivitis
+    </div>
+
+    <!-- ======================== RATIONALE FOR PRESCRIBING ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td colspan="3" style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                RATIONALE FOR PRESCRIBING &nbsp;<span style="font-weight:normal;">(Check all that apply)</span>
+            </td>
+        </tr>
+        <!-- Column headers -->
+        <tr>
+            <td style="width:33.3%; font-weight:bold; padding:2px 6px; border:1px solid #000; border-left:none; text-align:center;">Bacterial</td>
+            <td style="width:33.3%; font-weight:bold; padding:2px 6px; border:1px solid #000; text-align:center;">Viral</td>
+            <td style="width:33.3%; font-weight:bold; padding:2px 6px; border:1px solid #000; border-right:none; text-align:center;">Allergic</td>
+        </tr>
+        <!-- Symptom rows -->
+        <tr>
+            <td style="padding:2px 6px 4px 6px; border:1px solid #000; border-left:none; vertical-align:top; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['bacterial']['generalizedRedness'] == true ? 'checked' : ''}" class="cb"></span>Generalized redness<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['bacterial']['mucopurulentDischarge'] == true ? 'checked' : ''}" class="cb"></span>Mucopurulent (viscous, yellow-green) discharge<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['bacterial']['minimalItching'] == true ? 'checked' : ''}" class="cb"></span>Minimal itching<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['bacterial']['unilateralToBilateral'] == true ? 'checked' : ''}" class="cb"></span>Unilateral initially, but may have progressed to bilateral
+            </td>
+            <td style="padding:2px 6px 4px 6px; border:1px solid #000; vertical-align:top; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['viral']['generalizedRedness'] == true ? 'checked' : ''}" class="cb"></span>Generalized redness<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['viral']['wateryMucoidDischarge'] == true ? 'checked' : ''}" class="cb"></span>Watery/ mucoid (clear; may be crusting in morning only)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['viral']['minimalItching'] == true ? 'checked' : ''}" class="cb"></span>Minimal itching<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['viral']['bilateralLymphadenopathy'] == true ? 'checked' : ''}" class="cb"></span>Bilateral lymphadenopathy<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['viral']['unilateralToBilateral'] == true ? 'checked' : ''}" class="cb"></span>Unilateral initially, but may have progressed to bilateral<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['viral']['pharyngitisAndFever'] == true ? 'checked' : ''}" class="cb"></span>Pharyngitis &amp; fever (common)
+            </td>
+            <td style="padding:2px 6px 4px 6px; border:1px solid #000; border-right:none; vertical-align:top; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['allergic']['itching'] == true ? 'checked' : ''}" class="cb"></span>Itching<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['allergic']['wateryMucoid'] == true ? 'checked' : ''}" class="cb"></span>Watery/ mucoid (clear)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['allergic']['generalizedRedness'] == true ? 'checked' : ''}" class="cb"></span>Generalized redness<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['allergic']['conjunctivalEdema'] == true ? 'checked' : ''}" class="cb"></span>Conjunctival edema (chemosis)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['allergic']['bilateral'] == true ? 'checked' : ''}" class="cb"></span>Bilateral (most cases)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['allergic']['sneezingCongestion'] == true ? 'checked' : ''}" class="cb"></span>Sneezing, congestion (some cases)
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== CRITERIA ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td colspan="3" style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient meets the following criteria for minor ailment prescribing &nbsp;<span style="font-weight:bold;">(Must check all)</span>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:33.3%; padding:2px 6px 4px 6px; border:1px solid #000; border-left:none; vertical-align:top; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noVisualAcuityLoss'] == true ? 'checked' : ''}" class="cb"></span>No loss of visual acuity (includes blurred vision, seeing halos)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noIrregularPupils'] == true ? 'checked' : ''}" class="cb"></span>No irregular pupils &#8211; fixed, smaller, larger<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noCornealOpacity'] == true ? 'checked' : ''}" class="cb"></span>No visible corneal opacity or haze<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noFocalRedness'] == true ? 'checked' : ''}" class="cb"></span>No focal rather than diffuse redness<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noHyperPurulentDischarge'] == true ? 'checked' : ''}" class="cb"></span>No hyper-purulent discharge
+            </td>
+            <td style="width:33.3%; padding:2px 6px 4px 6px; border:1px solid #000; vertical-align:top; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noCiliaryFlush'] == true ? 'checked' : ''}" class="cb"></span>No ciliary flush (redness concentrated in ring around the iris)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noPhotophobia'] == true ? 'checked' : ''}" class="cb"></span>No photophobia +/- cannot hold eye open<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noRashBlisters'] == true ? 'checked' : ''}" class="cb"></span>No rash +/- blisters around eye, or soft tissue swelling<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noModerateSeverePain'] == true ? 'checked' : ''}" class="cb"></span>No moderate to severe pain
+            </td>
+            <td style="width:33.3%; padding:2px 6px 4px 6px; border:1px solid #000; border-right:none; vertical-align:top; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noHeadacheNausea'] == true ? 'checked' : ''}" class="cb"></span>No headache with nausea<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['symptomsDurationUnder2Weeks'] == true ? 'checked' : ''}" class="cb"></span>Symptoms duration &lt; 2 weeks<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noForeignBodySensation'] == true ? 'checked' : ''}" class="cb"></span>No foreign body sensation<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noHistoryEyeTrauma'] == true ? 'checked' : ''}" class="cb"></span>No history of eye trauma<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noUnresponsiveSymptoms'] == true ? 'checked' : ''}" class="cb"></span>No symptoms unresponsive to appropriate therapy<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noContactLensUse'] == true ? 'checked' : ''}" class="cb"></span>No contact lens use
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== TREATMENT – BACTERIAL ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Treatment - <span style="font-style:italic;">Bacterial</span> Conjunctivitis
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['bacterial']['gramicidinPolymyxin'] == true ? 'checked' : ''}" class="cb"></span>Gramicidin/polymyxin B Drops: initially 1&#8211;3 drops in affected eye(s) Q1H, gradually decreasing to 1&#8211;2 drops 4&#8211;6 times daily &#215; 7 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['bacterial']['erythromycin'] == true ? 'checked' : ''}" class="cb"></span>Erythromycin Ointment: 1.25 cm 2&#8211;6 times/day in affected eye(s) &#215; 7 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['bacterial']['fusidicAcid'] == true ? 'checked' : ''}" class="cb"></span>Fusidic acid (over 2 years old) 1%: 1 drop in affected eye(s) Q12H &#215; 7 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['bacterial']['polymyxinTrimethoprim'] == true ? 'checked' : ''}" class="cb"></span>Polymyxin B/trimethoprim (over 2 months old): 0.1%/10,000 units/mL Initially 1&#8211;3 drops in affected eye(s) Q1H, gradually decreasing to 1&#8211;2 drops Q3H daily &#215; 7 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['bacterial']['tobramycin'] == true ? 'checked' : ''}" class="cb"></span>Tobramycin (Over 1 year old): 0.3%:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['bacterial']['tobramycinDrops'] == true ? 'checked' : ''}" class="cb"></span>Drops: 1&#8211;2 drops in affected eye(s) Q4H &#215; 7 days<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['bacterial']['tobramycinOintment'] == true ? 'checked' : ''}" class="cb"></span>Ointment: 1.25 cm in affected eye(s) BID&#8211;TID &#215; 7 days
+                </div>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['bacterial']['other'] == true ? 'checked' : ''}" class="cb"></span>Other:
+                <span th:text="${data['ailment']['clinicalBlock']['treatment']['bacterial']['otherDetail'] != null ? data['ailment']['clinicalBlock']['treatment']['bacterial']['otherDetail'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== TREATMENT – VIRAL ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Treatment - <span style="font-style:italic;">Viral</span> Conjunctivitis
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['viral']['antazolineNaphazoline'] == true ? 'checked' : ''}" class="cb"></span>Antazoline/naphazoline (adults) 0.51%/0.051%: 1&#8211;2 drops in affected eye(s) Q3&#8211;4h x 3&#8211;4 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['viral']['pheniramiineNaphazoline'] == true ? 'checked' : ''}" class="cb"></span>Pheniramine/naphazoline (adults) 0.3%/0.025%: 1&#8211;2 drops in affected eye(s) QID x 3&#8211;4 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['viral']['tetrahydrozoline'] == true ? 'checked' : ''}" class="cb"></span>Tetrahydrozoline (adults) 0.05%: 1&#8211;2 drops in affected eye(s) BID&#8211;QID x 3&#8211;4 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['viral']['naphazoline'] == true ? 'checked' : ''}" class="cb"></span>Naphazoline (adults) 0.1%: 1&#8211;2 drops in affected eye(s) QID x 3&#8211;4 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['viral']['other'] == true ? 'checked' : ''}" class="cb"></span>Other:
+                <span th:text="${data['ailment']['clinicalBlock']['treatment']['viral']['otherDetail'] != null ? data['ailment']['clinicalBlock']['treatment']['viral']['otherDetail'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== TREATMENT – ALLERGIC ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Treatment - <span style="font-style:italic;">Allergic</span> Conjunctivitis
+            </td>
+        </tr>
+
+        <!-- First Line -->
+        <tr>
+            <td style="font-weight:bold; padding:2px 6px; border:1px solid #000; border-left:none; border-right:none; border-top:none;">
+                First Line
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['allergic']['firstLine']['olopatadine'] == true ? 'checked' : ''}" class="cb"></span>Olopatadine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['allergic']['firstLine']['olopatadineOver3y07'] == true ? 'checked' : ''}" class="cb"></span>Over 3 years old: 0.7%: 1 drop in affected eye(s) once daily x
+                    <span th:text="${data['ailment']['clinicalBlock']['treatment']['allergic']['firstLine']['olopatadineOver3y07Days'] != null ? data['ailment']['clinicalBlock']['treatment']['allergic']['firstLine']['olopatadineOver3y07Days'] : ''}"></span>
+                    <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> days<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['allergic']['firstLine']['olopatadineOver3y01'] == true ? 'checked' : ''}" class="cb"></span>Over 3 years old: 0.1%: 1&#8211;2 drops in affected eye(s) BID x
+                    <span th:text="${data['ailment']['clinicalBlock']['treatment']['allergic']['firstLine']['olopatadineOver3y01Days'] != null ? data['ailment']['clinicalBlock']['treatment']['allergic']['firstLine']['olopatadineOver3y01Days'] : ''}"></span>
+                    <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> days<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['allergic']['firstLine']['olopatadineAdult02'] == true ? 'checked' : ''}" class="cb"></span>Adults: 0.2%: 1 drop in affected eye(s) once daily x
+                    <span th:text="${data['ailment']['clinicalBlock']['treatment']['allergic']['firstLine']['olopatadineAdult02Days'] != null ? data['ailment']['clinicalBlock']['treatment']['allergic']['firstLine']['olopatadineAdult02Days'] : ''}"></span>
+                    <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> days
+                </div>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['allergic']['firstLine']['lodoxamide'] == true ? 'checked' : ''}" class="cb"></span>Lodoxamide (over 3 years old): 0.1%: 1&#8211;2 drops in affected eye(s) QID x
+                <span th:text="${data['ailment']['clinicalBlock']['treatment']['allergic']['firstLine']['lodoxamideDays'] != null ? data['ailment']['clinicalBlock']['treatment']['allergic']['firstLine']['lodoxamideDays'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['allergic']['firstLine']['bepotastine'] == true ? 'checked' : ''}" class="cb"></span>Bepotastine (over 3 years): 1.5%: 1&#8211;2 drops in affected eye(s) BID x
+                <span th:text="${data['ailment']['clinicalBlock']['treatment']['allergic']['firstLine']['bepotastineDays'] != null ? data['ailment']['clinicalBlock']['treatment']['allergic']['firstLine']['bepotastineDays'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['allergic']['firstLine']['ketotifen'] == true ? 'checked' : ''}" class="cb"></span>Ketotifen (over 3 years old): 0.025%: 1 drop in affected eye(s) Q8&#8211;12H x
+                <span th:text="${data['ailment']['clinicalBlock']['treatment']['allergic']['firstLine']['ketotifenDays'] != null ? data['ailment']['clinicalBlock']['treatment']['allergic']['firstLine']['ketotifenDays'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['allergic']['firstLine']['other'] == true ? 'checked' : ''}" class="cb"></span>Other:
+                <span th:text="${data['ailment']['clinicalBlock']['treatment']['allergic']['firstLine']['otherDetail'] != null ? data['ailment']['clinicalBlock']['treatment']['allergic']['firstLine']['otherDetail'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            </td>
+        </tr>
+
+        <!-- Second Line -->
+        <tr>
+            <td style="font-weight:bold; padding:2px 6px; border:1px solid #000; border-left:none; border-right:none; border-top:1px solid #000;">
+                Second Line
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['allergic']['secondLine']['sodiumCromoglycate'] == true ? 'checked' : ''}" class="cb"></span>Sodium cromoglycate (over 5 years old) 2%: 1&#8211;2 drops in affected eye(s) QID x
+                <span th:text="${data['ailment']['clinicalBlock']['treatment']['allergic']['secondLine']['sodiumCromoglycateDays'] != null ? data['ailment']['clinicalBlock']['treatment']['allergic']['secondLine']['sodiumCromoglycateDays'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['allergic']['secondLine']['lodoxamide'] == true ? 'checked' : ''}" class="cb"></span>Lodoxamide (over 3 years old) 0.1%: 1&#8211;2 drops in affected eye(s) QID x
+                <span th:text="${data['ailment']['clinicalBlock']['treatment']['allergic']['secondLine']['lodoxamideDays'] != null ? data['ailment']['clinicalBlock']['treatment']['allergic']['secondLine']['lodoxamideDays'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['allergic']['secondLine']['antazolineNaphazoline'] == true ? 'checked' : ''}" class="cb"></span>Antazoline/naphazoline (adults) 0.51%/0.051%: 1&#8211;2 drops in affected eye(s) Q3&#8211;4h x 3&#8211;4 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['allergic']['secondLine']['pheniramiineNaphazoline'] == true ? 'checked' : ''}" class="cb"></span>Pheniramine/naphazoline (adults) 0.3%/0.025%: 1&#8211;2 drops in affected eye(s) QID x 3&#8211;4 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['allergic']['secondLine']['naphazoline005'] == true ? 'checked' : ''}" class="cb"></span>Naphazoline (adults) 0.05%: 1&#8211;2 drops in affected eye(s) BID&#8211;QID x 3&#8211;4 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['allergic']['secondLine']['tetrahydrozoline'] == true ? 'checked' : ''}" class="cb"></span>Tetrahydrozoline (adults) 0.05%: 1&#8211;2 drops in affected eye(s) BID&#8211;QID x 3&#8211;4 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['allergic']['secondLine']['other'] == true ? 'checked' : ''}" class="cb"></span>Other:
+                <span th:text="${data['ailment']['clinicalBlock']['treatment']['allergic']['secondLine']['otherDetail'] != null ? data['ailment']['clinicalBlock']['treatment']['allergic']['secondLine']['otherDetail'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            </td>
+        </tr>
+
+    </table>
+
+</div>
+
+</body>
+</html>

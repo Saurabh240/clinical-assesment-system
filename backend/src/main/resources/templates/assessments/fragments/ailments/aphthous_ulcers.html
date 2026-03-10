@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section(data)">
+
+    <div style="text-align:center; font-weight:bold; font-size:13px; margin:2px 0 3px 0;">
+        Minor Ailment Assessment &amp; Treatment Options - Aphthous Ulcers
+    </div>
+
+    <!-- ======================== RATIONALE FOR PRESCRIBING ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                RATIONALE FOR PRESCRIBING
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient presents with the following symptoms consistent with oral ulcers <em>(Check all that apply)</em>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['roundOrOvalUlcers'] == true ? 'checked' : ''}" class="cb"></span>1 - 5 round or oval, small, white/yellow/grey colored ulcer(s) with raised margin and red halo<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['durationUnder14Days'] == true ? 'checked' : ''}" class="cb"></span>Duration &lt;14 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['mucosalSurfaces'] == true ? 'checked' : ''}" class="cb"></span>Ulcer(s) present on mucosal surfaces; inside cheeks or lips, side of tongue, soft palate (the posterior roof of mouth), or floor of mouth<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['shallowAndPainful'] == true ? 'checked' : ''}" class="cb"></span>Ulcer(s) are shallow and painful<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['historyRecurrentUnder6PerYear'] == true ? 'checked' : ''}" class="cb"></span>History of recurrent episodes &lt;6 times per year<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['other'] == true ? 'checked' : ''}" class="cb"></span>Other:
+                <span th:text="${data['ailment']['clinicalBlock']['symptoms']['otherDetail'] != null ? data['ailment']['clinicalBlock']['symptoms']['otherDetail'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient meets the following criteria for minor ailment prescribing <em>(Must check all)</em>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['notImmunocompromised'] == true ? 'checked' : ''}" class="cb"></span>Not immunocompromised due to disease state, medication, radiation therapy, or immunodeficiency disorder (e.g. HIV, malignancies, Behcet's syndrome, Reiter's syndrome, inflammatory bowel disease, celiac disease, systemic lupus erythematosus, etc.)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noHistoryUlcersOver14DaysOrScarring'] == true ? 'checked' : ''}" class="cb"></span>No history of ulcers that last longer than 14 days, or cause scarring;<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['currentLesionUnder14Days'] == true ? 'checked' : ''}" class="cb"></span>Current lesion has been present &lt;14 days<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['firstOccurrenceUnder30'] == true ? 'checked' : ''}" class="cb"></span>First occurrence of ulcers before the age of 30<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noRecentContactSameSymptoms'] == true ? 'checked' : ''}" class="cb"></span>No recent contact with someone exhibiting the same symptoms<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noRecentNewDrug'] == true ? 'checked' : ''}" class="cb"></span>Patient has no recently started a new drug (e.g. NSAIDs, beta-blockers, methotrexate, ACEI, antiarrhythmic, opioids, etc.) that could indicate drug-induced ulcers<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noSystemicSymptoms'] == true ? 'checked' : ''}" class="cb"></span>No systemic symptoms (e.g. fever, pharyngitis, joint pain)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noLesionsElsewhere'] == true ? 'checked' : ''}" class="cb"></span>No lesions present elsewhere on the body e.g. head, trunk, hard palate (anterior roof of mouth), genitals, throat, lips, eyes, hands, feet<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noSeverePainInhibitingEating'] == true ? 'checked' : ''}" class="cb"></span>No severe pain that is inhibiting eating, drinking or swallowing<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noRecurrencesOver6PerYear'] == true ? 'checked' : ''}" class="cb"></span>No recurrences &gt; 6 times per year<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['diameterUnder1cm'] == true ? 'checked' : ''}" class="cb"></span>Diameter of ulcer &lt;1 cm<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['under5UlcersPresent'] == true ? 'checked' : ''}" class="cb"></span>&lt;5 ulcers present<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noClustersManySmallUlcers'] == true ? 'checked' : ''}" class="cb"></span>No clusters of many (10 to 100) small ulcers, 1-3mm in diameter, that may coalesce into 1 irregular shaped ulcer
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== PRESCRIPTION TREATMENT ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Prescription Treatment
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['triamcinoloneAcetonide'] == true ? 'checked' : ''}" class="cb"></span>Triamcinolone Acetonide 0.1%: dab small amount (0.5cm) to ulcer(s) QHS and as required up to TID PC PRN x 7 days (Do not rub in)
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== OTC TREATMENT ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                OTC Treatment
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['benzocaine'] == true ? 'checked' : ''}" class="cb"></span>Benzocaine: Apply to affected area in the mouth up to QID<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['lidocaineViscous'] == true ? 'checked' : ''}" class="cb"></span>Lidocaine Viscous 2%: Apply to affected area in the mouth up to QID<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['carboxymethylCellulose'] == true ? 'checked' : ''}" class="cb"></span>Carboxymethyl Cellulose: Use as often as needed, particularly PC
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+</body>
+</html>

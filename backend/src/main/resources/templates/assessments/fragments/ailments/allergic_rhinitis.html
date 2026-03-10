@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section(data)">
+
+    <div style="text-align:center; font-weight:bold; font-size:13px; margin:2px 0 3px 0;">
+        Minor Ailment Assessment &amp; Treatment Options - Allergic Rhinitis
+    </div>
+
+    <!-- ======================== RATIONALE FOR PRESCRIBING ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                RATIONALE FOR PRESCRIBING
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient presents with the following symptoms consistent with allergic rhinitis (Check all that apply)
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['congestion'] == true ? 'checked' : ''}" class="cb"></span>Congestion<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['sneezing'] == true ? 'checked' : ''}" class="cb"></span>Sneezing<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['postnasalDrip'] == true ? 'checked' : ''}" class="cb"></span>Postnasal drip<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['coughing'] == true ? 'checked' : ''}" class="cb"></span>Coughing<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['runnyNose'] == true ? 'checked' : ''}" class="cb"></span>Runny nose<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['headache'] == true ? 'checked' : ''}" class="cb"></span>Headache<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['soreThroat'] == true ? 'checked' : ''}" class="cb"></span>Sore throat<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['hives'] == true ? 'checked' : ''}" class="cb"></span>Hives<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['itchyEyes'] == true ? 'checked' : ''}" class="cb"></span>Itchy eyes, ears, mouth, throat, nose and/or skin<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['allergicShiner'] == true ? 'checked' : ''}" class="cb"></span>Allergic shiner (i.e. darkened or swollen areas under the eyes)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['other'] == true ? 'checked' : ''}" class="cb"></span>Other:
+                <span th:text="${data['ailment']['clinicalBlock']['symptoms']['otherDetail'] != null ? data['ailment']['clinicalBlock']['symptoms']['otherDetail'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient meets the following criteria for minor ailment prescribing &nbsp;(Check all that apply)
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['over2YearsOfAge'] == true ? 'checked' : ''}" class="cb"></span>&gt; 2 years of age<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noConcomitantAsthma'] == true ? 'checked' : ''}" class="cb"></span>No concomitant uncontrolled asthma, otitis media, or sinusitis<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['symptomsUnder2Weeks'] == true ? 'checked' : ''}" class="cb"></span>Symptoms &lt; 2 weeks with pharmacological treatment<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noShortnessOfBreath'] == true ? 'checked' : ''}" class="cb"></span>No shortness of breath or difficulty breathing<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['bilateralSymptoms'] == true ? 'checked' : ''}" class="cb"></span>Bilateral symptoms<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noFever'] == true ? 'checked' : ''}" class="cb"></span>No fever<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noSevereHeadacheOrEyePain'] == true ? 'checked' : ''}" class="cb"></span>No severe headache or eye pain<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noCloseContactInfectiousDisease'] == true ? 'checked' : ''}" class="cb"></span>No close contact with an individual with an infectious disease or loss of smell/taste<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noRecurrentNosebleeds'] == true ? 'checked' : ''}" class="cb"></span>No recurrent nosebleeds
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== PRESCRIPTION TREATMENT ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                PRESCRIPTION TREATMENT
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+
+                <!-- Bilastine -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['bilastine'] == true ? 'checked' : ''}" class="cb"></span>Bilastine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['bilastineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;12 y: 20 mg once daily PO<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['bilastineChild4to11'] == true ? 'checked' : ''}" class="cb"></span>Children 4&#8211;11 y (body wt &#8805;16 kg): 10 mg once daily PO
+                </div>
+
+                <!-- Cetirizine -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['cetirizine'] == true ? 'checked' : ''}" class="cb"></span>Cetirizine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['cetirizineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;6 y: 5&#8211;10 mg Q24H PO; maximum 20 mg/day<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['cetirizineChild6to12m'] == true ? 'checked' : ''}" class="cb"></span>Children: 6&#8211;12 months: 2.5 mg Q24H PO<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['cetirizineChild12to23m'] == true ? 'checked' : ''}" class="cb"></span>12&#8211;23 months: 2.5 mg Q24H PO; maximum 2.5 mg Q12H<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['cetirizineChild2to5'] == true ? 'checked' : ''}" class="cb"></span>2&#8211;5 y: 2.5 mg Q24H PO; maximum 5 mg/day in 1&#8211;2 doses
+                </div>
+
+                <!-- Desloratadine -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['desloratadine'] == true ? 'checked' : ''}" class="cb"></span>Desloratadine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['desloratadineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;12 y: 5 mg Q24H PO<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['desloratadineChild6to11m'] == true ? 'checked' : ''}" class="cb"></span>Children 6&#8211;11 months: 1 mg Q24H PO<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['desloratadineChild1to5'] == true ? 'checked' : ''}" class="cb"></span>1&#8211;5 y: 1.25 mg Q24H PO<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['desloratadineChild6to11'] == true ? 'checked' : ''}" class="cb"></span>6&#8211;11 y: 2.5 mg Q24H PO
+                </div>
+
+                <!-- Fexofenadine -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['fexofenadine'] == true ? 'checked' : ''}" class="cb"></span>Fexofenadine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['fexofenadineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults: 60 mg Q12H PO; maximum 180 mg/day (12-h formulation) or 120 mg/day (24-h formulation)<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['fexofenadineChild2to11'] == true ? 'checked' : ''}" class="cb"></span>Children 2&#8211;11 y: 30 mg Q12H PO
+                </div>
+
+                <!-- Rupatadine -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['rupatadine'] == true ? 'checked' : ''}" class="cb"></span>Rupatadine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['rupatadineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;12 y: 10 mg Q24H PO<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['rupatadineChild2to11'] == true ? 'checked' : ''}" class="cb"></span>Children 2&#8211;11 y: oral solution<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['rupatadine10to25kg'] == true ? 'checked' : ''}" class="cb"></span>10&#8211;25 kg: 2.5 mg Q24H PO; maximum 2.5 mg/day<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['rupatadineOver25kg'] == true ? 'checked' : ''}" class="cb"></span>&gt;25 kg: 5 mg Q24H PO; maximum 5 mg/day
+                </div>
+
+                <!-- Loratadine -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['loratadine'] == true ? 'checked' : ''}" class="cb"></span>Loratadine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['loratadineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &gt;5 y: 10 mg Q24H PO<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['loratadineChild2to5'] == true ? 'checked' : ''}" class="cb"></span>Children 2&#8211;5 y: 5 mg Q24H PO
+                </div>
+
+                <!-- Beclomethasone -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['beclomethasone'] == true ? 'checked' : ''}" class="cb"></span>Beclomethasone:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['beclomethasoneAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;6 y: 2 sprays (50 mcg/spray) in each nostril BID Adults: maximum 12 sprays/day. Children: maximum 8 sprays/day
+                </div>
+
+                <!-- Budesonide -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['budesonide'] == true ? 'checked' : ''}" class="cb"></span>Budesonide<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['budesonideNasalSuspension'] == true ? 'checked' : ''}" class="cb"></span>Nasal suspension (64 mcg/metered dose):<br>
+                    <div style="margin-left:16px; line-height:1.55;">
+                        <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['budesonideNasalSuspensionAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;6 y: Initial dose: 2 sprays in each nostril daily or 1 spray in each nostril BID; may decrease maintenance dose to 1 spray in each nostril daily<br>
+                    </div>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['budesonideNasalPowder'] == true ? 'checked' : ''}" class="cb"></span>Nasal powder (100 mcg/dose):<br>
+                    <div style="margin-left:16px; line-height:1.55;">
+                        <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['budesonideNasalPowderAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;6 y: Initial dose: 2 applications in each nostril in the morning or 1 application in each nostril BID; may decrease maintenance dose to 1 application in each nostril daily Max:400mcg/d
+                    </div>
+                </div>
+
+                <!-- Ciclesonide -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['ciclesonide'] == true ? 'checked' : ''}" class="cb"></span>Ciclesonide:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['ciclesonideAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;12 y: 2 sprays (50 mcg/spray) in each nostril daily; maximum 200 mcg/day
+                </div>
+
+                <!-- Fluticasone propionate -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['fluticasonePropionate'] == true ? 'checked' : ''}" class="cb"></span>Fluticasone propionate:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['fluticasonePropionateAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;12 y: 2 sprays (50 mcg/spray) in each nostril daily, may increase to BID in severe situations; maximum 400 mcg/day<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['fluticasonePropionateChild4to11'] == true ? 'checked' : ''}" class="cb"></span>Children 4&#8211;11 y: 1&#8211;2 sprays in each nostril daily; maximum 200 mcg/day
+                </div>
+
+                <!-- Fluticasone furoate -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['fluticasoneFuroate'] == true ? 'checked' : ''}" class="cb"></span>Fluticasone furoate:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['fluticasoneFuroateAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;12 y: 2 sprays (27.5 mcg/spray) in each nostril once daily; maximum 110 mcg/day<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['fluticasoneFuroateChild2to11'] == true ? 'checked' : ''}" class="cb"></span>Children 2&#8211;11 y: 1 spray in each nostril once daily, may increase to 2 sprays in each nostril once daily if needed. Decrease to 1 spray in each nostril daily for maintenance; maximum 110 mcg/day
+                </div>
+
+                <!-- Mometasone -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['mometasone'] == true ? 'checked' : ''}" class="cb"></span>Mometasone:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['mometasoneAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;12 y: 2 sprays (50 mcg/spray) in each nostril daily, may decrease to 1 spray in each nostril daily for maintenance; may increase to BID in severe situations<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['mometasoneChild3to11'] == true ? 'checked' : ''}" class="cb"></span>Children 3&#8211;11 y: 1 spray in each nostril daily
+                </div>
+
+                <!-- Triamcinolone -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['triamcinolone'] == true ? 'checked' : ''}" class="cb"></span>Triamcinolone<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['triamcinoloneAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;12 y: 2 sprays (55 mcg/spray) in each nostril once daily, may decrease to 1 spray in each nostril daily<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['triamcinoloneChild4to11'] == true ? 'checked' : ''}" class="cb"></span>Children 4&#8211;11 y: 1 spray in each nostril once daily, may increase to 2 sprays in each nostril once daily if needed. Decrease to 1 spray in each nostril daily for maintenance; maximum 110 mcg/day
+                </div>
+
+                <!-- Azelastine/fluticasone -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['azelastineFluticasone'] == true ? 'checked' : ''}" class="cb"></span>Azelastine/fluticasone:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['azelastineFluticasoneAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;12 y: 1 spray (137 mcg/50 mcg) in each nostril BID
+                </div>
+
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== OTC TREATMENT ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                OTC Treatment
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+
+                <!-- Chlorpheniramine -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['chlorpheniramine'] == true ? 'checked' : ''}" class="cb"></span>Chlorpheniramine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['chlorpheniramineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults: 4 mg Q4&#8211;6H PO; maximum 24 mg/day<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['chlorpheniramineChild'] == true ? 'checked' : ''}" class="cb"></span>Children: 0.35 mg/kg/day divided Q4&#8211;6H PO
+                </div>
+
+                <!-- Diphenhydramine -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['diphenhydramine'] == true ? 'checked' : ''}" class="cb"></span>Diphenhydramine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['diphenhydramineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults: 25&#8211;50 mg Q6&#8211;8H PO; maximum 300 mg/day<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['diphenhydramineChild'] == true ? 'checked' : ''}" class="cb"></span>Children: 5 mg/kg/day PO given in 3&#8211;4 divided doses
+                </div>
+
+                <!-- Cyproheptadine -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['cyproheptadine'] == true ? 'checked' : ''}" class="cb"></span>Cyproheptadine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['cyproheptadineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults: Initially 4 mg Q8H PO; then 0.5 mg/kg/day, usually 12&#8211;16 mg/day; max 32 mg daily.<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['cyproheptadineChild2to6'] == true ? 'checked' : ''}" class="cb"></span>Children 2&#8211;6 years: 0.25 mg/kg/day PO OR 2 mg Q8&#8211;12H; max 12mg/d<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['cyproheptadineChild7to14'] == true ? 'checked' : ''}" class="cb"></span>Children 7&#8211;14 years: 0.25 mg/kg/day PO OR 4 mg Q8&#8211;12H; max 16mg/d
+                </div>
+
+                <!-- Pseudoephedrine -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['pseudoephedrine'] == true ? 'checked' : ''}" class="cb"></span>Pseudoephedrine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['pseudoephedrineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults: 60 mg Q4&#8211;6H PO; maximum 240 mg/day<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['pseudoephedrineSR'] == true ? 'checked' : ''}" class="cb"></span>Sustained-release: 120 mg Q12H PO; maximum 240 mg/day<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['pseudoephedrineChild6to11'] == true ? 'checked' : ''}" class="cb"></span>Children 6&#8211;11 y: 30 mg Q4&#8211;6H PO; maximum 120 mg/day
+                </div>
+
+                <!-- Cetirizine/pseudoephedrine -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['cetirizinePseudoephedrine'] == true ? 'checked' : ''}" class="cb"></span>Cetirizine/pseudoephedrine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['cetirizinePseudoephedrineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;12 y: 1 tablet (5 mg/120 mg) Q12H PO
+                </div>
+
+                <!-- Desloratadine/pseudoephedrine -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['desloratadinePseudoephedrine'] == true ? 'checked' : ''}" class="cb"></span>Desloratadine/pseudoephedrine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['desloratadinePseudoephedrineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;12 y: 1 tablet (2.5 mg/120 mg) Q12H PO
+                </div>
+
+                <!-- Fexofenadine/pseudoephedrine -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['fexofenadinePseudoephedrine'] == true ? 'checked' : ''}" class="cb"></span>Fexofenadine/pseudoephedrine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['fexofenadinePseudoephedrineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;12 y: 1 tablet (60 mg/120 mg) Q12H PO
+                </div>
+
+                <!-- Loratadine/pseudoephedrine -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['loratadinePseudoephedrine'] == true ? 'checked' : ''}" class="cb"></span>Loratadine/pseudoephedrine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['loratadinePseudoephedrineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;12 y: 1 tablet (5 mg/120 mg) Q12H PO or 1 tablet (10 mg/240 mg) Q24H PO
+                </div>
+
+                <!-- Oxymetazoline -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['oxymetazoline'] == true ? 'checked' : ''}" class="cb"></span>Oxymetazoline:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['oxymetazolineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;6 y: 0.05% solution: 2&#8211;3 drops/sprays per nostril (max 3 days)
+                </div>
+
+                <!-- Pheniramine/phenylephrine -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['pheniraminePhenylepherine'] == true ? 'checked' : ''}" class="cb"></span>Pheniramine/phenylephrine:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['pheniraminePhenylepherineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;6 y: 0.25% or 0.5% solution: 2&#8211;3 drops/sprays per nostril Q4H
+                </div>
+
+                <!-- Xylometazoline -->
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['xylometazoline'] == true ? 'checked' : ''}" class="cb"></span>Xylometazoline:<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['xylometazolineAdult'] == true ? 'checked' : ''}" class="cb"></span>Adults and children &#8805;6 y: 0.05% or 0.1% solution: 2&#8211;3 drops or 1&#8211;2 sprays per nostril Q8&#8211;10H
+                </div>
+
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+</body>
+</html>

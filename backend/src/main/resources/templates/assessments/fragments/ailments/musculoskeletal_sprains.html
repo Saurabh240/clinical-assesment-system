@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="section(data)">
+
+    <div style="text-align:center; font-weight:bold; font-size:13px; margin:2px 0 3px 0;">
+        Minor Ailment Assessment &amp; Treatment Options - Musculoskeletal Sprains and Strains
+    </div>
+
+    <!-- ======================== RATIONALE FOR PRESCRIBING ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                RATIONALE FOR PRESCRIBING
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient presents with the following symptoms consistent with musculoskeletal sprains and strains (Check all that apply)
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['pain'] == true ? 'checked' : ''}" class="cb"></span>Pain (mild to moderate)<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['swelling'] == true ? 'checked' : ''}" class="cb"></span>Swelling<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['tenderness'] == true ? 'checked' : ''}" class="cb"></span>Tenderness<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['bruising'] == true ? 'checked' : ''}" class="cb"></span>Bruising<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['symptoms']['other'] == true ? 'checked' : ''}" class="cb"></span>Other:
+                <span th:text="${data['ailment']['clinicalBlock']['symptoms']['otherDetail'] != null ? data['ailment']['clinicalBlock']['symptoms']['otherDetail'] : ''}"></span>
+                <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Patient meets the following criteria for minor ailment prescribing &nbsp;(Check all that apply)
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noEyeHeadInjury'] == true ? 'checked' : ''}" class="cb"></span>No eye or head injury, nosebleeds or ruptured eardrum<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['noSeverePainOrFracture'] == true ? 'checked' : ''}" class="cb"></span>No severe pain, obvious fractures or joint deformity<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['criteria']['ableToBearWeight'] == true ? 'checked' : ''}" class="cb"></span>Able to bear weight on injured limb
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== PRESCRIPTION TREATMENT ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                Prescription Treatment
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['acetaminophen'] == true ? 'checked' : ''}" class="cb"></span>Acetaminophen 325&#8211;500 mg Q3H PRN PO OR 325&#8211;650 mg Q4H PRN PO OR 650&#8211;1000 mg Q6H PRN PO; Max 4 g/d<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['asa'] == true ? 'checked' : ''}" class="cb"></span>ASA 325&#8211;500 mg Q3H PRN PO OR 325&#8211;650 mg Q4H PRN PO OR 650&#8211;1000 mg Q6H PRN PO<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['ibuprofen'] == true ? 'checked' : ''}" class="cb"></span>Ibuprofen &gt; 12 years old 600&#8211;800 mg TID&#8211;QID PRN<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['naproxen'] == true ? 'checked' : ''}" class="cb"></span>Naproxen 550 mg loading dose, then 275 mg Q6&#8211;8H PRN<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['diclofenacDiethylamine'] == true ? 'checked' : ''}" class="cb"></span>Diclofenac diethylamine (Voltaren) Apply TID&#8211;QID x 7d<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['diclofenacSodium'] == true ? 'checked' : ''}" class="cb"></span>Diclofenac sodium (Pennsaid) Apply 2&#8211;4g TID&#8211;QID x 7d<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['celecoxib'] == true ? 'checked' : ''}" class="cb"></span>Celecoxib 400mg single dose on the first day, then 100&#8211;200 mg daily PO PRN x 7d<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['flurbiprofen'] == true ? 'checked' : ''}" class="cb"></span>Flurbiprofen 50mg Q4&#8211;6H PO PRN x 7d<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['ketoprofen'] == true ? 'checked' : ''}" class="cb"></span>Ketoprofen 25 or 50mg TID&#8211;QID PO PRN x 7d<br>
+                <span th:classappend="${data['ailment']['clinicalBlock']['treatment']['mefenamicAcid'] == true ? 'checked' : ''}" class="cb"></span>Mefenamic acid 500mg loading dose, then 250 mg Q6H PO PRN x 7d
+            </td>
+        </tr>
+    </table>
+
+    <!-- ======================== OTC TREATMENT ======================== -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
+        <tr>
+            <td style="background:#000; color:#fff; font-weight:bold; padding:3px 6px; border:1px solid #000; border-left:none; border-right:none;">
+                OTC Treatment
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:2px 6px 4px 12px; border:1px solid #000; border-left:none; border-right:none; line-height:1.55;">
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['ibuprofen'] == true ? 'checked' : ''}" class="cb"></span>Ibuprofen<br>
+                <div style="margin-left:16px; line-height:1.55;">
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['ibuprofenAdult'] == true ? 'checked' : ''}" class="cb"></span>Adult: 200&#8211;400 mg Q4&#8211;6H PRN x 5 days<br>
+                    <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['ibuprofenChild'] == true ? 'checked' : ''}" class="cb"></span>Children &lt;12: 5&#8211;10 mg/kg/dose Q6&#8211;8H x 5 days
+                </div>
+                <span th:classappend="${data['ailment']['clinicalBlock']['otcTreatment']['naproxenSodium'] == true ? 'checked' : ''}" class="cb"></span>Naproxen sodium 220 mg Q8&#8211;12H PRN
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+</body>
+</html>
