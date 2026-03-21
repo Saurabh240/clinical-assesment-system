@@ -9,6 +9,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.apache.http.auth.InvalidCredentialsException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -16,17 +17,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.HexFormat;
 import java.util.UUID;
 
-import static org.apache.commons.codec.digest.DigestUtils.sha256;
+import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 
 @Service
+@RequiredArgsConstructor
 @Transactional
 public class AuthService {
 
@@ -34,13 +32,6 @@ public class AuthService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
-
-    public AuthService(UserRepository userRepository, RefreshTokenRepository refreshTokenRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
-        this.userRepository = userRepository;
-        this.refreshTokenRepository = refreshTokenRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtUtil = jwtUtil;
-    }
 
     public SignupResponse signUp(SignupRequest signupRequest){
 
@@ -97,7 +88,6 @@ public class AuthService {
                 .build();
 
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-
         return new LoginResponse(user.getId(), user.getStatus(), resolveNextStep(user), accessToken, user.getRole());
     }
 
@@ -160,15 +150,5 @@ public class AuthService {
         if (user.getPharmacy() == null) return "PHARMACY_SELECTION";
         if (user.getPharmacy().getSubscription() == null) return "SUBSCRIPTION";
         return "DASHBOARD";
-    }
-
-    private String sha256Hex(String value) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hash = md.digest(value.getBytes(StandardCharsets.UTF_8));
-            return HexFormat.of().formatHex(hash);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 }

@@ -4,6 +4,7 @@ import com.clinical.dto.CheckoutResponse;
 import com.clinical.dto.CreateCheckoutRequest;
 import com.clinical.service.BillingService;
 import com.clinical.service.StripeWebhookService;
+import com.stripe.exception.StripeException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class BillingController {
     }
 
     @PostMapping("/webhook")
-    public ResponseEntity<Void> webhook(HttpServletRequest request) {
+    public ResponseEntity<Void> webhook(HttpServletRequest request) throws StripeException {
         stripeWebhookService.handleWebhook(request);
         return ResponseEntity.ok().build();
     }

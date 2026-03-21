@@ -6,6 +6,7 @@ import com.clinical.model.SubscriptionPlan;
 import com.clinical.model.SubscriptionStatus;
 import com.clinical.repository.PharmacyRepository;
 import com.clinical.repository.SubscriptionRepository;
+import com.stripe.exception.StripeException;
 import com.stripe.model.Event;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
@@ -30,7 +31,7 @@ public class StripeWebhookService {
     @Value("${stripe.webhook.secret}")
     private String webhookSecret;
 
-    public void handleWebhook(HttpServletRequest request) {
+    public void handleWebhook(HttpServletRequest request) throws StripeException {
 
         String payload;
         try {
@@ -51,24 +52,38 @@ public class StripeWebhookService {
         }
 
         if ("checkout.session.completed".equals(event.getType())) {
-
             Session session = (Session) event.getDataObjectDeserializer()
                     .getObject().orElseThrow();
+
+            // Fetch real subscription data from Stripe
+            com.stripe.model.Subscription stripeSub =
+                    com.stripe.model.Subscription.retrieve(session.getSubscription());
+
+            String interval = stripeSub.getItems().getData().get(0)
+                    .getPrice().getRecurring().getInterval(); // "month" or "year"
+
+            SubscriptionPlan plan = "year".equals(interval)
+                    ? SubscriptionPlan.ANNUAL
+                    : SubscriptionPlan.MONTHLY;
+
+            Instant start = Instant.ofEpochSecond(
+                    stripeSub.getCurrentPeriodStart());
+            Instant end   = Instant.ofEpochSecond(
+                    stripeSub.getCurrentPeriodEnd());
 
             Pharmacy pharmacy = pharmacyRepo
                     .findByStripeCustomerId(session.getCustomer())
                     .orElseThrow();
 
             Subscription sub = subscriptionRepo
-                    .findByPharmacy(pharmacy)
-                    .orElse(new Subscription());
+                    .findByPharmacy(pharmacy).orElse(new Subscription());
 
             sub.setPharmacy(pharmacy);
-            sub.setPlan(SubscriptionPlan.MONTHLY);
+            sub.setPlan(plan);
             sub.setStatus(SubscriptionStatus.ACTIVE);
-            sub.setStartDate(Instant.now());
-            sub.setEndDate(Instant.now().plusSeconds(30L * 24 * 60 * 60)); // 30 days
-
+            sub.setStartDate(start);
+            sub.setEndDate(end);
+            sub.setStripeSubscriptionId(stripeSub.getId());
             subscriptionRepo.save(sub);
         }
     }

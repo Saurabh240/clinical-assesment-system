@@ -33,5 +33,9 @@ public class Assessment {
     private String pdfUrl;
 
     private Instant createdAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pharmacy_id", nullable = false)
+    private Pharmacy pharmacy;
 }
 

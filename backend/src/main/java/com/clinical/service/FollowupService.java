@@ -92,13 +92,13 @@ public class FollowupService {
         assessment.setFollowupStatus(request.status());
 
         if (!Objects.equals(oldStatus, request.status())) {
-            auditLogService.log(
+            auditLogService.logStatusChange(
                     "ASSESSMENT",
                     assessmentId,
-                    "followupStatus",
                     oldStatus,
                     request.status(),
-                    updatedBy
+                    updatedBy,
+                    "System"
             );
         }
 

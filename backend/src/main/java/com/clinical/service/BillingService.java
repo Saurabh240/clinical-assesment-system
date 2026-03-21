@@ -33,6 +33,12 @@ public class BillingService {
     @Value("${stripe.price.annual}")
     private String annualPriceId;
 
+    @Value("${stripe.redirect.success-url}")
+    private String successUrl;
+
+    @Value("${stripe.redirect.cancel-url}")
+    private String cancelUrl;
+
     public CheckoutResponse createCheckout(CreateCheckoutRequest request, Authentication auth) {
 
         AuthUser authUser = (AuthUser) auth.getPrincipal();
@@ -68,8 +74,8 @@ public class BillingService {
                                             .setQuantity(1L)
                                             .build()
                             )
-                            .setSuccessUrl("http://localhost:5173/success")
-                            .setCancelUrl("http://localhost:5173/cancel")
+                            .setSuccessUrl(successUrl)
+                            .setCancelUrl(cancelUrl)
                             .build()
             );
 

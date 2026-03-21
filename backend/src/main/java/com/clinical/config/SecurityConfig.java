@@ -1,6 +1,7 @@
 package com.clinical.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,6 +26,9 @@ import static org.springframework.http.HttpMethod.OPTIONS;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    @Value("${app.cors.allowed-origins}")
+    private List<String> allowedOrigins;
+
     private final JwtAuthFilter jwtAuthFilter;
 
     @Bean
@@ -41,11 +45,9 @@ public class SecurityConfig {
                                 "/auth/signIn",
                                 "/auth/signUp",
                                 "/auth/refresh",
-                                "/v3/api-docs/**",
-                                "/pdfs/**",
-                                "/swagger-ui/**"
+                                "/v3/api-docs/**", "/swagger-ui/**"
                         ).permitAll()
-                        .requestMatchers("/auth/logout").authenticated()
+                        .requestMatchers("/auth/logout", "/pdfs/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
@@ -65,10 +67,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of(
-                "http://localhost:3000",
-                "http://localhost:5173"
-        ));
+        config.setAllowedOrigins(allowedOrigins);
 
         config.setAllowedMethods(List.of(
                 "GET", "POST", "PUT", "DELETE", "OPTIONS"

@@ -9,7 +9,7 @@ import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import static com.clinical.Specifications.ProductSpecification.*;
+import static com.clinical.specifications.ProductSpecification.*;
 
 @Service
 @RequiredArgsConstructor
