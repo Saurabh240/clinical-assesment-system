@@ -276,7 +276,7 @@
 }
 }
 }
-
+---
 ## DERMATITIS -Json body
 
 {
@@ -463,6 +463,7 @@
 }
 ---
 ## DYSMENORRHEA
+
 {
 "ailmentCode": "DYSMENORRHEA",
 "data": {
@@ -616,6 +617,7 @@
 }
 ---
 ## INSECT_BITES
+
 {
 "ailmentCode": "INSECT_BITES",
 "data": {
@@ -795,6 +797,7 @@
 }
 ---
 ## CONJUNCTIVITIS
+
 {
 "ailmentCode": "CONJUNCTIVITIS",
 "data": {
@@ -1022,6 +1025,7 @@
 }
 ---
 ## HEMORRHOIDS
+
 {
 "ailmentCode": "HEMORRHOIDS",
 "data": {
@@ -1189,6 +1193,7 @@
 }
 ---
 ## IMPETIGO
+
 {
 "ailmentCode": "IMPETIGO",
 "data": {
@@ -1348,6 +1353,7 @@
 }
 ---
 ## TICK_BITES
+
 {
 "ailmentCode": "TICK_BITES",
 "data": {
@@ -1503,6 +1509,7 @@
 }
 ---
 ## ALLERGIC_RHINITIS
+
 {
 "ailmentCode": "ALLERGIC_RHINITIS",
 "data": {
@@ -1741,6 +1748,7 @@
 }
 ---
 ## COLD_SORE
+
 {
 "ailmentCode": "COLD_SORE",
 "data": {
@@ -1898,6 +1906,7 @@
 }
 ---
 ## GERD
+
 {
 "ailmentCode": "GERD",
 "data": {
@@ -2081,6 +2090,7 @@
 }
 ---
 ## MUSCULOSKELETAL_SPRAINS
+
 {
 "ailmentCode": "MUSCULOSKELETAL_SPRAINS",
 "data": {
@@ -2246,6 +2256,7 @@
 }
 ---
 ## CANDIDAL_STOMATITIS
+
 {
 "ailmentCode": "CANDIDAL_STOMATITIS",
 "data": {
@@ -2397,6 +2408,7 @@
 }
 ---
 ## ACNE
+
 {
 "ailmentCode": "ACNE",
 "data": {
@@ -2571,6 +2583,7 @@
 }
 ---
 ## APHTHOUS_ULCERS
+
 {
 "ailmentCode": "APHTHOUS_ULCERS",
 "data": {
@@ -2738,6 +2751,7 @@
 }
 ---
 ## NAUSEA_VOMITING_PREGNANCY
+
 {
 "ailmentCode": "NAUSEA_VOMITING_PREGNANCY",
 "data": {
@@ -2909,6 +2923,7 @@
 }
 ---
 ## PINWORMS
+
 {
 "ailmentCode": "PINWORMS",
 "data": {
@@ -3069,6 +3084,7 @@
 }
 ---
 ## VAGINAL_CANDIDIASIS
+
 {
 "ailmentCode": "VAGINAL_CANDIDIASIS",
 "data": {
@@ -3247,6 +3263,7 @@
 }
 ---
 ## DIAPER_DERMATITIS
+
 {
 "ailmentCode": "DIAPER_DERMATITIS",
 "data": {
