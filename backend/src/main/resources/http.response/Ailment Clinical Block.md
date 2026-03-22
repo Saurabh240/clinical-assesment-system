@@ -206,14 +206,14 @@
           "otherDetail": ""
         },
         "criteria": {
-          "ageOver2": true,
-          "noUncontrolledAsthma": true,
+          "over2YearsOfAge": true,
+          "noConcomitantAsthma": true,
           "symptomsUnder2Weeks": true,
           "noShortnessOfBreath": true,
           "bilateralSymptoms": true,
           "noFever": true,
-          "noSevereHeadache": true,
-          "noCloseContactInfectious": true,
+          "noSevereHeadacheOrEyePain": true,
+          "noCloseContactInfectiousDisease": true,
           "noRecurrentNosebleeds": true
         },
         "treatment": {
@@ -290,22 +290,22 @@
           "loratadinePseudoephedrineAdult": false,
           "oxymetazoline": false,
           "oxymetazolineAdult": false,
-          "pheniraminePhenyephrine": false,
-          "pheniraminePhenyephrineAdult": false,
+          "pheniraminePhenylepherine": false,
+          "pheniraminePhenylepherineAdult": false,
           "xylometazoline": false,
           "xylometazolineAdult": false
         }
       }
     },
     "patient": {
-      "dob": "1990-03-25",
+      "dob": "1992-05-18",
       "gender": "F",
-      "phone": "416-555-0199",
-      "height": "164 cm",
-      "weight": "60 kg",
-      "address": "14 Maple Court, Toronto, ON M4K 1T2",
-      "lastName": "Sharma",
-      "firstName": "Anika",
+      "phone": "416-555-0245",
+      "height": "168 cm",
+      "weight": "64 kg",
+      "address": "33 Willow Crescent, Toronto, ON M3H 2L4",
+      "lastName": "Kaur",
+      "firstName": "Simran",
       "healthCardNo": "4567-890-123"
     },
     "consent": {
@@ -350,10 +350,15 @@
       "none": true,
       "notes": "",
       "allergies": false,
+      "scrDate": "",
+      "scrValue": "",
+      "egfrDate": "",
+      "egfrValue": "",
       "pregnantNo": true,
       "pregnantNA": false,
       "pregnantYes": false,
       "scrProvided": false,
+      "allergiesDetail": "",
       "egfrProvided": false,
       "liverImpairmentNo": true,
       "renalImpairmentNo": true,
@@ -361,24 +366,45 @@
       "renalImpairmentYes": false,
       "medicalConditions": false,
       "drugInteractions": false,
+      "liverImpairmentUnknown": false,
+      "renalImpairmentUnknown": false,
+      "drugInteractionsDetail": "",
+      "attachCurrentMedication": false,
       "historyOfPresentingComplaint": true,
       "medicationsFromAnotherPharmacyNo": true,
       "medicationsFromAnotherPharmacyYes": false
     },
     "carePlan": {
+      "fax": false,
+      "date": "",
+      "notes": "",
+      "other": false,
       "phone": true,
+      "referToMD": false,
+      "recommendOTC": false,
+      "rationalProvided": false,
       "inPersonCareIssued": true,
+      "virtualCareIssued": false,
+      "noPrimaryCareProvider": false,
+      "recommendNonPharm": false,
+      "virtualCareNotIssued": false,
+      "inPersonCareNotIssued": false,
       "primaryCareProviderNotified": true
     },
     "medicationOrder": {
       "medications": [
         {
           "name": "Budesonide",
-          "strength": "64 mcg/spray nasal suspension",
+          "strength": "64 mcg/metered dose nasal suspension",
           "quantity": "1 bottle",
-          "direction": "2 sprays in each nostril once daily. May decrease to 1 spray in each nostril daily for maintenance."
+          "direction": "2 sprays in each nostril once daily. May decrease to 1 spray in each nostril daily once controlled."
         },
-        { "name": "", "strength": "", "quantity": "", "direction": "" }
+        {
+          "name": "",
+          "strength": "",
+          "quantity": "",
+          "direction": ""
+        }
       ]
     },
     "signature": {
@@ -390,7 +416,7 @@
       "date": "2025-03-23",
       "phone": true,
       "inPerson": false,
-      "monitoringParameters": "Monitor for reduction in congestion, sneezing, and rhinorrhea. Reassess if symptoms do not improve within 2 weeks or worsen."
+      "monitoringParameters": "Monitor for reduction in congestion, sneezing, and rhinorrhea. Reassess if symptoms do not improve within 2 weeks or if new symptoms develop."
     }
   }
 }
@@ -470,26 +496,71 @@
     "eligibility": {
       "acne": false,
       "noRedFlags": true,
-      "aphthousUlcers": true,
+      "impetigo": false,
+      "tickBites": false,
+      "pinworms": false,
+      "dermatitis": false,
+      "hemorrhoids": false,
       "notPrecluded": true,
+      "conjunctivitis": false,
+      "dysmenorrhea": false,
+      "insectBites": false,
+      "herpesLabialis": false,
+      "allergicRhinitis": false,
+      "diaperDermatitis": false,
+      "candidalStomatitis": false,
+      "aphthousUlcers": true,
+      "vaginalCandidiasis": false,
+      "musculoskeletalSprains": false,
+      "urinaryTractInfections": false,
+      "gastroesophagealReflux": false,
+      "nauseaVomitingPregnancy": false,
       "validOntarioHealthNumber": true
     },
     "assessment": {
       "nka": true,
       "none": true,
+      "notes": "",
+      "allergies": false,
+      "scrDate": "",
+      "scrValue": "",
+      "egfrDate": "",
+      "egfrValue": "",
       "pregnantNo": true,
       "pregnantNA": false,
       "pregnantYes": false,
+      "scrProvided": false,
+      "allergiesDetail": "",
+      "egfrProvided": false,
       "liverImpairmentNo": true,
       "renalImpairmentNo": true,
+      "liverImpairmentYes": false,
+      "renalImpairmentYes": false,
+      "medicalConditions": false,
+      "drugInteractions": false,
+      "liverImpairmentUnknown": false,
+      "renalImpairmentUnknown": false,
+      "drugInteractionsDetail": "",
+      "attachCurrentMedication": false,
       "historyOfPresentingComplaint": true,
       "medicationsFromAnotherPharmacyNo": true,
       "medicationsFromAnotherPharmacyYes": false
     },
     "carePlan": {
+      "fax": false,
+      "date": "",
+      "notes": "",
+      "other": false,
       "phone": true,
+      "referToMD": false,
       "recommendOTC": true,
+      "rationalProvided": false,
       "inPersonCareIssued": true,
+      "virtualCareIssued": false,
+      "noPrimaryCareProvider": false,
+      "recommendNonPharm": false,
+      "virtualCareNotIssued": false,
+      "inPersonCareNotIssued": false,
       "primaryCareProviderNotified": true
     },
     "medicationOrder": {
@@ -500,7 +571,12 @@
           "quantity": "1 tube (5g)",
           "direction": "Dab small amount (0.5cm) to ulcer(s) QHS and as required up to TID PC PRN x 7 days. Do not rub in."
         },
-        { "name": "", "strength": "", "quantity": "", "direction": "" }
+        {
+          "name": "",
+          "strength": "",
+          "quantity": "",
+          "direction": ""
+        }
       ]
     },
     "signature": {
@@ -512,7 +588,7 @@
       "date": "2025-03-16",
       "phone": true,
       "inPerson": false,
-      "monitoringParameters": "Monitor for resolution of ulcer pain and healing within 7 days. Reassess if ulcers persist beyond 14 days, worsen, or new lesions develop elsewhere."
+      "monitoringParameters": "Monitor for resolution of ulcer pain and healing within 7 days. Advise patient to avoid spicy/acidic foods. Reassess if ulcers persist beyond 14 days, worsen, or new lesions develop elsewhere."
     }
   }
 }
@@ -575,24 +651,72 @@
       "licenseNo": "PHR780"
     },
     "eligibility": {
+      "acne": false,
       "noRedFlags": true,
-      "candidalStomatitis": true,
+      "impetigo": false,
+      "tickBites": false,
+      "pinworms": false,
+      "dermatitis": false,
+      "hemorrhoids": false,
       "notPrecluded": true,
+      "conjunctivitis": false,
+      "dysmenorrhea": false,
+      "insectBites": false,
+      "herpesLabialis": false,
+      "allergicRhinitis": false,
+      "diaperDermatitis": false,
+      "candidalStomatitis": true,
+      "vaginalCandidiasis": false,
+      "musculoskeletalSprains": false,
+      "urinaryTractInfections": false,
+      "gastroesophagealReflux": false,
+      "nauseaVomitingPregnancy": false,
       "validOntarioHealthNumber": true
     },
     "assessment": {
       "nka": true,
       "none": true,
+      "notes": "",
+      "allergies": false,
+      "scrDate": "",
+      "scrValue": "",
+      "egfrDate": "",
+      "egfrValue": "",
       "pregnantNo": true,
+      "pregnantNA": false,
+      "pregnantYes": false,
+      "scrProvided": false,
+      "allergiesDetail": "",
+      "egfrProvided": false,
       "liverImpairmentNo": true,
       "renalImpairmentNo": true,
+      "liverImpairmentYes": false,
+      "renalImpairmentYes": false,
+      "medicalConditions": false,
+      "drugInteractions": false,
+      "liverImpairmentUnknown": false,
+      "renalImpairmentUnknown": false,
+      "drugInteractionsDetail": "",
+      "attachCurrentMedication": false,
       "historyOfPresentingComplaint": true,
       "medicationsFromAnotherPharmacyNo": true,
       "medicationsFromAnotherPharmacyYes": false
     },
     "carePlan": {
+      "fax": false,
+      "date": "",
+      "notes": "",
+      "other": false,
       "phone": true,
+      "referToMD": false,
+      "recommendOTC": false,
+      "rationalProvided": false,
       "inPersonCareIssued": true,
+      "virtualCareIssued": false,
+      "noPrimaryCareProvider": false,
+      "recommendNonPharm": false,
+      "virtualCareNotIssued": false,
+      "inPersonCareNotIssued": false,
       "primaryCareProviderNotified": true
     },
     "medicationOrder": {
@@ -603,7 +727,12 @@
           "quantity": "300 mL",
           "direction": "Swish & swallow 400,000 - 600,000 units (4-6 mL) QID x 7-14 days"
         },
-        { "name": "", "strength": "", "quantity": "", "direction": "" }
+        {
+          "name": "",
+          "strength": "",
+          "quantity": "",
+          "direction": ""
+        }
       ]
     },
     "signature": {
@@ -615,7 +744,7 @@
       "date": "2025-03-23",
       "phone": true,
       "inPerson": false,
-      "monitoringParameters": "Monitor for resolution of white plaques and oral discomfort. Reassess if no improvement within 7 days or symptoms worsen."
+      "monitoringParameters": "Monitor for resolution of white plaques and oral discomfort. Advise patient to continue treatment for full duration even if symptoms resolve. Reassess if no improvement within 7 days or symptoms worsen."
     }
   }
 }
@@ -684,24 +813,72 @@
       "licenseNo": "PHR780"
     },
     "eligibility": {
+      "acne": false,
       "noRedFlags": true,
-      "herpesLabialis": true,
+      "impetigo": false,
+      "tickBites": false,
+      "pinworms": false,
+      "dermatitis": false,
+      "hemorrhoids": false,
       "notPrecluded": true,
+      "conjunctivitis": false,
+      "dysmenorrhea": false,
+      "insectBites": false,
+      "herpesLabialis": true,
+      "allergicRhinitis": false,
+      "diaperDermatitis": false,
+      "candidalStomatitis": false,
+      "vaginalCandidiasis": false,
+      "musculoskeletalSprains": false,
+      "urinaryTractInfections": false,
+      "gastroesophagealReflux": false,
+      "nauseaVomitingPregnancy": false,
       "validOntarioHealthNumber": true
     },
     "assessment": {
       "nka": true,
       "none": true,
+      "notes": "",
+      "allergies": false,
+      "scrDate": "",
+      "scrValue": "",
+      "egfrDate": "",
+      "egfrValue": "",
       "pregnantNo": true,
+      "pregnantNA": false,
+      "pregnantYes": false,
+      "scrProvided": false,
+      "allergiesDetail": "",
+      "egfrProvided": false,
       "liverImpairmentNo": true,
       "renalImpairmentNo": true,
+      "liverImpairmentYes": false,
+      "renalImpairmentYes": false,
+      "medicalConditions": false,
+      "drugInteractions": false,
+      "liverImpairmentUnknown": false,
+      "renalImpairmentUnknown": false,
+      "drugInteractionsDetail": "",
+      "attachCurrentMedication": false,
       "historyOfPresentingComplaint": true,
       "medicationsFromAnotherPharmacyNo": true,
       "medicationsFromAnotherPharmacyYes": false
     },
     "carePlan": {
+      "fax": false,
+      "date": "",
+      "notes": "",
+      "other": false,
       "phone": true,
+      "referToMD": false,
+      "recommendOTC": false,
+      "rationalProvided": false,
       "inPersonCareIssued": true,
+      "virtualCareIssued": false,
+      "noPrimaryCareProvider": false,
+      "recommendNonPharm": false,
+      "virtualCareNotIssued": false,
+      "inPersonCareNotIssued": false,
       "primaryCareProviderNotified": true
     },
     "medicationOrder": {
@@ -712,7 +889,12 @@
           "quantity": "2 tablets",
           "direction": "Take 2000 mg BID PO x 1 day (2 doses total, 12 hours apart)"
         },
-        { "name": "", "strength": "", "quantity": "", "direction": "" }
+        {
+          "name": "",
+          "strength": "",
+          "quantity": "",
+          "direction": ""
+        }
       ]
     },
     "signature": {
@@ -724,7 +906,7 @@
       "date": "2025-03-16",
       "phone": true,
       "inPerson": false,
-      "monitoringParameters": "Monitor for resolution of prodromal symptoms and prevention of lesion outbreak. Seek medical attention if lesions spread to ocular area or systemic symptoms develop."
+      "monitoringParameters": "Monitor for resolution of prodromal symptoms and prevention of lesion outbreak. Advise patient to seek medical attention if lesions spread to ocular area or systemic symptoms develop."
     }
   }
 }
@@ -863,24 +1045,72 @@
       "licenseNo": "PHR780"
     },
     "eligibility": {
+      "acne": false,
       "noRedFlags": true,
-      "conjunctivitis": true,
+      "impetigo": false,
+      "tickBites": false,
+      "pinworms": false,
+      "dermatitis": false,
+      "hemorrhoids": false,
       "notPrecluded": true,
+      "conjunctivitis": true,
+      "dysmenorrhea": false,
+      "insectBites": false,
+      "herpesLabialis": false,
+      "allergicRhinitis": false,
+      "diaperDermatitis": false,
+      "candidalStomatitis": false,
+      "vaginalCandidiasis": false,
+      "musculoskeletalSprains": false,
+      "urinaryTractInfections": false,
+      "gastroesophagealReflux": false,
+      "nauseaVomitingPregnancy": false,
       "validOntarioHealthNumber": true
     },
     "assessment": {
       "nka": true,
       "none": true,
+      "notes": "",
+      "allergies": false,
+      "scrDate": "",
+      "scrValue": "",
+      "egfrDate": "",
+      "egfrValue": "",
       "pregnantNo": true,
+      "pregnantNA": false,
+      "pregnantYes": false,
+      "scrProvided": false,
+      "allergiesDetail": "",
+      "egfrProvided": false,
       "liverImpairmentNo": true,
       "renalImpairmentNo": true,
+      "liverImpairmentYes": false,
+      "renalImpairmentYes": false,
+      "medicalConditions": false,
+      "drugInteractions": false,
+      "liverImpairmentUnknown": false,
+      "renalImpairmentUnknown": false,
+      "drugInteractionsDetail": "",
+      "attachCurrentMedication": false,
       "historyOfPresentingComplaint": true,
       "medicationsFromAnotherPharmacyNo": true,
       "medicationsFromAnotherPharmacyYes": false
     },
     "carePlan": {
+      "fax": false,
+      "date": "",
+      "notes": "",
+      "other": false,
       "phone": true,
+      "referToMD": false,
+      "recommendOTC": false,
+      "rationalProvided": false,
       "inPersonCareIssued": true,
+      "virtualCareIssued": false,
+      "noPrimaryCareProvider": false,
+      "recommendNonPharm": false,
+      "virtualCareNotIssued": false,
+      "inPersonCareNotIssued": false,
       "primaryCareProviderNotified": true
     },
     "medicationOrder": {
@@ -891,7 +1121,12 @@
           "quantity": "1 tube (3g)",
           "direction": "Instill 1 drop in affected eye(s) Q12H x 7 days"
         },
-        { "name": "", "strength": "", "quantity": "", "direction": "" }
+        {
+          "name": "",
+          "strength": "",
+          "quantity": "",
+          "direction": ""
+        }
       ]
     },
     "signature": {
@@ -904,6 +1139,195 @@
       "phone": true,
       "inPerson": false,
       "monitoringParameters": "Monitor for resolution of discharge and redness. Reassess if symptoms worsen or do not improve within 7 days, or if visual changes occur."
+    }
+  }
+}
+```
+
+---
+
+## Dermatitis
+
+```json
+{
+  "ailmentCode": "DERMATITIS",
+  "data": {
+    "ailment": {
+      "code": "DERMATITIS",
+      "displayName": "Atopic and Contact Dermatitis",
+      "clinicalBlock": {
+        "symptoms": {
+          "other": false,
+          "drySkin": true,
+          "pruritus": true,
+          "otherDetail": "",
+          "rednessPatches": true
+        },
+        "criteria": {
+          "noBleeding": true,
+          "palmsNotAffected": true,
+          "noRecentContact": true,
+          "noSignsOfInfection": true,
+          "lesionsBelow30BSA": true,
+          "notSignificantlyInterfering": true
+        },
+        "treatment": {
+          "desonide005": false,
+          "desonide005g": "",
+          "hydrocortisone": true,
+          "hydrocortisone1": false,
+          "hydrocortisone1g": "",
+          "hydrocortisone2": true,
+          "hydrocortisone2g": "30",
+          "hydrocortisone25": false,
+          "hydrocortisone25g": "",
+          "beclomethasone": false,
+          "beclomethasoneG": "",
+          "betamethasone005": false,
+          "betamethasone005g": "",
+          "betamethasone01": false,
+          "betamethasone01g": "",
+          "betamethasoneValerate": false,
+          "clobetasone": false,
+          "clobetasoneG": "",
+          "desonide002": false,
+          "desonide002g": "",
+          "fluocinolone": false,
+          "fluocinoloneG": "",
+          "prednicarbate": false,
+          "prednicarbateG": "",
+          "triamcinolone": false,
+          "triamcinolone01": false,
+          "triamcinolone01g": "",
+          "triamcinolone05": false,
+          "triamcinolone05g": "",
+          "hydrocortisoneValerate": false,
+          "hydrocortisoneValerateG": "",
+          "crisaborole": false,
+          "crisaboroleG": ""
+        }
+      }
+    },
+    "patient": {
+      "dob": "1995-08-20",
+      "gender": "F",
+      "phone": "416-555-0234",
+      "height": "160 cm",
+      "weight": "58 kg",
+      "address": "789 Oak Avenue, Toronto, ON M6K 2T1",
+      "lastName": "Smith",
+      "firstName": "Emily",
+      "healthCardNo": "9876-543-210"
+    },
+    "consent": {
+      "substituteName": "",
+      "substituteRelation": "",
+      "verbalConsentSubstitute": false,
+      "verbalConsentIndividual": true
+    },
+    "prescriber": {
+      "faxNo": "416-555-0202",
+      "phone": "416-555-0201",
+      "address": "456 Pharmacy Ave, Toronto, ON M5A 2T3",
+      "lastName": "Mitchell",
+      "firstName": "Sarah",
+      "licenseNo": "RPH-20341"
+    },
+    "eligibility": {
+      "acne": false,
+      "noRedFlags": true,
+      "impetigo": false,
+      "tickBites": false,
+      "pinworms": false,
+      "dermatitis": true,
+      "hemorrhoids": false,
+      "notPrecluded": true,
+      "conjunctivitis": false,
+      "dysmenorrhea": false,
+      "insectBites": false,
+      "herpesLabialis": false,
+      "allergicRhinitis": false,
+      "diaperDermatitis": false,
+      "candidalStomatitis": false,
+      "vaginalCandidiasis": false,
+      "musculoskeletalSprains": false,
+      "urinaryTractInfections": false,
+      "gastroesophagealReflux": false,
+      "nauseaVomitingPregnancy": false,
+      "validOntarioHealthNumber": true
+    },
+    "assessment": {
+      "nka": false,
+      "none": true,
+      "notes": "",
+      "allergies": true,
+      "scrDate": "",
+      "scrValue": "",
+      "egfrDate": "",
+      "egfrValue": "",
+      "pregnantNo": true,
+      "pregnantNA": false,
+      "pregnantYes": false,
+      "scrProvided": false,
+      "allergiesDetail": "Penicillin",
+      "egfrProvided": false,
+      "liverImpairmentNo": true,
+      "renalImpairmentNo": true,
+      "liverImpairmentYes": false,
+      "renalImpairmentYes": false,
+      "medicalConditions": true,
+      "drugInteractions": false,
+      "liverImpairmentUnknown": false,
+      "renalImpairmentUnknown": false,
+      "drugInteractionsDetail": "",
+      "attachCurrentMedication": true,
+      "historyOfPresentingComplaint": true,
+      "medicationsFromAnotherPharmacyNo": true,
+      "medicationsFromAnotherPharmacyYes": false
+    },
+    "carePlan": {
+      "fax": false,
+      "date": "",
+      "notes": "",
+      "other": false,
+      "phone": true,
+      "referToMD": false,
+      "recommendOTC": false,
+      "rationalProvided": false,
+      "inPersonCareIssued": true,
+      "virtualCareIssued": false,
+      "noPrimaryCareProvider": false,
+      "recommendNonPharm": false,
+      "virtualCareNotIssued": false,
+      "inPersonCareNotIssued": false,
+      "primaryCareProviderNotified": true
+    },
+    "medicationOrder": {
+      "medications": [
+        {
+          "name": "Hydrocortisone 2% Cream",
+          "strength": "2%",
+          "quantity": "30 g",
+          "direction": "Apply thin layer to affected area twice daily x 2 weeks"
+        },
+        {
+          "name": "",
+          "strength": "",
+          "quantity": "",
+          "direction": ""
+        }
+      ]
+    },
+    "signature": {
+      "date": "2025-02-15",
+      "ocpNumber": "PHR780",
+      "pharmacistName": "Dr. Jane Wilson"
+    },
+    "followUp": {
+      "date": "2025-02-22",
+      "phone": true,
+      "inPerson": false,
+      "monitoringParameters": "Monitor for improvement in symptoms after 2 weeks. Watch for signs of skin infection or worsening condition."
     }
   }
 }
@@ -985,25 +1409,72 @@
       "licenseNo": "PHR780"
     },
     "eligibility": {
+      "acne": false,
       "noRedFlags": true,
-      "diaperDermatitis": true,
+      "impetigo": false,
+      "tickBites": false,
+      "pinworms": false,
+      "dermatitis": false,
+      "hemorrhoids": false,
       "notPrecluded": true,
+      "conjunctivitis": false,
+      "dysmenorrhea": false,
+      "insectBites": false,
+      "herpesLabialis": false,
+      "allergicRhinitis": false,
+      "diaperDermatitis": true,
+      "candidalStomatitis": false,
+      "vaginalCandidiasis": false,
+      "musculoskeletalSprains": false,
+      "urinaryTractInfections": false,
+      "gastroesophagealReflux": false,
+      "nauseaVomitingPregnancy": false,
       "validOntarioHealthNumber": true
     },
     "assessment": {
       "nka": true,
       "none": true,
+      "notes": "",
+      "allergies": false,
+      "scrDate": "",
+      "scrValue": "",
+      "egfrDate": "",
+      "egfrValue": "",
+      "pregnantNo": false,
       "pregnantNA": true,
+      "pregnantYes": false,
+      "scrProvided": false,
+      "allergiesDetail": "",
+      "egfrProvided": false,
       "liverImpairmentNo": true,
       "renalImpairmentNo": true,
+      "liverImpairmentYes": false,
+      "renalImpairmentYes": false,
+      "medicalConditions": false,
+      "drugInteractions": false,
+      "liverImpairmentUnknown": false,
+      "renalImpairmentUnknown": false,
+      "drugInteractionsDetail": "",
+      "attachCurrentMedication": false,
       "historyOfPresentingComplaint": true,
       "medicationsFromAnotherPharmacyNo": true,
       "medicationsFromAnotherPharmacyYes": false
     },
     "carePlan": {
+      "fax": false,
+      "date": "",
+      "notes": "",
+      "other": false,
       "phone": true,
+      "referToMD": false,
       "recommendOTC": true,
+      "rationalProvided": false,
       "inPersonCareIssued": true,
+      "virtualCareIssued": false,
+      "noPrimaryCareProvider": false,
+      "recommendNonPharm": false,
+      "virtualCareNotIssued": false,
+      "inPersonCareNotIssued": false,
       "primaryCareProviderNotified": true
     },
     "medicationOrder": {
@@ -1031,7 +1502,7 @@
       "date": "2025-03-23",
       "phone": true,
       "inPerson": false,
-      "monitoringParameters": "Monitor for resolution of rash, satellite lesions, and crying during diaper changes. Reassess if no improvement within 7 days or symptoms worsen."
+      "monitoringParameters": "Monitor for resolution of rash, satellite lesions, and crying during diaper changes. Advise caregiver on frequent diaper changes, gentle cleaning, and barrier cream application. Reassess if no improvement within 7 days or symptoms worsen."
     }
   }
 }
@@ -1096,24 +1567,72 @@
       "licenseNo": "PHR780"
     },
     "eligibility": {
+      "acne": false,
       "noRedFlags": true,
-      "dysmenorrhea": true,
+      "impetigo": false,
+      "tickBites": false,
+      "pinworms": false,
+      "dermatitis": false,
+      "hemorrhoids": false,
       "notPrecluded": true,
+      "conjunctivitis": false,
+      "dysmenorrhea": true,
+      "insectBites": false,
+      "herpesLabialis": false,
+      "allergicRhinitis": false,
+      "diaperDermatitis": false,
+      "candidalStomatitis": false,
+      "vaginalCandidiasis": false,
+      "musculoskeletalSprains": false,
+      "urinaryTractInfections": false,
+      "gastroesophagealReflux": false,
+      "nauseaVomitingPregnancy": false,
       "validOntarioHealthNumber": true
     },
     "assessment": {
       "nka": true,
       "none": true,
+      "notes": "",
+      "allergies": false,
+      "scrDate": "",
+      "scrValue": "",
+      "egfrDate": "",
+      "egfrValue": "",
       "pregnantNo": true,
+      "pregnantNA": false,
+      "pregnantYes": false,
+      "scrProvided": false,
+      "allergiesDetail": "",
+      "egfrProvided": false,
       "liverImpairmentNo": true,
       "renalImpairmentNo": true,
+      "liverImpairmentYes": false,
+      "renalImpairmentYes": false,
+      "medicalConditions": false,
+      "drugInteractions": false,
+      "liverImpairmentUnknown": false,
+      "renalImpairmentUnknown": false,
+      "drugInteractionsDetail": "",
+      "attachCurrentMedication": false,
       "historyOfPresentingComplaint": true,
       "medicationsFromAnotherPharmacyNo": true,
       "medicationsFromAnotherPharmacyYes": false
     },
     "carePlan": {
+      "fax": false,
+      "date": "",
+      "notes": "",
+      "other": false,
       "phone": true,
+      "referToMD": false,
+      "recommendOTC": false,
+      "rationalProvided": false,
       "inPersonCareIssued": true,
+      "virtualCareIssued": false,
+      "noPrimaryCareProvider": false,
+      "recommendNonPharm": false,
+      "virtualCareNotIssued": false,
+      "inPersonCareNotIssued": false,
       "primaryCareProviderNotified": true
     },
     "medicationOrder": {
@@ -1124,7 +1643,12 @@
           "quantity": "6 tablets",
           "direction": "Take 1 tablet twice daily x 3 days. Refills x 3"
         },
-        { "name": "", "strength": "", "quantity": "", "direction": "" }
+        {
+          "name": "",
+          "strength": "",
+          "quantity": "",
+          "direction": ""
+        }
       ]
     },
     "signature": {
@@ -1231,24 +1755,72 @@
       "licenseNo": "PHR780"
     },
     "eligibility": {
+      "acne": false,
       "noRedFlags": true,
-      "gastroesophagealReflux": true,
+      "impetigo": false,
+      "tickBites": false,
+      "pinworms": false,
+      "dermatitis": false,
+      "hemorrhoids": false,
       "notPrecluded": true,
+      "conjunctivitis": false,
+      "dysmenorrhea": false,
+      "insectBites": false,
+      "herpesLabialis": false,
+      "allergicRhinitis": false,
+      "diaperDermatitis": false,
+      "candidalStomatitis": false,
+      "vaginalCandidiasis": false,
+      "musculoskeletalSprains": false,
+      "urinaryTractInfections": false,
+      "gastroesophagealReflux": true,
+      "nauseaVomitingPregnancy": false,
       "validOntarioHealthNumber": true
     },
     "assessment": {
       "nka": true,
       "none": true,
+      "notes": "",
+      "allergies": false,
+      "scrDate": "",
+      "scrValue": "",
+      "egfrDate": "",
+      "egfrValue": "",
       "pregnantNo": true,
+      "pregnantNA": false,
+      "pregnantYes": false,
+      "scrProvided": false,
+      "allergiesDetail": "",
+      "egfrProvided": false,
       "liverImpairmentNo": true,
       "renalImpairmentNo": true,
+      "liverImpairmentYes": false,
+      "renalImpairmentYes": false,
+      "medicalConditions": false,
+      "drugInteractions": false,
+      "liverImpairmentUnknown": false,
+      "renalImpairmentUnknown": false,
+      "drugInteractionsDetail": "",
+      "attachCurrentMedication": false,
       "historyOfPresentingComplaint": true,
       "medicationsFromAnotherPharmacyNo": true,
       "medicationsFromAnotherPharmacyYes": false
     },
     "carePlan": {
+      "fax": false,
+      "date": "",
+      "notes": "",
+      "other": false,
       "phone": true,
+      "referToMD": false,
+      "recommendOTC": false,
+      "rationalProvided": false,
       "inPersonCareIssued": true,
+      "virtualCareIssued": false,
+      "noPrimaryCareProvider": false,
+      "recommendNonPharm": false,
+      "virtualCareNotIssued": false,
+      "inPersonCareNotIssued": false,
       "primaryCareProviderNotified": true
     },
     "medicationOrder": {
@@ -1259,7 +1831,12 @@
           "quantity": "28 capsules",
           "direction": "Take 1 capsule PO daily x 4 weeks"
         },
-        { "name": "", "strength": "", "quantity": "", "direction": "" }
+        {
+          "name": "",
+          "strength": "",
+          "quantity": "",
+          "direction": ""
+        }
       ]
     },
     "signature": {
@@ -1271,7 +1848,7 @@
       "date": "2025-04-06",
       "phone": true,
       "inPerson": false,
-      "monitoringParameters": "Monitor for resolution of heartburn and regurgitation. Take 30 minutes before meals. Reassess if symptoms persist or worsen after 4 weeks."
+      "monitoringParameters": "Monitor for resolution of heartburn and regurgitation symptoms. Advise patient to take 30 minutes before meals. Reassess if symptoms persist or worsen after 4 weeks."
     }
   }
 }
@@ -1350,24 +1927,72 @@
       "licenseNo": "PHR780"
     },
     "eligibility": {
+      "acne": false,
       "noRedFlags": true,
+      "impetigo": false,
+      "tickBites": false,
+      "pinworms": false,
+      "dermatitis": false,
       "hemorrhoids": true,
       "notPrecluded": true,
+      "conjunctivitis": false,
+      "dysmenorrhea": false,
+      "insectBites": false,
+      "herpesLabialis": false,
+      "allergicRhinitis": false,
+      "diaperDermatitis": false,
+      "candidalStomatitis": false,
+      "vaginalCandidiasis": false,
+      "musculoskeletalSprains": false,
+      "urinaryTractInfections": false,
+      "gastroesophagealReflux": false,
+      "nauseaVomitingPregnancy": false,
       "validOntarioHealthNumber": true
     },
     "assessment": {
       "nka": true,
       "none": true,
+      "notes": "",
+      "allergies": false,
+      "scrDate": "",
+      "scrValue": "",
+      "egfrDate": "",
+      "egfrValue": "",
       "pregnantNo": true,
+      "pregnantNA": false,
+      "pregnantYes": false,
+      "scrProvided": false,
+      "allergiesDetail": "",
+      "egfrProvided": false,
       "liverImpairmentNo": true,
       "renalImpairmentNo": true,
+      "liverImpairmentYes": false,
+      "renalImpairmentYes": false,
+      "medicalConditions": false,
+      "drugInteractions": false,
+      "liverImpairmentUnknown": false,
+      "renalImpairmentUnknown": false,
+      "drugInteractionsDetail": "",
+      "attachCurrentMedication": false,
       "historyOfPresentingComplaint": true,
       "medicationsFromAnotherPharmacyNo": true,
       "medicationsFromAnotherPharmacyYes": false
     },
     "carePlan": {
+      "fax": false,
+      "date": "",
+      "notes": "",
+      "other": false,
       "phone": true,
+      "referToMD": false,
+      "recommendOTC": false,
+      "rationalProvided": false,
       "inPersonCareIssued": true,
+      "virtualCareIssued": false,
+      "noPrimaryCareProvider": false,
+      "recommendNonPharm": false,
+      "virtualCareNotIssued": false,
+      "inPersonCareNotIssued": false,
       "primaryCareProviderNotified": true
     },
     "medicationOrder": {
@@ -1378,7 +2003,12 @@
           "quantity": "30 g",
           "direction": "Apply BID and after each bowel movement x 7 days"
         },
-        { "name": "", "strength": "", "quantity": "", "direction": "" }
+        {
+          "name": "",
+          "strength": "",
+          "quantity": "",
+          "direction": ""
+        }
       ]
     },
     "signature": {
@@ -1461,24 +2091,72 @@
       "licenseNo": "PHR780"
     },
     "eligibility": {
+      "acne": false,
       "noRedFlags": true,
       "impetigo": true,
+      "tickBites": false,
+      "pinworms": false,
+      "dermatitis": false,
+      "hemorrhoids": false,
       "notPrecluded": true,
+      "conjunctivitis": false,
+      "dysmenorrhea": false,
+      "insectBites": false,
+      "herpesLabialis": false,
+      "allergicRhinitis": false,
+      "diaperDermatitis": false,
+      "candidalStomatitis": false,
+      "vaginalCandidiasis": false,
+      "musculoskeletalSprains": false,
+      "urinaryTractInfections": false,
+      "gastroesophagealReflux": false,
+      "nauseaVomitingPregnancy": false,
       "validOntarioHealthNumber": true
     },
     "assessment": {
       "nka": true,
       "none": true,
+      "notes": "",
+      "allergies": false,
+      "scrDate": "",
+      "scrValue": "",
+      "egfrDate": "",
+      "egfrValue": "",
       "pregnantNo": true,
+      "pregnantNA": false,
+      "pregnantYes": false,
+      "scrProvided": false,
+      "allergiesDetail": "",
+      "egfrProvided": false,
       "liverImpairmentNo": true,
       "renalImpairmentNo": true,
+      "liverImpairmentYes": false,
+      "renalImpairmentYes": false,
+      "medicalConditions": false,
+      "drugInteractions": false,
+      "liverImpairmentUnknown": false,
+      "renalImpairmentUnknown": false,
+      "drugInteractionsDetail": "",
+      "attachCurrentMedication": false,
       "historyOfPresentingComplaint": true,
       "medicationsFromAnotherPharmacyNo": true,
       "medicationsFromAnotherPharmacyYes": false
     },
     "carePlan": {
+      "fax": false,
+      "date": "",
+      "notes": "",
+      "other": false,
       "phone": true,
+      "referToMD": false,
+      "recommendOTC": false,
+      "rationalProvided": false,
       "inPersonCareIssued": true,
+      "virtualCareIssued": false,
+      "noPrimaryCareProvider": false,
+      "recommendNonPharm": false,
+      "virtualCareNotIssued": false,
+      "inPersonCareNotIssued": false,
       "primaryCareProviderNotified": true
     },
     "medicationOrder": {
@@ -1489,7 +2167,12 @@
           "quantity": "15 g",
           "direction": "Apply BID-TID to affected area x 7-14 days"
         },
-        { "name": "", "strength": "", "quantity": "", "direction": "" }
+        {
+          "name": "",
+          "strength": "",
+          "quantity": "",
+          "direction": ""
+        }
       ]
     },
     "signature": {
@@ -1560,9 +2243,9 @@
         },
         "otcTreatment": {
           "benzocaine": false,
-          "pramoxine": true,
-          "camphor": false,
-          "calamine": false,
+          "pramoxine": false,
+          "camphor": true,
+          "calamine": true,
           "ammoniaBakingSoda": false,
           "lidocaine": false,
           "zincOxide": false,
@@ -1591,15 +2274,15 @@
       }
     },
     "patient": {
-      "dob": "1990-06-20",
+      "dob": "1990-06-10",
       "gender": "M",
-      "phone": "416-555-0101",
+      "phone": "416-555-0789",
       "height": "175 cm",
       "weight": "78 kg",
-      "address": "123 Oak Avenue, Toronto, ON M6G 1A1",
-      "lastName": "Smith",
-      "firstName": "John",
-      "healthCardNo": "9876-543-210"
+      "address": "55 King Street West, Toronto, ON M5H 1J9",
+      "lastName": "Brown",
+      "firstName": "Michael",
+      "healthCardNo": "5678-901-234"
     },
     "consent": {
       "substituteName": "",
@@ -1608,61 +2291,108 @@
       "verbalConsentIndividual": true
     },
     "prescriber": {
-      "faxNo": "416-555-0404",
-      "phone": "416-555-0403",
+      "faxNo": "416-555-0202",
+      "phone": "416-555-0201",
       "address": "456 Pharmacy Ave, Toronto, ON M5A 2T3",
       "lastName": "Wilson",
       "firstName": "Jane",
       "licenseNo": "PHR780"
     },
     "eligibility": {
+      "acne": false,
       "noRedFlags": true,
-      "insectBites": true,
+      "impetigo": false,
+      "tickBites": false,
+      "pinworms": false,
+      "dermatitis": false,
+      "hemorrhoids": false,
       "notPrecluded": true,
+      "conjunctivitis": false,
+      "dysmenorrhea": false,
+      "insectBites": true,
+      "herpesLabialis": false,
+      "allergicRhinitis": false,
+      "diaperDermatitis": false,
+      "candidalStomatitis": false,
+      "vaginalCandidiasis": false,
+      "musculoskeletalSprains": false,
+      "urinaryTractInfections": false,
+      "gastroesophagealReflux": false,
+      "nauseaVomitingPregnancy": false,
       "validOntarioHealthNumber": true
     },
     "assessment": {
       "nka": true,
       "none": true,
+      "notes": "",
+      "allergies": false,
+      "scrDate": "",
+      "scrValue": "",
+      "egfrDate": "",
+      "egfrValue": "",
       "pregnantNA": true,
+      "pregnantNo": false,
+      "pregnantYes": false,
+      "scrProvided": false,
+      "allergiesDetail": "",
+      "egfrProvided": false,
       "liverImpairmentNo": true,
       "renalImpairmentNo": true,
+      "liverImpairmentYes": false,
+      "renalImpairmentYes": false,
+      "medicalConditions": false,
+      "drugInteractions": false,
+      "liverImpairmentUnknown": false,
+      "renalImpairmentUnknown": false,
+      "drugInteractionsDetail": "",
+      "attachCurrentMedication": false,
       "historyOfPresentingComplaint": true,
       "medicationsFromAnotherPharmacyNo": true,
       "medicationsFromAnotherPharmacyYes": false
     },
     "carePlan": {
+      "fax": false,
+      "date": "",
+      "notes": "",
+      "other": false,
       "phone": true,
+      "referToMD": false,
       "recommendOTC": true,
+      "rationalProvided": false,
       "inPersonCareIssued": true,
+      "virtualCareIssued": false,
+      "noPrimaryCareProvider": false,
+      "recommendNonPharm": false,
+      "virtualCareNotIssued": false,
+      "inPersonCareNotIssued": false,
       "primaryCareProviderNotified": true
     },
     "medicationOrder": {
       "medications": [
         {
-          "name": "Hydrocortisone",
+          "name": "Hydrocortisone 1% Cream",
           "strength": "1%",
-          "quantity": "1 tube (30g)",
-          "direction": "Apply to affected area BID PRN x 7 days"
+          "quantity": "15 g",
+          "direction": "Apply to affected area twice daily PRN, maximum 7 days"
         },
         {
           "name": "Cetirizine",
           "strength": "10 mg",
           "quantity": "7 tablets",
-          "direction": "Take 1 tablet once daily x 7 days"
+          "direction": "Take 1 tablet once daily PO PRN for itching"
         }
       ]
     },
     "signature": {
-      "date": "2025-03-09",
+      "date": "2025-02-15",
       "ocpNumber": "PHR780",
       "pharmacistName": "Dr. Jane Wilson"
     },
     "followUp": {
-      "date": "2025-03-16",
+      "date": "2025-02-22",
       "phone": true,
       "inPerson": false,
-      "monitoringParameters": "Monitor for resolution of itch, redness, and inflammation. Reassess if symptoms worsen or do not improve within 7 days."
+      "monitoringParameters": "Monitor for resolution of symptoms within 7 days. Return if redness expands, signs of infection develop, or symptoms worsen."
     }
   }
 }
@@ -1739,24 +2469,72 @@
       "licenseNo": "PHR780"
     },
     "eligibility": {
+      "acne": false,
       "noRedFlags": true,
-      "musculoskeletalSprains": true,
+      "impetigo": false,
+      "tickBites": false,
+      "pinworms": false,
+      "dermatitis": false,
+      "hemorrhoids": false,
       "notPrecluded": true,
+      "conjunctivitis": false,
+      "dysmenorrhea": false,
+      "insectBites": false,
+      "herpesLabialis": false,
+      "allergicRhinitis": false,
+      "diaperDermatitis": false,
+      "candidalStomatitis": false,
+      "vaginalCandidiasis": false,
+      "musculoskeletalSprains": true,
+      "urinaryTractInfections": false,
+      "gastroesophagealReflux": false,
+      "nauseaVomitingPregnancy": false,
       "validOntarioHealthNumber": true
     },
     "assessment": {
       "nka": true,
       "none": true,
+      "notes": "",
+      "allergies": false,
+      "scrDate": "",
+      "scrValue": "",
+      "egfrDate": "",
+      "egfrValue": "",
       "pregnantNo": true,
+      "pregnantNA": false,
+      "pregnantYes": false,
+      "scrProvided": false,
+      "allergiesDetail": "",
+      "egfrProvided": false,
       "liverImpairmentNo": true,
       "renalImpairmentNo": true,
+      "liverImpairmentYes": false,
+      "renalImpairmentYes": false,
+      "medicalConditions": false,
+      "drugInteractions": false,
+      "liverImpairmentUnknown": false,
+      "renalImpairmentUnknown": false,
+      "drugInteractionsDetail": "",
+      "attachCurrentMedication": false,
       "historyOfPresentingComplaint": true,
       "medicationsFromAnotherPharmacyNo": true,
       "medicationsFromAnotherPharmacyYes": false
     },
     "carePlan": {
+      "fax": false,
+      "date": "",
+      "notes": "",
+      "other": false,
       "phone": true,
+      "referToMD": false,
+      "recommendOTC": false,
+      "rationalProvided": false,
       "inPersonCareIssued": true,
+      "virtualCareIssued": false,
+      "noPrimaryCareProvider": false,
+      "recommendNonPharm": false,
+      "virtualCareNotIssued": false,
+      "inPersonCareNotIssued": false,
       "primaryCareProviderNotified": true
     },
     "medicationOrder": {
@@ -1767,7 +2545,12 @@
           "quantity": "1 tube (100g)",
           "direction": "Apply to affected area TID-QID x 7 days"
         },
-        { "name": "", "strength": "", "quantity": "", "direction": "" }
+        {
+          "name": "",
+          "strength": "",
+          "quantity": "",
+          "direction": ""
+        }
       ]
     },
     "signature": {
@@ -1862,27 +2645,72 @@
       "licenseNo": "PHR780"
     },
     "eligibility": {
+      "acne": false,
       "noRedFlags": true,
-      "nauseaVomitingPregnancy": true,
+      "impetigo": false,
+      "tickBites": false,
+      "pinworms": false,
+      "dermatitis": false,
+      "hemorrhoids": false,
       "notPrecluded": true,
+      "conjunctivitis": false,
+      "dysmenorrhea": false,
+      "insectBites": false,
+      "herpesLabialis": false,
+      "allergicRhinitis": false,
+      "diaperDermatitis": false,
+      "candidalStomatitis": false,
+      "vaginalCandidiasis": false,
+      "musculoskeletalSprains": false,
+      "urinaryTractInfections": false,
+      "gastroesophagealReflux": false,
+      "nauseaVomitingPregnancy": true,
       "validOntarioHealthNumber": true
     },
     "assessment": {
       "nka": true,
       "none": true,
+      "notes": "",
+      "allergies": false,
+      "scrDate": "",
+      "scrValue": "",
+      "egfrDate": "",
+      "egfrValue": "",
       "pregnantNo": false,
       "pregnantNA": false,
       "pregnantYes": true,
+      "scrProvided": false,
+      "allergiesDetail": "",
+      "egfrProvided": false,
       "liverImpairmentNo": true,
       "renalImpairmentNo": true,
+      "liverImpairmentYes": false,
+      "renalImpairmentYes": false,
+      "medicalConditions": false,
+      "drugInteractions": false,
+      "liverImpairmentUnknown": false,
+      "renalImpairmentUnknown": false,
+      "drugInteractionsDetail": "",
+      "attachCurrentMedication": false,
       "historyOfPresentingComplaint": true,
       "medicationsFromAnotherPharmacyNo": true,
       "medicationsFromAnotherPharmacyYes": false
     },
     "carePlan": {
+      "fax": false,
+      "date": "",
+      "notes": "",
+      "other": false,
       "phone": true,
-      "recommendNonPharm": true,
+      "referToMD": false,
+      "recommendOTC": false,
+      "rationalProvided": false,
       "inPersonCareIssued": true,
+      "virtualCareIssued": false,
+      "noPrimaryCareProvider": false,
+      "recommendNonPharm": true,
+      "virtualCareNotIssued": false,
+      "inPersonCareNotIssued": false,
       "primaryCareProviderNotified": true
     },
     "medicationOrder": {
@@ -1893,7 +2721,12 @@
           "quantity": "30 tablets",
           "direction": "Start with 2 tablets PO QHS. Add 1 tablet QAM and 1 tablet mid-afternoon as required."
         },
-        { "name": "", "strength": "", "quantity": "", "direction": "" }
+        {
+          "name": "",
+          "strength": "",
+          "quantity": "",
+          "direction": ""
+        }
       ]
     },
     "signature": {
@@ -1905,7 +2738,7 @@
       "date": "2025-03-16",
       "phone": true,
       "inPerson": false,
-      "monitoringParameters": "Monitor for improvement in nausea and vomiting. Reassess PUQE score at follow-up. Seek immediate care if red flag symptoms develop."
+      "monitoringParameters": "Monitor for improvement in nausea and vomiting. Reassess PUQE score at follow-up. Advise patient to seek immediate care if red flag symptoms develop (inability to keep fluids down >12 hours, signs of dehydration, or bloody vomit)."
     }
   }
 }
@@ -1977,24 +2810,72 @@
       "licenseNo": "PHR780"
     },
     "eligibility": {
+      "acne": false,
       "noRedFlags": true,
+      "impetigo": false,
+      "tickBites": false,
       "pinworms": true,
+      "dermatitis": false,
+      "hemorrhoids": false,
       "notPrecluded": true,
+      "conjunctivitis": false,
+      "dysmenorrhea": false,
+      "insectBites": false,
+      "herpesLabialis": false,
+      "allergicRhinitis": false,
+      "diaperDermatitis": false,
+      "candidalStomatitis": false,
+      "vaginalCandidiasis": false,
+      "musculoskeletalSprains": false,
+      "urinaryTractInfections": false,
+      "gastroesophagealReflux": false,
+      "nauseaVomitingPregnancy": false,
       "validOntarioHealthNumber": true
     },
     "assessment": {
       "nka": true,
       "none": true,
+      "notes": "",
+      "allergies": false,
+      "scrDate": "",
+      "scrValue": "",
+      "egfrDate": "",
+      "egfrValue": "",
+      "pregnantNo": false,
       "pregnantNA": true,
+      "pregnantYes": false,
+      "scrProvided": false,
+      "allergiesDetail": "",
+      "egfrProvided": false,
       "liverImpairmentNo": true,
       "renalImpairmentNo": true,
+      "liverImpairmentYes": false,
+      "renalImpairmentYes": false,
+      "medicalConditions": false,
+      "drugInteractions": false,
+      "liverImpairmentUnknown": false,
+      "renalImpairmentUnknown": false,
+      "drugInteractionsDetail": "",
+      "attachCurrentMedication": false,
       "historyOfPresentingComplaint": true,
       "medicationsFromAnotherPharmacyNo": true,
       "medicationsFromAnotherPharmacyYes": false
     },
     "carePlan": {
+      "fax": false,
+      "date": "",
+      "notes": "",
+      "other": false,
       "phone": true,
+      "referToMD": false,
+      "recommendOTC": false,
+      "rationalProvided": false,
       "inPersonCareIssued": true,
+      "virtualCareIssued": false,
+      "noPrimaryCareProvider": false,
+      "recommendNonPharm": false,
+      "virtualCareNotIssued": false,
+      "inPersonCareNotIssued": false,
       "primaryCareProviderNotified": true
     },
     "medicationOrder": {
@@ -2005,7 +2886,12 @@
           "quantity": "3 tablets",
           "direction": "Take 1 tablet (100mg) as a single dose. Repeat on Day 14 and Day 28. Total 3 doses."
         },
-        { "name": "", "strength": "", "quantity": "", "direction": "" }
+        {
+          "name": "",
+          "strength": "",
+          "quantity": "",
+          "direction": ""
+        }
       ]
     },
     "signature": {
@@ -2017,8 +2903,137 @@
       "date": "2025-03-23",
       "phone": true,
       "inPerson": false,
-      "monitoringParameters": "Monitor for resolution of perianal pruritus. Remind caregiver to administer repeat doses on Day 14 and Day 28. Advise strict hand hygiene and laundering of bedding to prevent reinfection."
+      "monitoringParameters": "Monitor for resolution of perianal pruritus and sleep disturbance after first dose. Remind caregiver to administer repeat doses on Day 14 and Day 28. Advise strict hand hygiene and laundering of bedding/clothing to prevent reinfection."
     }
+  }
+}
+```
+
+---
+
+## Tamiflu (Oseltamivir)
+
+```json
+{
+  "consent": {
+    "verbalConsent": true,
+    "substituteName": null,
+    "substituteConsent": false,
+    "substituteRelation": null
+  },
+  "patient": {
+    "dob": "1992-06-15",
+    "phone": "+1-416-555-1234",
+    "gender": "M",
+    "height": "175 cm",
+    "weight": "72 kg",
+    "address": "123 Main Street, Toronto, ON",
+    "lastName": "Doe",
+    "firstName": "John",
+    "healthCardNo": "HC123456789"
+  },
+  "carePlan": {
+    "notes": "",
+    "other": false,
+    "referToMDNP": false,
+    "inPersonCare": true,
+    "recommendOTC": false,
+    "inPersonCareRefer": false,
+    "recommendNonPharm": false,
+    "prescriptionIssued": true,
+    "virtualCareTelephone": false,
+    "inPersonCareNotIssued": false,
+    "prescriptionNotIssued": false,
+    "issueRxWithModification": false,
+    "virtualCareTelephoneRefer": false,
+    "virtualCareTelephoneNotIssued": false
+  },
+  "followUp": {
+    "date": null,
+    "phone": false,
+    "pcpFax": false,
+    "inPerson": false,
+    "pcpPhone": false,
+    "paxlovidPhone": false,
+    "pcpNotifiedDate": null,
+    "paxlovidInPerson": false,
+    "paxlovidConfirmed": false,
+    "paxlovidConfirmDate": null
+  },
+  "symptoms": {
+    "gi": false,
+    "cough": true,
+    "fever": true,
+    "chills": false,
+    "fatigue": false,
+    "malaise": true,
+    "myalgia": false,
+    "headache": true,
+    "rhinitis": false,
+    "soreThroat": false,
+    "abruptRespiratory": true
+  },
+  "signature": {
+    "date": "2025-01-03",
+    "ocpNumber": "OCP-445566",
+    "pharmacistName": "Sarah Smith"
+  },
+  "assessment": {
+    "nka": true,
+    "sCr": null,
+    "eGFR": null,
+    "notes": "",
+    "sCrDate": null,
+    "eGFRDate": null,
+    "allergies": "NKA",
+    "eGFRandSCr": null,
+    "hasAllergies": false,
+    "knownPregnant": false,
+    "otherPharmacy": false,
+    "liverImpairment": false,
+    "renalImpairment": false,
+    "medicationListAttached": true,
+    "pregnancyBreastfeeding": null
+  },
+  "medication": {
+    "standardDose": true,
+    "children1to12": false,
+    "infantsUnder1": false,
+    "weight23to40kg": false,
+    "weightOver40kg": false,
+    "weightUnder15kg": false,
+    "creatinine10to30": false,
+    "creatinineOver30": false,
+    "prevAdults13Plus": false,
+    "prevChildren1to12": false,
+    "renalAdults18Plus": false,
+    "prevWeight23to40kg": false,
+    "prevWeightOver40kg": false,
+    "prevWeightUnder15kg": false,
+    "reducedDosePaxlovid": false,
+    "adultsChildren13Plus": true,
+    "treatmentOseltamivir": true,
+    "preventionOseltamivir": false,
+    "renalPrevAdults18Plus": false,
+    "renalImpairmentTreatment": false,
+    "renalImpairmentPrevention": false,
+    "renalPrevCreatinine10to30": false,
+    "renalPrevCreatinineOver30": false
+  },
+  "prescriber": {
+    "faxNo": "+1-416-555-7788",
+    "phone": "+1-416-555-8899",
+    "address": "456 Pharmacy Ave, Toronto, ON",
+    "lastName": "Smith",
+    "firstName": "Sarah",
+    "licenseNo": "PHR-998877"
+  },
+  "eligibility": {
+    "noRedFlags": true,
+    "clinicalJudgment": true,
+    "positiveTestDate": "2025-01-02",
+    "symptomOnsetDate": "2025-01-01",
+    "outbreakDiagnosis": false
   }
 }
 ```
@@ -2084,24 +3099,72 @@
       "licenseNo": "PHR780"
     },
     "eligibility": {
+      "acne": false,
       "noRedFlags": true,
+      "impetigo": false,
       "tickBites": true,
+      "pinworms": false,
+      "dermatitis": false,
+      "hemorrhoids": false,
       "notPrecluded": true,
+      "conjunctivitis": false,
+      "dysmenorrhea": false,
+      "insectBites": false,
+      "herpesLabialis": false,
+      "allergicRhinitis": false,
+      "diaperDermatitis": false,
+      "candidalStomatitis": false,
+      "vaginalCandidiasis": false,
+      "musculoskeletalSprains": false,
+      "urinaryTractInfections": false,
+      "gastroesophagealReflux": false,
+      "nauseaVomitingPregnancy": false,
       "validOntarioHealthNumber": true
     },
     "assessment": {
       "nka": true,
       "none": true,
+      "notes": "",
+      "allergies": false,
+      "scrDate": "",
+      "scrValue": "",
+      "egfrDate": "",
+      "egfrValue": "",
       "pregnantNo": true,
+      "pregnantNA": false,
+      "pregnantYes": false,
+      "scrProvided": false,
+      "allergiesDetail": "",
+      "egfrProvided": false,
       "liverImpairmentNo": true,
       "renalImpairmentNo": true,
+      "liverImpairmentYes": false,
+      "renalImpairmentYes": false,
+      "medicalConditions": false,
+      "drugInteractions": false,
+      "liverImpairmentUnknown": false,
+      "renalImpairmentUnknown": false,
+      "drugInteractionsDetail": "",
+      "attachCurrentMedication": false,
       "historyOfPresentingComplaint": true,
       "medicationsFromAnotherPharmacyNo": true,
       "medicationsFromAnotherPharmacyYes": false
     },
     "carePlan": {
+      "fax": false,
+      "date": "",
+      "notes": "",
+      "other": false,
       "phone": true,
+      "referToMD": false,
+      "recommendOTC": false,
+      "rationalProvided": false,
       "inPersonCareIssued": true,
+      "virtualCareIssued": false,
+      "noPrimaryCareProvider": false,
+      "recommendNonPharm": false,
+      "virtualCareNotIssued": false,
+      "inPersonCareNotIssued": false,
       "primaryCareProviderNotified": true
     },
     "medicationOrder": {
@@ -2112,7 +3175,12 @@
           "quantity": "1 tablet",
           "direction": "Take 1 tablet PO x 1 dose"
         },
-        { "name": "", "strength": "", "quantity": "", "direction": "" }
+        {
+          "name": "",
+          "strength": "",
+          "quantity": "",
+          "direction": ""
+        }
       ]
     },
     "signature": {
@@ -2124,7 +3192,163 @@
       "date": "2025-03-16",
       "phone": true,
       "inPerson": false,
-      "monitoringParameters": "Monitor for development of erythema migrans rash, fever, chills, headache, or joint aches. Seek immediate medical attention if any systemic symptoms develop within 30 days."
+      "monitoringParameters": "Monitor for development of erythema migrans rash, fever, chills, headache, or joint aches. Advise patient to seek immediate medical attention if any systemic symptoms develop within 30 days."
+    }
+  }
+}
+```
+
+---
+
+## UTI
+
+```json
+{
+  "ailmentCode": "UTI",
+  "data": {
+    "ailment": {
+      "code": "UTI",
+      "displayName": "Urinary Tract Infection (UTI)",
+      "clinicalBlock": {
+        "symptoms": {
+          "dysuria": true,
+          "frequency": true,
+          "noVaginalDischarge": true,
+          "suprapubicDiscomfort": true
+        },
+        "criteria": {
+          "notMale": true,
+          "ageAbove12": true,
+          "noRedFlags": true,
+          "noRecentUTI": true,
+          "noRedFlagSymptoms": true,
+          "previousDiagnosisUTI": true
+        },
+        "treatment": {
+          "selected": "Nitrofurantoin"
+        }
+      }
+    },
+    "patient": {
+      "dob": "1990-05-14",
+      "gender": "F",
+      "phone": "416-555-0192",
+      "height": "165 cm",
+      "weight": "62 kg",
+      "address": "123 Maple Street, Toronto, ON M4B 1B3",
+      "lastName": "Doe",
+      "firstName": "Jane",
+      "healthCardNo": "1234-567-890"
+    },
+    "consent": {
+      "substituteName": "",
+      "substituteRelation": "",
+      "verbalConsentSubstitute": false,
+      "verbalConsentIndividual": true
+    },
+    "prescriber": {
+      "faxNo": "416-555-0101",
+      "phone": "416-555-0100",
+      "address": "456 Pharmacy Ave, Toronto, ON M5A 2T3",
+      "lastName": "Mitchell",
+      "firstName": "Sarah",
+      "licenseNo": "RPH-20341"
+    },
+    "eligibility": {
+      "acne": false,
+      "noRedFlags": true,
+      "impetigo": false,
+      "tickBites": false,
+      "pinworms": false,
+      "dermatitis": false,
+      "hemorrhoids": false,
+      "notPrecluded": true,
+      "conjunctivitis": false,
+      "dysmenorrhea": false,
+      "insectBites": false,
+      "herpesLabialis": false,
+      "allergicRhinitis": false,
+      "diaperDermatitis": false,
+      "candidalStomatitis": false,
+      "vaginalCandidiasis": false,
+      "musculoskeletalSprains": false,
+      "urinaryTractInfections": true,
+      "gastroesophagealReflux": false,
+      "nauseaVomitingPregnancy": false,
+      "validOntarioHealthNumber": true
+    },
+    "assessment": {
+      "nka": true,
+      "none": true,
+      "notes": "",
+      "allergies": false,
+      "scrDate": "",
+      "scrValue": "",
+      "egfrDate": "",
+      "egfrValue": "",
+      "pregnantNo": true,
+      "pregnantNA": false,
+      "pregnantYes": false,
+      "scrProvided": false,
+      "allergiesDetail": "",
+      "egfrProvided": false,
+      "liverImpairmentNo": true,
+      "renalImpairmentNo": true,
+      "liverImpairmentYes": false,
+      "renalImpairmentYes": false,
+      "medicalConditions": true,
+      "drugInteractions": false,
+      "liverImpairmentUnknown": false,
+      "renalImpairmentUnknown": false,
+      "drugInteractionsDetail": "",
+      "attachCurrentMedication": true,
+      "historyOfPresentingComplaint": true,
+      "medicationsFromAnotherPharmacyNo": true,
+      "medicationsFromAnotherPharmacyYes": false
+    },
+    "carePlan": {
+      "fax": false,
+      "date": "",
+      "notes": "",
+      "other": false,
+      "phone": true,
+      "referToMD": false,
+      "recommendOTC": false,
+      "rationalProvided": false,
+      "inPersonCareIssued": true,
+      "virtualCareIssued": false,
+      "noPrimaryCareProvider": false,
+      "recommendNonPharm": false,
+      "virtualCareNotIssued": false,
+      "inPersonCareNotIssued": false,
+      "primaryCareProviderNotified": true
+    },
+    "medicationOrder": {
+      "medications": [
+        {
+          "name": "Nitrofurantoin (MacroBID)",
+          "strength": "100 mg",
+          "quantity": "10 capsules",
+          "direction": "Take 1 capsule twice daily x 5 days with food"
+        },
+        {
+          "name": "",
+          "strength": "",
+          "quantity": "",
+          "direction": ""
+        }
+      ]
+    },
+    "signature": {
+      "date": "2025-02-15",
+      "ocpNumber": "PHR780",
+      "pharmacistName": "Dr. Jane Wilson"
+    },
+    "followUp": {
+      "date": "2025-02-20",
+      "phone": true,
+      "inPerson": false,
+      "monitoringParameters": ""
     }
   }
 }
@@ -2214,25 +3438,72 @@
       "licenseNo": "PHR780"
     },
     "eligibility": {
+      "acne": false,
       "noRedFlags": true,
-      "vaginalCandidiasis": true,
+      "impetigo": false,
+      "tickBites": false,
+      "pinworms": false,
+      "dermatitis": false,
+      "hemorrhoids": false,
       "notPrecluded": true,
+      "conjunctivitis": false,
+      "dysmenorrhea": false,
+      "insectBites": false,
+      "herpesLabialis": false,
+      "allergicRhinitis": false,
+      "diaperDermatitis": false,
+      "candidalStomatitis": false,
+      "vaginalCandidiasis": true,
+      "musculoskeletalSprains": false,
+      "urinaryTractInfections": false,
+      "gastroesophagealReflux": false,
+      "nauseaVomitingPregnancy": false,
       "validOntarioHealthNumber": true
     },
     "assessment": {
       "nka": true,
       "none": true,
+      "notes": "",
+      "allergies": false,
+      "scrDate": "",
+      "scrValue": "",
+      "egfrDate": "",
+      "egfrValue": "",
       "pregnantNo": true,
+      "pregnantNA": false,
+      "pregnantYes": false,
+      "scrProvided": false,
+      "allergiesDetail": "",
+      "egfrProvided": false,
       "liverImpairmentNo": true,
       "renalImpairmentNo": true,
+      "liverImpairmentYes": false,
+      "renalImpairmentYes": false,
+      "medicalConditions": false,
+      "drugInteractions": false,
+      "liverImpairmentUnknown": false,
+      "renalImpairmentUnknown": false,
+      "drugInteractionsDetail": "",
+      "attachCurrentMedication": false,
       "historyOfPresentingComplaint": true,
       "medicationsFromAnotherPharmacyNo": true,
       "medicationsFromAnotherPharmacyYes": false
     },
     "carePlan": {
+      "fax": false,
+      "date": "",
+      "notes": "",
+      "other": false,
       "phone": true,
+      "referToMD": false,
       "recommendOTC": true,
+      "rationalProvided": false,
       "inPersonCareIssued": true,
+      "virtualCareIssued": false,
+      "noPrimaryCareProvider": false,
+      "recommendNonPharm": false,
+      "virtualCareNotIssued": false,
+      "inPersonCareNotIssued": false,
       "primaryCareProviderNotified": true
     },
     "medicationOrder": {
@@ -2243,7 +3514,12 @@
           "quantity": "1 tablet",
           "direction": "Take 1 tablet (150mg) PO as a single dose"
         },
-        { "name": "", "strength": "", "quantity": "", "direction": "" }
+        {
+          "name": "",
+          "strength": "",
+          "quantity": "",
+          "direction": ""
+        }
       ]
     },
     "signature": {
@@ -2255,7 +3531,7 @@
       "date": "2025-03-16",
       "phone": true,
       "inPerson": false,
-      "monitoringParameters": "Monitor for resolution of vulvar pruritus, discharge, and burning. Return if symptoms persist beyond 7 days, worsen, or recur within 8 weeks."
+      "monitoringParameters": "Monitor for resolution of vulvar pruritus, discharge, and burning. Advise patient to return if symptoms persist beyond 7 days, worsen, or recur within 8 weeks."
     }
   }
 }
