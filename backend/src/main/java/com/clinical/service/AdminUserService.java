@@ -28,15 +28,15 @@ public class AdminUserService {
 
     public UserResponse createPharmacist(AdminCreatePharmacistRequest req) {
 
-        if (userRepository.existsByEmail(req.getEmail())) {
+        if (userRepository.existsByEmail(req.email())) {
             throw new RuntimeException("Email already exists");
         }
 
         User user = new User();
-        user.setEmail(req.getEmail());
-        user.setFirstName(req.getFirstName());
-        user.setLastName(req.getLastName());
-        user.setPassword(passwordEncoder.encode(req.getPassword()));
+        user.setEmail(req.email());
+        user.setFirstName(req.firstName());
+        user.setLastName(req.lastName());
+        user.setPassword(passwordEncoder.encode(req.password()));
 
         user.setRole(Role.PHARMACIST);
         user.setStatus(UserStatus.ACTIVE);
@@ -65,9 +65,9 @@ public class AdminUserService {
             throw new RuntimeException("Only pharmacist users can be updated");
         }
 
-        user.setFirstName(req.getFirstName());
-        user.setLastName(req.getLastName());
-        user.setStatus(req.getStatus());
+        user.setFirstName(req.firstName());
+        user.setLastName(req.lastName());
+        user.setStatus(req.status());
 
         User updatedUser = userRepository.save(user);
         return new UserResponse(
@@ -85,7 +85,7 @@ public class AdminUserService {
     public void softDeletePharmacist(Long userId) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("Pharmacist not found"));
 
         if (user.getRole() != Role.PHARMACIST) {
             throw new RuntimeException("Only pharmacist users can be deleted");

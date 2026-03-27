@@ -19,10 +19,8 @@ public class AdminUserController {
 
     @Autowired
     private AdminUserService adminUserService;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -30,16 +28,15 @@ public class AdminUserController {
     @PostMapping
     public User createPharmacist(@RequestBody AdminCreatePharmacistRequest req) {
 
-        if (userRepository.existsByEmail(req.getEmail())) {
+        if (userRepository.existsByEmail(req.email())) {
             throw new RuntimeException("Email already exists");
         }
 
         User user = new User();
-        user.setEmail(req.getEmail());
-        user.setPassword(passwordEncoder.encode(req.getPassword()));
-        user.setFirstName(req.getFirstName());
-        user.setLastName(req.getLastName());
-
+        user.setEmail(req.email());
+        user.setPassword(passwordEncoder.encode(req.password()));
+        user.setFirstName(req.firstName());
+        user.setLastName(req.lastName());
         user.setRole(Role.PHARMACIST);
         user.setStatus(UserStatus.ACTIVE);
 
@@ -54,18 +51,18 @@ public class AdminUserController {
             @RequestBody AdminUpdatePharmacistRequest req
     ) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("Pharmacist not found"));
 
-        user.setFirstName(req.getFirstName());
-        user.setLastName(req.getLastName());
-        user.setStatus(req.getStatus());
+        user.setFirstName(req.firstName());
+        user.setLastName(req.lastName());
+        user.setStatus(req.status());
 
         return userRepository.save(user);
     }
 
     /* ---------------- SOFT DELETE ---------------- */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePharmacist(@PathVariable Long id) {
         adminUserService.softDeletePharmacist(id);
         return ResponseEntity.noContent().build();
     }

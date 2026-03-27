@@ -1,14 +1,9 @@
 package com.clinical.dto;
 
-import lombok.Data;
+public record AdminCreatePharmacistRequest (
 
-@Data
-public class AdminCreatePharmacistRequest {
-
-    private String email;
-    private String password;
-    private String firstName;
-    private String lastName;
-
-
-}
+     String email,
+     String password,
+     String firstName,
+     String lastName)
+{}
