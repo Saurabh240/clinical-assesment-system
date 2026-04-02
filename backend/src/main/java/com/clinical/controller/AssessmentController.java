@@ -1,17 +1,13 @@
 package com.clinical.controller;
 
 import com.clinical.dto.*;
-import com.clinical.model.Assessment;
-import com.clinical.repository.AssessmentRepository;
 import com.clinical.service.AssessmentService;
-import com.clinical.service.PdfClient;
-import com.clinical.service.PdfHtmlService;
-import com.clinical.service.S3Service;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.clinical.service.AuditLogService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
@@ -20,55 +16,56 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AssessmentController {
 
-    private final AssessmentRepository repo;
     private final AssessmentService service;
-    private final ObjectMapper mapper;
-    private final PdfHtmlService htmlBuilder;
-    private final PdfClient pdfClient;
-    private final S3Service s3;
+    private final AuditLogService auditLogService;
 
     @PostMapping
-    public ResponseEntity<Map<String, Long>> create(@RequestBody AssessmentRequest req) {
-        return ResponseEntity.ok(Map.of("id", service.createAssessment(req)));
+    public ResponseEntity<Map<String, Long>> create(
+            @RequestBody AssessmentRequest req,
+            @AuthenticationPrincipal AuthUser caller,
+            HttpServletRequest httpRequest) {
+
+        Long id = service.createAssessment(req);
+        String actor = caller != null ? caller.email() : "system";
+
+        auditLogService.logCreated(
+                "ASSESSMENT", id,
+                "Created new assessment for patient",
+                actor,
+                resolveIp(httpRequest));
+
+        return ResponseEntity.ok(Map.of("id", id));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AssessmentResponse> get(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getAssessment(id));
+    public ResponseEntity<AssessmentResponse> get(@PathVariable Long id, @AuthenticationPrincipal AuthUser caller) {
+        return ResponseEntity.ok(service.getAssessment(id, caller));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(
             @PathVariable Long id,
-            @RequestBody AssessmentRequest req) {
+            @RequestBody AssessmentRequest req,
+            @AuthenticationPrincipal AuthUser caller,
+            HttpServletRequest httpRequest) {
 
-        service.updateAssessment(id, req);
+        service.updateAssessment(id, req, caller);
+        String actor = caller != null ? caller.email() : "system";
+        auditLogService.logUpdated(
+                "ASSESSMENT", id,
+                "Updated assessment #" + id,
+                actor,
+                resolveIp(httpRequest));
+
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{id}/pdf")
-    public Map<String, String> generatePdf(@PathVariable Long id) {
-        Assessment a = repo.findById(id).orElseThrow();
-        Map<String, Object> model = mapper.convertValue(
-                a.getAssessmentData(),
-                new TypeReference<>() {}
-        );
-        String html = htmlBuilder.renderAssessment(a);
-        byte[] pdf = pdfClient.generate(html);
-
-        // Extract ailment code safely
-        String ailmentCode = "assessment";
-        if (model.containsKey("ailment")) {
-            Map<String, Object> ailment = (Map<String, Object>) model.get("ailment");
-            if (ailment != null && ailment.get("code") != null) {
-                ailmentCode = ailment.get("code").toString().toLowerCase();
-            }
-        }
-        String fileName = ailmentCode + "-" + id + ".pdf";
-        String url = s3.upload(pdf, fileName);
-        a.setPdfUrl(url);
-        repo.save(a);
-        return Map.of("url", url);
+    public ResponseEntity<Map<String, String>> generatePdf(@PathVariable Long id, @AuthenticationPrincipal AuthUser caller, HttpServletRequest httpRequest) {
+        String url = service.generatePdf(id, caller);
+        String actor = caller != null ? caller.email() : "system";
+        auditLogService.logPdfGenerated(id, url, actor, resolveIp(httpRequest));
+        return ResponseEntity.ok(Map.of("url", url));
     }
 
     @PostMapping("/getAllAssessments")
@@ -76,6 +73,14 @@ public class AssessmentController {
             AssessmentFilterRequest request) {
 
         return ResponseEntity.ok(service.getAssessments(request));
+    }
+
+    private String resolveIp(HttpServletRequest request) {
+        String forwarded = request.getHeader("X-Forwarded-For");
+        if (forwarded != null && !forwarded.isBlank()) {
+            return forwarded.split(",")[0].trim();
+        }
+        return request.getRemoteAddr();
     }
 }
 

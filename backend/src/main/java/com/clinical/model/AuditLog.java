@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "audit_logs")
@@ -21,13 +20,34 @@ public class AuditLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /** Resource type: ASSESSMENT, USER, PHARMACY, FOLLOWUP, PDF */
     private String entity;
+
+    /** ID of the affected resource */
     private Long entityId;
 
+    /**
+     * Action: CREATE, UPDATE, DELETE, LOGIN, LOGOUT,
+     * PDF_GENERATED, STATUS_CHANGE
+     */
+    private String action;
+
+    /** Field that changed (for field-level diffs) */
     private String field;
+
     private String oldValue;
     private String newValue;
 
+    /** Human-readable summary shown in the Details column */
+    @Column(columnDefinition = "TEXT")
+    private String details;
+
+    /** Email or display name of the actor */
     private String updatedBy;
+
+    /** Client IP captured from the HTTP request */
+    @Column(length = 45)
+    private String ipAddress;
+
     private Instant updatedAt;
 }
