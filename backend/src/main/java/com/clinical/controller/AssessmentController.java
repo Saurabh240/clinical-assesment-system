@@ -25,8 +25,8 @@ public class AssessmentController {
             @AuthenticationPrincipal AuthUser caller,
             HttpServletRequest httpRequest) {
 
-        Long id = service.createAssessment(req);
-        String actor = caller != null ? caller.email() : "system";
+        Long id = service.createAssessment(req, caller);
+        String actor = caller.email();
 
         auditLogService.logCreated(
                 "ASSESSMENT", id,
@@ -70,8 +70,11 @@ public class AssessmentController {
 
     @PostMapping("/getAllAssessments")
     public ResponseEntity<Page<AssessmentSummaryResponse>> getAssessments(
-            AssessmentFilterRequest request) {
+            AssessmentFilterRequest request,
+            @AuthenticationPrincipal AuthUser caller) {
 
+        // Scope the listing to the caller's pharmacy automatically
+        request.setCallerUserId(caller.userId());
         return ResponseEntity.ok(service.getAssessments(request));
     }
 
@@ -83,4 +86,3 @@ public class AssessmentController {
         return request.getRemoteAddr();
     }
 }
-

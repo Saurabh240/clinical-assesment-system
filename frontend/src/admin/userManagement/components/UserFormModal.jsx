@@ -1,19 +1,19 @@
 import { useState } from "react";
 import {
     Edit2, Plus, X, Eye, EyeOff, AlertCircle,
-    ChevronDown, Loader2, Shield, Mail, Lock, User,
+    ChevronDown, Loader2, Mail, Lock, User,
 } from "lucide-react";
 
-const ROLE_OPTIONS = ["Admin", "Pharmacist"];
+// Role is always Pharmacist for Pharmacy Admin — no role selector shown
 const STATUS_OPTIONS = ["Active", "Inactive"];
-const EMPTY_FORM = { name: "", email: "", role: "Pharmacist", status: "Active", password: "" };
+const EMPTY_FORM = { name: "", email: "", status: "Active", password: "" };
 
 function validate(form, isEdit) {
     const errors = {};
     if (!form.name.trim())
         errors.name = "Full name is required.";
-    else if (form.name.trim().length < 3)
-        errors.name = "Name must be at least 3 characters.";
+    else if (form.name.trim().split(" ").filter(Boolean).length < 2)
+        errors.name = "Please enter both first and last name.";
     if (!form.email.trim())
         errors.email = "Email address is required.";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
@@ -24,12 +24,10 @@ function validate(form, isEdit) {
         else if (form.password.length < 8)
             errors.password = "Password must be at least 8 characters.";
     }
-    if (!form.role) errors.role = "Role is required.";
     return errors;
 }
 
-// ── Reusable input ───────────────────────────────────────────
-function InputField({ label, name, type = "text", value, onChange, error, placeholder, icon: Icon, rightSlot }) {
+function InputField({ label, name, type = "text", value, onChange, error, placeholder, icon: Icon, rightSlot, disabled }) {
     return (
         <div>
             <label className="block text-xs font-semibold text-gray-600 mb-1.5">{label}</label>
@@ -44,8 +42,10 @@ function InputField({ label, name, type = "text", value, onChange, error, placeh
                     value={value}
                     onChange={(e) => onChange(name, e.target.value)}
                     placeholder={placeholder}
+                    disabled={disabled}
                     className={`w-full ${Icon ? "pl-9" : "pl-3.5"} ${rightSlot ? "pr-10" : "pr-3.5"} py-2.5
             rounded-lg border text-sm transition-colors outline-none
+            ${disabled ? "bg-gray-50 text-gray-400 cursor-not-allowed" : ""}
             ${error
                             ? "border-red-300 bg-red-50 focus:border-red-400 focus:ring-2 focus:ring-red-100"
                             : "border-gray-200 bg-white focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
@@ -64,21 +64,15 @@ function InputField({ label, name, type = "text", value, onChange, error, placeh
     );
 }
 
-// ── Reusable select ──────────────────────────────────────────
-function SelectField({ label, name, value, onChange, options, error, icon: Icon }) {
+function SelectField({ label, name, value, onChange, options, error }) {
     return (
         <div>
             <label className="block text-xs font-semibold text-gray-600 mb-1.5">{label}</label>
             <div className="relative">
-                {Icon && (
-                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                        <Icon size={15} />
-                    </div>
-                )}
                 <select
                     value={value}
                     onChange={(e) => onChange(name, e.target.value)}
-                    className={`w-full appearance-none ${Icon ? "pl-9" : "pl-3.5"} pr-9 py-2.5
+                    className={`w-full appearance-none pl-3.5 pr-9 py-2.5
             rounded-lg border text-sm transition-colors outline-none bg-white
             ${error
                             ? "border-red-300 focus:border-red-400 focus:ring-2 focus:ring-red-100"
@@ -103,7 +97,6 @@ function SelectField({ label, name, value, onChange, options, error, icon: Icon 
     );
 }
 
-// ── Main Modal ───────────────────────────────────────────────
 export default function UserFormModal({ editUser, onSave, onClose, loading }) {
     const isEdit = !!editUser;
     const [form, setForm] = useState(isEdit ? { ...editUser, password: "" } : EMPTY_FORM);
@@ -124,10 +117,8 @@ export default function UserFormModal({ editUser, onSave, onClose, loading }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            {/* Backdrop */}
             <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
 
-            {/* Modal */}
             <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md z-10 overflow-hidden">
 
                 {/* Header */}
@@ -142,10 +133,10 @@ export default function UserFormModal({ editUser, onSave, onClose, loading }) {
                             </div>
                             <div>
                                 <h2 className="text-base font-bold text-white">
-                                    {isEdit ? "Edit User" : "Add New User"}
+                                    {isEdit ? "Edit Pharmacist" : "Add New Pharmacist"}
                                 </h2>
                                 <p className="text-xs text-emerald-100">
-                                    {isEdit ? "Update user information" : "Create a new pharmacist account"}
+                                    {isEdit ? "Update pharmacist information" : "Create a new pharmacist account"}
                                 </p>
                             </div>
                         </div>
@@ -167,7 +158,7 @@ export default function UserFormModal({ editUser, onSave, onClose, loading }) {
                         value={form.name}
                         onChange={handleChange}
                         error={errors.name}
-                        placeholder="e.g. John Pharmacist"
+                        placeholder="e.g. John Smith"
                         icon={User}
                     />
                     <InputField
@@ -177,8 +168,9 @@ export default function UserFormModal({ editUser, onSave, onClose, loading }) {
                         value={form.email}
                         onChange={handleChange}
                         error={errors.email}
-                        placeholder="e.g. john@clinic.com"
+                        placeholder="e.g. john@pharmacy.com"
                         icon={Mail}
+                        disabled={isEdit}
                     />
                     {!isEdit && (
                         <InputField
@@ -201,16 +193,19 @@ export default function UserFormModal({ editUser, onSave, onClose, loading }) {
                             }
                         />
                     )}
-                    <div className="grid grid-cols-2 gap-3">
-                        <SelectField
-                            label="Role"
-                            name="role"
-                            value={form.role}
-                            onChange={handleChange}
-                            options={ROLE_OPTIONS}
-                            error={errors.role}
-                            icon={Shield}
-                        />
+
+                    {/* Role is fixed — shown as a read-only pill, no select */}
+                    <div>
+                        <label className="block text-xs font-semibold text-gray-600 mb-1.5">Role</label>
+                        <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-lg border border-gray-200 bg-gray-50">
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-teal-50 text-teal-700 text-xs font-semibold">
+                                Pharmacist
+                            </span>
+                            <span className="text-xs text-gray-400">Only pharmacists can be added here</span>
+                        </div>
+                    </div>
+
+                    {isEdit && (
                         <SelectField
                             label="Status"
                             name="status"
@@ -219,7 +214,7 @@ export default function UserFormModal({ editUser, onSave, onClose, loading }) {
                             options={STATUS_OPTIONS}
                             error={errors.status}
                         />
-                    </div>
+                    )}
                 </div>
 
                 {/* Footer */}
@@ -241,7 +236,7 @@ export default function UserFormModal({ editUser, onSave, onClose, loading }) {
               disabled:opacity-60 flex items-center justify-center gap-2"
                     >
                         {loading && <Loader2 size={14} className="animate-spin" />}
-                        {isEdit ? "Save Changes" : "Add User"}
+                        {isEdit ? "Save Changes" : "Add Pharmacist"}
                     </button>
                 </div>
             </div>
