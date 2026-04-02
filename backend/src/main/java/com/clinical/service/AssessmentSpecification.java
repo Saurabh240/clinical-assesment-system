@@ -11,15 +11,21 @@ import java.util.List;
 
 public class AssessmentSpecification {
 
-    public static Specification<Assessment> build(AssessmentFilterRequest req) {
+    public static Specification<Assessment> build(AssessmentFilterRequest req, Long pharmacyId) {
 
         return (root, query, cb) -> {
 
             List<Predicate> predicates = new ArrayList<>();
 
+            // Always scope to the caller's pharmacy — prevents cross-pharmacy data leaks
+            if (pharmacyId != null) {
+                predicates.add(
+                        cb.equal(root.get("pharmacy").get("id"), pharmacyId)
+                );
+            }
+
             if (req.getAilmentCode() != null) {
                 String search = req.getAilmentCode().trim().toLowerCase();
-
                 predicates.add(
                         cb.like(
                                 cb.lower(root.get("ailmentCode")),
@@ -87,4 +93,3 @@ public class AssessmentSpecification {
         };
     }
 }
-

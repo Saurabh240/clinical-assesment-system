@@ -22,4 +22,7 @@ public class AssessmentFilterRequest {
 
     private String sortBy = "date";
     private String sortDirection = "DESC";
+
+    // Set automatically by the controller from the JWT — never from the client
+    private Long callerUserId;
 }

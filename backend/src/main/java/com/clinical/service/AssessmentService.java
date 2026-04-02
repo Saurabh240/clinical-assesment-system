@@ -41,7 +41,14 @@ public class AssessmentService {
     );
 
     @Transactional
-    public Long createAssessment(AssessmentRequest req) {
+    public Long createAssessment(AssessmentRequest req, AuthUser caller) {
+
+        User user = userRepository.findById(caller.userId())
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        if (user.getPharmacy() == null) {
+            throw new IllegalStateException("User is not linked to a pharmacy");
+        }
 
         Assessment a = new Assessment();
         a.setAilmentCode(req.getAilmentCode());
@@ -49,6 +56,7 @@ public class AssessmentService {
         a.setCreatedAt(Instant.now());
         a.setFollowupStatus(FollowupStatus.PENDING);
         a.setLastFollowupDate(null);
+        a.setPharmacy(user.getPharmacy());   // ← set pharmacy from the logged-in user
         repository.save(a);
         return a.getId();
     }
@@ -68,22 +76,30 @@ public class AssessmentService {
 
     @Transactional
     public Page<AssessmentSummaryResponse> getAssessments(AssessmentFilterRequest req) {
+        // Resolve the caller's pharmacyId and inject it into the spec
+        Long pharmacyId = null;
+        if (req.getCallerUserId() != null) {
+            User caller = userRepository.findById(req.getCallerUserId())
+                    .orElseThrow(() -> new EntityNotFoundException("User not found"));
+            if (caller.getPharmacy() != null) {
+                pharmacyId = caller.getPharmacy().getId();
+            }
+        }
         Pageable pageable = buildPageable(req);
-        Specification<Assessment> spec =
-                AssessmentSpecification.build(req);
+        Specification<Assessment> spec = AssessmentSpecification.build(req, pharmacyId);
         Page<Assessment> page = repository.findAll(spec, pageable);
         return page.map(this::mapToSummaryDto);
     }
 
-     @Transactional
-     public String generatePdf(Long id, AuthUser caller) {
-         Assessment a = findAndAuthorize(id, caller);
-         String html = htmlBuilder.renderAssessment(a);
-         byte[] pdf = pdfClient.generate(html);
-         String url = s3.upload(pdf, buildFileName(a));
-         a.setPdfUrl(url);
-         return url;
-     }
+    @Transactional
+    public String generatePdf(Long id, AuthUser caller) {
+        Assessment a = findAndAuthorize(id, caller);
+        String html = htmlBuilder.renderAssessment(a);
+        byte[] pdf = pdfClient.generate(html);
+        String url = s3.upload(pdf, buildFileName(a));
+        a.setPdfUrl(url);
+        return url;
+    }
 
     // ================= DTO MAPPING =================
     private AssessmentResponse mapToDetailDto(Assessment a) {
@@ -167,5 +183,3 @@ public class AssessmentService {
         return a.getAilmentCode() + "-" + a.getId() + ".pdf";
     }
 }
-
-

@@ -1,61 +1,128 @@
-import { useState } from "react";
-
-const MOCK_USERS = [
-    { id: 1, name: "Dr. Sarah Admin", email: "admin@clinic.com", role: "Admin", status: "Active", createdAt: "2025-01-10", lastLogin: "2026-02-25 14:32" },
-    { id: 2, name: "John Pharmacist", email: "pharmacist@clinic.com", role: "Pharmacist", status: "Active", createdAt: "2025-02-14", lastLogin: "2026-02-25 13:15" },
-    { id: 3, name: "Lisa Martinez", email: "lisa.martinez@clinic.com", role: "Pharmacist", status: "Active", createdAt: "2025-03-22", lastLogin: "2026-02-24 09:40" },
-    { id: 4, name: "Robert Kim", email: "robert.kim@clinic.com", role: "Pharmacist", status: "Inactive", createdAt: "2025-04-05", lastLogin: "2026-01-10 11:00" },
-    { id: 5, name: "Priya Nair", email: "priya.nair@clinic.com", role: "Pharmacist", status: "Active", createdAt: "2025-06-18", lastLogin: "2026-02-23 16:55" },
-];
+import { useState, useEffect } from "react";
+import api from "../../../api/axios";
 
 export default function useUserManagement() {
-    const [users, setUsers] = useState(MOCK_USERS);
+    const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [toast, setToast] = useState(null); // { type: "success"|"error", msg }
+    const [toast, setToast] = useState(null);
 
     const showToast = (type, msg) => {
         setToast({ type, msg });
         setTimeout(() => setToast(null), 3500);
     };
 
-    // Simulate async — remove fakeDelay and swap with real API calls
-    const fakeDelay = (ms = 700) => new Promise((r) => setTimeout(r, ms));
-
-    const addUser = async (data) => {
-        setLoading(true);
-        await fakeDelay();
-        // TODO: const res = await userApi.create(data);
-        const newUser = {
-            ...data,
-            id: Date.now(),
-            createdAt: new Date().toISOString().split("T")[0],
-            lastLogin: "Never",
+    /* ── Fetch all pharmacists for this pharmacy on mount ── */
+    useEffect(() => {
+        const fetchUsers = async () => {
+            setLoading(true);
+            try {
+                const { data } = await api.get("/admin/users");
+                // Normalise to the shape the UI expects
+                const normalised = data.map((u) => ({
+                    id: u.id,
+                    name: `${u.firstName} ${u.lastName}`,
+                    email: u.email,
+                    role: u.role === "PHARMACIST" ? "Pharmacist" : "Admin",
+                    status: u.status === "ACTIVE" ? "Active" : "Inactive",
+                    firstName: u.firstName,
+                    lastName: u.lastName,
+                }));
+                setUsers(normalised);
+            } catch (err) {
+                showToast("error", err.response?.data?.message || "Failed to load users.");
+            } finally {
+                setLoading(false);
+            }
         };
-        setUsers((prev) => [newUser, ...prev]);
-        showToast("success", `User "${data.name}" added successfully.`);
-        setLoading(false);
-        return true;
-    };
 
-    const updateUser = async (id, data) => {
+        fetchUsers();
+    }, []);
+
+    /* ── Create ── */
+    const addUser = async (formData) => {
         setLoading(true);
-        await fakeDelay();
-        // TODO: await userApi.update(id, data);
-        setUsers((prev) => prev.map((u) => (u.id === id ? { ...u, ...data } : u)));
-        showToast("success", `User "${data.name}" updated successfully.`);
-        setLoading(false);
-        return true;
+        try {
+            // Split "Full Name" back into first/last for the API
+            const [firstName, ...rest] = formData.name.trim().split(" ");
+            const lastName = rest.join(" ") || "";
+
+            const { data } = await api.post("/admin/users", {
+                firstName,
+                lastName,
+                email: formData.email,
+                password: formData.password,
+            });
+
+            const newUser = {
+                id: data.id,
+                name: `${data.firstName} ${data.lastName}`,
+                email: data.email,
+                role: "Pharmacist",
+                status: data.status === "ACTIVE" ? "Active" : "Inactive",
+                firstName: data.firstName,
+                lastName: data.lastName,
+            };
+
+            setUsers((prev) => [newUser, ...prev]);
+            showToast("success", `Pharmacist "${newUser.name}" added successfully.`);
+            return true;
+        } catch (err) {
+            showToast("error", err.response?.data?.message || "Failed to add user.");
+            return false;
+        } finally {
+            setLoading(false);
+        }
     };
 
+    /* ── Update ── */
+    const updateUser = async (id, formData) => {
+        setLoading(true);
+        try {
+            const [firstName, ...rest] = formData.name.trim().split(" ");
+            const lastName = rest.join(" ") || "";
+
+            const { data } = await api.put(`/admin/users/${id}`, {
+                firstName,
+                lastName,
+                status: formData.status === "Active" ? "ACTIVE" : "INACTIVE",
+            });
+
+            const updated = {
+                id: data.id,
+                name: `${data.firstName} ${data.lastName}`,
+                email: data.email,
+                role: "Pharmacist",
+                status: data.status === "ACTIVE" ? "Active" : "Inactive",
+                firstName: data.firstName,
+                lastName: data.lastName,
+            };
+
+            setUsers((prev) => prev.map((u) => (u.id === id ? updated : u)));
+            showToast("success", `Pharmacist "${updated.name}" updated successfully.`);
+            return true;
+        } catch (err) {
+            showToast("error", err.response?.data?.message || "Failed to update user.");
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    /* ── Soft delete (marks INACTIVE on backend) ── */
     const deleteUser = async (id) => {
         setLoading(true);
-        await fakeDelay();
-        // TODO: await userApi.delete(id);
-        const name = users.find((u) => u.id === id)?.name;
-        setUsers((prev) => prev.filter((u) => u.id !== id));
-        showToast("success", `User "${name}" deleted.`);
-        setLoading(false);
-        return true;
+        try {
+            const name = users.find((u) => u.id === id)?.name;
+            await api.delete(`/admin/users/${id}`);
+            setUsers((prev) => prev.filter((u) => u.id !== id));
+            showToast("success", `Pharmacist "${name}" removed.`);
+            return true;
+        } catch (err) {
+            showToast("error", err.response?.data?.message || "Failed to delete user.");
+            return false;
+        } finally {
+            setLoading(false);
+        }
     };
 
     return { users, loading, toast, showToast, addUser, updateUser, deleteUser };

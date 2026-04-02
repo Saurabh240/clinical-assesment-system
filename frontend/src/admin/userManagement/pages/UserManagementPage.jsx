@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Plus, Search, Filter, RefreshCw, CheckCircle, AlertCircle } from "lucide-react";
 
 import useUserManagement from "../hooks/useUserManagement";
@@ -7,10 +6,8 @@ import UserTable from "../components/UserTable";
 import UserFormModal from "../components/UserFormModal";
 import DeleteConfirmModal from "../components/DeleteConfirmModal";
 
-const ROLE_OPTIONS = ["Admin", "Pharmacist"];
 const STATUS_OPTIONS = ["Active", "Inactive"];
 
-// ── Toast ────────────────────────────────────────────────────
 function Toast({ toast }) {
   if (!toast) return null;
   const isSuccess = toast.type === "success";
@@ -33,45 +30,37 @@ function Toast({ toast }) {
   );
 }
 
-// ── Page ─────────────────────────────────────────────────────
 export default function UserManagementPage() {
-  const navigate = useNavigate();
   const {
     users, loading, toast, showToast,
     addUser, updateUser, deleteUser,
   } = useUserManagement();
 
   const [search, setSearch] = useState("");
-  const [roleFilter, setRoleFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All");
   const [showAddModal, setShowAddModal] = useState(false);
   const [editUser, setEditUser] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
-  // ── Filter logic ─────────────────────────────────────────
   const filtered = users.filter((u) => {
     const q = search.toLowerCase();
     const matchSearch = !q || u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q);
-    const matchRole = roleFilter === "All" || u.role === roleFilter;
     const matchStatus = statusFilter === "All" || u.status === statusFilter;
-    return matchSearch && matchRole && matchStatus;
+    return matchSearch && matchStatus;
   });
 
-  // ── Stats ─────────────────────────────────────────────────
   const stats = {
     total: users.length,
     active: users.filter((u) => u.status === "Active").length,
     inactive: users.filter((u) => u.status === "Inactive").length,
-    admins: users.filter((u) => u.role === "Admin").length,
   };
 
   const clearFilters = () => {
     setSearch("");
-    setRoleFilter("All");
     setStatusFilter("All");
   };
 
-  const hasFilters = search || roleFilter !== "All" || statusFilter !== "All";
+  const hasFilters = search || statusFilter !== "All";
 
   return (
     <div className="space-y-6">
@@ -82,14 +71,13 @@ export default function UserManagementPage() {
         }
       `}</style>
 
-      {/* Toast notification */}
       <Toast toast={toast} />
 
-      {/* ── Page Header ─────────────────────────────────── */}
+      {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">User Management</h1>
-          <p className="text-sm text-gray-500 mt-0.5">Manage pharmacist and admin accounts</p>
+          <h1 className="text-2xl font-bold text-gray-800">Pharmacist Management</h1>
+          <p className="text-sm text-gray-500 mt-0.5">Manage pharmacist accounts for your pharmacy</p>
         </div>
         <button
           onClick={() => setShowAddModal(true)}
@@ -100,17 +88,16 @@ export default function UserManagementPage() {
             transition-all duration-200 self-start sm:self-auto"
         >
           <Plus size={16} />
-          Add User
+          Add Pharmacist
         </button>
       </div>
 
-      {/* ── Stats Strip ─────────────────────────────────── */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      {/* Stats Strip */}
+      <div className="grid grid-cols-3 gap-3">
         {[
-          { label: "Total Users", value: stats.total, badge: "bg-gray-100 text-gray-600" },
+          { label: "Total Pharmacists", value: stats.total, badge: "bg-gray-100 text-gray-600" },
           { label: "Active", value: stats.active, badge: "bg-emerald-50 text-emerald-700" },
           { label: "Inactive", value: stats.inactive, badge: "bg-gray-100 text-gray-500" },
-          { label: "Admins", value: stats.admins, badge: "bg-purple-50 text-purple-700" },
         ].map((s) => (
           <div key={s.label} className="bg-white rounded-xl border border-gray-100 px-5 py-4 shadow-sm">
             <p className="text-xs text-gray-400 font-medium mb-1">{s.label}</p>
@@ -124,12 +111,11 @@ export default function UserManagementPage() {
         ))}
       </div>
 
-      {/* ── Table Card ──────────────────────────────────── */}
+      {/* Table Card */}
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
 
         {/* Toolbar */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 px-6 py-4 border-b border-gray-100">
-          {/* Search */}
           <div className="relative flex-1">
             <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
@@ -141,20 +127,8 @@ export default function UserManagementPage() {
             />
           </div>
 
-          {/* Filters */}
           <div className="flex items-center gap-2 flex-wrap">
             <Filter size={14} className="text-gray-400 flex-shrink-0" />
-
-            <select
-              value={roleFilter}
-              onChange={(e) => setRoleFilter(e.target.value)}
-              className="pl-3 pr-7 py-2 rounded-lg border border-gray-200 text-xs font-medium
-                text-gray-600 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100
-                outline-none transition appearance-none bg-white cursor-pointer"
-            >
-              <option value="All">All Roles</option>
-              {ROLE_OPTIONS.map((r) => <option key={r} value={r}>{r}</option>)}
-            </select>
 
             <select
               value={statusFilter}
@@ -167,7 +141,6 @@ export default function UserManagementPage() {
               {STATUS_OPTIONS.map((s) => <option key={s} value={s}>{s}</option>)}
             </select>
 
-            {/* Clear filters */}
             {hasFilters && (
               <button
                 onClick={clearFilters}
@@ -188,24 +161,18 @@ export default function UserManagementPage() {
             <span className="font-semibold text-gray-600">{filtered.length}</span>
             {" "}of{" "}
             <span className="font-semibold text-gray-600">{users.length}</span>
-            {" "}users
+            {" "}pharmacists
           </p>
         </div>
 
-        {/* Table */}
         <UserTable
           users={filtered}
           onEdit={(u) => setEditUser(u)}
           onDelete={(u) => setDeleteTarget(u)}
-          onView={(u) => {
-            // TODO: uncomment when user detail page is ready
-            // navigate(`/admin/users/${u.id}`);
-            showToast("success", `Viewing profile: ${u.name}`);
-          }}
+          onView={(u) => showToast("success", `Viewing profile: ${u.name}`)}
         />
       </div>
 
-      {/* ── Add / Edit Modal ────────────────────────────── */}
       {(showAddModal || editUser) && (
         <UserFormModal
           editUser={editUser}
@@ -218,7 +185,6 @@ export default function UserManagementPage() {
         />
       )}
 
-      {/* ── Delete Confirmation Modal ────────────────────── */}
       {deleteTarget && (
         <DeleteConfirmModal
           user={deleteTarget}
