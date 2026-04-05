@@ -22,7 +22,7 @@ public class AuditLogController {
      * Query params: search, action, entity, page (0-based), size
      */
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<Page<AuditLogResponse>> list(
             @RequestParam(required = false, defaultValue = "") String search,
             @RequestParam(required = false, defaultValue = "") String action,
@@ -44,7 +44,7 @@ public class AuditLogController {
      * Returns full detail of a single log entry.
      */
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<AuditLogResponse> getById(@PathVariable Long id) {
         return auditLogRepository.findById(id)
                 .map(this::toResponse)
