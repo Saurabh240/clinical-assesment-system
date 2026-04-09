@@ -1,28 +1,15 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Clock, FileText, Pill, Calendar } from "lucide-react";
+import { Search, Clock, FileText, Pill, Calendar, Loader2 } from "lucide-react";
 import api from "../api/axios";
 
-// AssessmentSummaryResponse returns patientFirstName/patientLastName as top-level fields
-// getPatientName accepts the whole item object (not assessmentData)
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+// Summary response has patientFirstName/patientLastName at top level
 const getPatientName = (item) => {
   const f = item.patientFirstName?.trim() || "";
   const l = item.patientLastName?.trim()  || "";
   return `${f} ${l}`.trim() || "Unknown";
-};
-
-// AssessmentSummaryResponse does not include patient contact details.
-// Full details are available in the AssessmentResponse (single assessment GET).
-// We populate what we can from the first assessment for this patient.
-const getPatientDetails = (item) => {
-  return {
-    dob: null,
-    gender: null,
-    phone: null,
-    healthCard: null,
-    address: null,
-    _note: "Full details available on individual assessment view",
-  };
 };
 
 const getAge = (dob) => {
@@ -34,6 +21,8 @@ const getAge = (dob) => {
   if (m < 0 || (m === 0 && now.getDate() < birth.getDate())) age--;
   return age;
 };
+
+// ── Timeline helpers ──────────────────────────────────────────────────────────
 
 const TimelineIcon = ({ ailmentCode }) => {
   const code = (ailmentCode || "").toLowerCase();
@@ -65,16 +54,27 @@ const TimelineBadge = ({ ailmentCode }) => {
   return <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">Assessment</span>;
 };
 
+// ── Page ─────────────────────────────────────────────────────────────────────
+
 export default function PatientHistory() {
   const navigate = useNavigate();
+
+  // All assessments (summary list)
   const [allAssessments, setAllAssessments] = useState([]);
+  // Unique patient list built from the summary list
   const [patients, setPatients] = useState([]);
+  // The selected patient object { name, assessmentIds[] }
   const [selectedPatient, setSelectedPatient] = useState(null);
+  // Full patient details fetched from single-assessment GET
+  const [patientDetails, setPatientDetails] = useState(null);
+  // Timeline entries for the selected patient
   const [patientTimeline, setPatientTimeline] = useState([]);
+
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const [dropdownSearch, setDropdownSearch] = useState("");
+  const [detailsLoading, setDetailsLoading] = useState(false);
 
+  // ── Fetch all summaries on mount ──────────────────────────────────────────
   useEffect(() => {
     const load = async () => {
       try {
@@ -83,28 +83,24 @@ export default function PatientHistory() {
           page: 0, size: 100, sortBy: "date", sortDirection: "DESC",
         });
         const content = res.data.content || [];
+        setAllAssessments(content);
 
         // Build unique patient list
         const seen = new Map();
         content.forEach((item) => {
           const name = getPatientName(item);
           if (!seen.has(name)) {
-            seen.set(name, {
-              name,
-              details: getPatientDetails(item),
-              assessments: [],
-            });
+            seen.set(name, { name, assessmentIds: [] });
           }
-          seen.get(name).assessments.push(item);
+          seen.get(name).assessmentIds.push(item.id);
         });
 
-        const patientList = Array.from(seen.values());
-        setPatients(patientList);
-        setAllAssessments(content);
+        const list = Array.from(seen.values());
+        setPatients(list);
 
         // Auto-select first patient
-        if (patientList.length > 0) {
-          selectPatient(patientList[0], content);
+        if (list.length > 0) {
+          handleSelectPatient(list[0], content);
         }
       } catch (err) {
         console.error(err);
@@ -115,35 +111,63 @@ export default function PatientHistory() {
     load();
   }, []);
 
-  const selectPatient = (patient, allData) => {
+  // ── Select a patient — build timeline + fetch full details ────────────────
+  const handleSelectPatient = async (patient, source) => {
     setSelectedPatient(patient);
+    setPatientDetails(null);
+    setSearch("");
+
+    const data = source || allAssessments;
     const name = patient.name;
-    const source = allData || allAssessments;
-    const timeline = source
+
+    // Build timeline from summary data
+    const timeline = data
       .filter((item) => getPatientName(item) === name)
       .map((item) => ({
         id: item.id,
-        title: `${item.ailmentCode} Assessment`,
+        title: `${item.ailmentCode || "Assessment"}`,
         date: item.createdAt,
-        details: "",  // details not available in summary — visible in individual assessment view
         ailmentCode: item.ailmentCode,
         status: item.followupStatus,
       }))
       .sort((a, b) => new Date(b.date) - new Date(a.date));
+
     setPatientTimeline(timeline);
-    setDropdownSearch("");
+
+    // Fetch full details from the most recent assessment for this patient
+    if (patient.assessmentIds?.length > 0) {
+      setDetailsLoading(true);
+      try {
+        // Use the first (most recent) assessment ID to get full patient data
+        const firstId = timeline[0]?.id || patient.assessmentIds[0];
+        const detailRes = await api.get(`/assessments/${firstId}`);
+        const d = detailRes.data?.data?.patient || {};
+        setPatientDetails({
+          dob: d.dob || null,
+          gender: d.gender || null,
+          phone: d.phone || null,
+          healthCard: d.healthCardNo || null,
+          address: d.address || null,
+          email: d.email || null,
+        });
+      } catch (err) {
+        console.error("Failed to fetch patient details:", err);
+        setPatientDetails({}); // empty but not null — stops loading state
+      } finally {
+        setDetailsLoading(false);
+      }
+    }
   };
 
-  const filteredPatients = patients.filter((p) =>
-    p.name.toLowerCase().includes(dropdownSearch.toLowerCase())
-  );
+  const handlePatientChange = (e) => {
+    const p = patients.find((pt) => pt.name === e.target.value);
+    if (p) handleSelectPatient(p);
+  };
 
   const filteredTimeline = search
-    ? patientTimeline.filter(
-        (t) =>
-          t.title.toLowerCase().includes(search.toLowerCase()) ||
-          t.details.toLowerCase().includes(search.toLowerCase()) ||
-          t.ailmentCode?.toLowerCase().includes(search.toLowerCase())
+    ? patientTimeline.filter((t) =>
+        t.title.toLowerCase().includes(search.toLowerCase()) ||
+        t.ailmentCode?.toLowerCase().includes(search.toLowerCase())
       )
     : patientTimeline;
 
@@ -155,8 +179,10 @@ export default function PatientHistory() {
     );
   }
 
-  const details = selectedPatient?.details || {};
-  const age = getAge(details.dob);
+  const age = getAge(patientDetails?.dob);
+  const genderLabel = patientDetails?.gender === "M" ? "Male"
+    : patientDetails?.gender === "F" ? "Female"
+    : patientDetails?.gender || null;
 
   return (
     <div className="space-y-6">
@@ -166,95 +192,97 @@ export default function PatientHistory() {
         <p className="text-sm text-gray-500 mt-0.5">View comprehensive patient medical records and timeline</p>
       </div>
 
-      {/* Top cards — patient selector + details + contact */}
+      {/* Top cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
         {/* Select Patient */}
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Select Patient</p>
-          <div className="relative">
-            <button
-              className="w-full flex items-center justify-between px-3 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-800 hover:border-gray-300 transition"
-              onClick={() => setDropdownSearch(dropdownSearch === null ? "" : (dropdownSearch === undefined ? "" : null))}
-            >
-              <span>{selectedPatient?.name || "Select a patient"}</span>
-              <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-
-            {/* Patient dropdown — always visible as a select for simplicity */}
-            <select
-              className="absolute inset-0 opacity-0 cursor-pointer w-full"
-              value={selectedPatient?.name || ""}
-              onChange={(e) => {
-                const p = patients.find((pt) => pt.name === e.target.value);
-                if (p) selectPatient(p);
-              }}
-            >
-              {patients.map((p) => (
-                <option key={p.name} value={p.name}>{p.name}</option>
-              ))}
-            </select>
-          </div>
+          <select
+            className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-800
+              outline-none focus:ring-2 focus:ring-emerald-100 focus:border-emerald-400 transition bg-white"
+            value={selectedPatient?.name || ""}
+            onChange={handlePatientChange}
+          >
+            {patients.map((p) => (
+              <option key={p.name} value={p.name}>{p.name}</option>
+            ))}
+          </select>
           <p className="text-xs text-gray-400 mt-2">{patients.length} patients total</p>
         </div>
 
         {/* Patient Details */}
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Patient Details</p>
-          {selectedPatient ? (
-            <div className="space-y-2 text-sm">
-              {details.healthCard && (
+          {detailsLoading ? (
+            <div className="flex items-center gap-2 text-sm text-gray-400">
+              <Loader2 size={14} className="animate-spin" /> Loading...
+            </div>
+          ) : patientDetails ? (
+            <div className="space-y-2.5 text-sm">
+              {patientDetails.healthCard && (
                 <div>
-                  <p className="text-xs text-gray-400">Medical Record Number</p>
-                  <p className="font-semibold text-gray-800">{details.healthCard}</p>
+                  <p className="text-xs text-gray-400">Health Card</p>
+                  <p className="font-semibold text-gray-800">{patientDetails.healthCard}</p>
                 </div>
               )}
-              <div className="flex gap-6">
+              <div className="flex gap-5">
                 {age !== null && (
                   <div>
                     <p className="text-xs text-gray-400">Age</p>
                     <p className="font-semibold text-gray-800">{age}</p>
                   </div>
                 )}
-                {details.gender && (
+                {genderLabel && (
                   <div>
                     <p className="text-xs text-gray-400">Gender</p>
-                    <p className="font-semibold text-gray-800">{details.gender === "M" ? "Male" : details.gender === "F" ? "Female" : details.gender}</p>
+                    <p className="font-semibold text-gray-800">{genderLabel}</p>
                   </div>
                 )}
-                {details.dob && (
+                {patientDetails.dob && (
                   <div>
                     <p className="text-xs text-gray-400">DOB</p>
-                    <p className="font-semibold text-gray-800">{details.dob}</p>
+                    <p className="font-semibold text-gray-800">{patientDetails.dob}</p>
                   </div>
                 )}
               </div>
+              {!patientDetails.healthCard && !patientDetails.dob && !genderLabel && (
+                <p className="text-xs text-gray-400">No details on record for this patient</p>
+              )}
             </div>
           ) : (
             <p className="text-sm text-gray-400">No patient selected</p>
           )}
         </div>
 
-        {/* Contact Info */}
+        {/* Contact Information */}
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Contact Information</p>
-          {selectedPatient ? (
+          {detailsLoading ? (
+            <div className="flex items-center gap-2 text-sm text-gray-400">
+              <Loader2 size={14} className="animate-spin" /> Loading...
+            </div>
+          ) : patientDetails ? (
             <div className="space-y-2 text-sm">
-              {details.phone && (
+              {patientDetails.phone && (
                 <div>
                   <p className="text-xs text-gray-400">Phone</p>
-                  <p className="font-semibold text-gray-800">{details.phone}</p>
+                  <p className="font-semibold text-gray-800">{patientDetails.phone}</p>
                 </div>
               )}
-              {details.address && (
+              {patientDetails.email && (
+                <div>
+                  <p className="text-xs text-gray-400">Email</p>
+                  <p className="font-semibold text-gray-800">{patientDetails.email}</p>
+                </div>
+              )}
+              {patientDetails.address && (
                 <div>
                   <p className="text-xs text-gray-400">Address</p>
-                  <p className="font-semibold text-gray-800 text-xs leading-relaxed">{details.address}</p>
+                  <p className="font-semibold text-gray-800 text-xs leading-relaxed">{patientDetails.address}</p>
                 </div>
               )}
-              {!details.phone && !details.address && (
+              {!patientDetails.phone && !patientDetails.email && !patientDetails.address && (
                 <p className="text-sm text-gray-400">No contact info on record</p>
               )}
             </div>
@@ -264,7 +292,7 @@ export default function PatientHistory() {
         </div>
       </div>
 
-      {/* Search history */}
+      {/* Search */}
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
         <div className="relative">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -273,7 +301,8 @@ export default function PatientHistory() {
             placeholder="Search patient history..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-emerald-100 focus:border-emerald-400 transition"
+            className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none
+              focus:ring-2 focus:ring-emerald-100 focus:border-emerald-400 transition"
           />
         </div>
       </div>
@@ -290,26 +319,25 @@ export default function PatientHistory() {
             {search ? "No records match your search" : "No history found for this patient"}
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3">
             {filteredTimeline.map((entry) => (
               <button
                 key={entry.id}
                 onClick={() => navigate(`/assessments/${entry.id}`)}
-                className="w-full flex items-start gap-4 p-4 rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all text-left"
+                className="w-full flex items-start gap-4 p-4 rounded-xl border border-gray-100
+                  hover:border-gray-200 hover:shadow-sm transition-all text-left"
               >
                 <TimelineIcon ailmentCode={entry.ailmentCode} />
-
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2">
-                    <p className="text-sm font-semibold text-gray-900 truncate">{entry.title}</p>
+                    <p className="text-sm font-semibold text-gray-900 truncate">
+                      {entry.title} Assessment
+                    </p>
                     <TimelineBadge ailmentCode={entry.ailmentCode} />
                   </div>
                   <p className="text-xs text-gray-400 mt-0.5">
                     {entry.date ? new Date(entry.date).toLocaleDateString("en-CA") : "—"}
                   </p>
-                  {entry.details && (
-                    <p className="text-xs text-gray-600 mt-1.5 line-clamp-2">{entry.details}</p>
-                  )}
                 </div>
               </button>
             ))}
