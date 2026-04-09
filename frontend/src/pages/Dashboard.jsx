@@ -44,11 +44,12 @@ export default function Dashboard() {
   });
   const [loading, setLoading] = useState(true);
 
-  const getPatientName = (data) => {
-    if (!data?.patient) return "Unknown";
-    const f = data.patient.firstName?.trim() || "";
-    const l = data.patient.lastName?.trim() || "";
-    return `${f} ${l}`.trim() || "Unknown";
+  // Build display name from the fields AssessmentSummaryResponse actually returns:
+  // patientFirstName and patientLastName are top-level fields — NOT nested in assessmentData
+  const getPatientName = (item) => {
+    const first = item.patientFirstName?.trim() || "";
+    const last  = item.patientLastName?.trim()  || "";
+    return `${first} ${last}`.trim() || "Unknown";
   };
 
   useEffect(() => {
@@ -56,11 +57,9 @@ export default function Dashboard() {
       try {
         setLoading(true);
 
-        // Current user
         const userData = await authApi.getCurrentUser();
         setUser(userData);
 
-        // Fetch recent assessments
         const res = await api.post("/assessments/getAllAssessments", {
           page: 0, size: 20, sortBy: "date", sortDirection: "DESC",
         });
@@ -69,24 +68,23 @@ export default function Dashboard() {
         const today = new Date().toDateString();
 
         const mapped = content.map((item) => {
-          const due = item.lastFollowupDate ? new Date(item.lastFollowupDate) : null;
-          if (due) due.setDate(due.getDate() + 14);
-          const isOverdue = due && new Date() > due && item.followupStatus !== "COMPLETED";
+          // overdue calculation using fields directly on AssessmentSummaryResponse
+          const isOverdue = item.overdue || item.overdueDays > 0;
           return {
             id: item.id,
-            patientName: getPatientName(item.assessmentData),
+            patientName: getPatientName(item),   // ← reads patientFirstName/patientLastName
             ailmentCode: item.ailmentCode,
             date: item.createdAt,
             status: item.followupStatus === "COMPLETED"
               ? "COMPLETED"
               : isOverdue ? "OVERDUE" : "PENDING",
             lastFollowupDate: item.lastFollowupDate,
+            overdueDays: item.overdueDays || 0,
           };
         });
 
         setRecent(mapped.slice(0, 5));
 
-        // Stats
         const total = res.data.totalElements || mapped.length;
         const pending = mapped.filter((a) => a.status === "PENDING").length;
         const overdue = mapped.filter((a) => a.status === "OVERDUE").length;
@@ -95,8 +93,6 @@ export default function Dashboard() {
         ).length;
 
         setStats({ total, pending, followupsRequired: overdue, completedToday });
-
-        // Overdue follow-ups for the upcoming section
         setOverdueFollowups(mapped.filter((a) => a.status === "OVERDUE").slice(0, 3));
       } catch (err) {
         console.error("Dashboard load error:", err);
@@ -107,6 +103,9 @@ export default function Dashboard() {
 
     load();
   }, []);
+
+  // Navigate to Assessments page and auto-open the New Assessment modal via ?new=1
+  const handleNewAssessment = () => navigate("/assessments?new=1");
 
   if (loading) {
     return (
@@ -127,7 +126,7 @@ export default function Dashboard() {
           </p>
         </div>
         <button
-          onClick={() => navigate("/assessments")}
+          onClick={handleNewAssessment}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl
             bg-gradient-to-r from-emerald-500 to-teal-500
             hover:from-emerald-600 hover:to-teal-600
@@ -185,7 +184,7 @@ export default function Dashboard() {
               icon: ClipboardList,
               label: "New Assessment",
               desc: "Create patient assessment",
-              onClick: () => navigate("/assessments"),
+              onClick: handleNewAssessment,
               color: "text-emerald-600",
               bg: "bg-emerald-50",
             },
@@ -251,7 +250,7 @@ export default function Dashboard() {
                     <StatusBadge status={a.status} />
                   </div>
                   <p className="text-xs text-gray-500 mt-0.5">
-                    {a.ailmentCode} &bull; {a.date ? new Date(a.date).toLocaleDateString("en-CA") : "—"}
+                    {a.ailmentCode || "—"} &bull; {a.date ? new Date(a.date).toLocaleDateString("en-CA") : "—"}
                   </p>
                 </div>
                 <ChevronRight size={16} className="text-gray-400 flex-shrink-0" />

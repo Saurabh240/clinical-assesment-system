@@ -11,14 +11,11 @@ import Card from "../components/ui/Card";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
-const getPatientName = (assessmentData) => {
-  if (!assessmentData) return "Unknown";
-  if (assessmentData.patient) {
-    const first = assessmentData.patient.firstName?.trim() || "";
-    const last = assessmentData.patient.lastName?.trim() || "";
-    return `${first} ${last}`.trim() || "Unknown";
-  }
-  return "Unknown";
+// AssessmentSummaryResponse returns patientFirstName/patientLastName as top-level fields
+const getPatientName = (item) => {
+  const first = item.patientFirstName?.trim() || "";
+  const last  = item.patientLastName?.trim()  || "";
+  return `${first} ${last}`.trim() || "Unknown";
 };
 
 const calculateOverdueDays = (lastFollowupDate, followupStatus) => {
@@ -179,6 +176,20 @@ export default function Assessments() {
   const [error, setError] = useState(null);
   const [showNewModal, setShowNewModal] = useState(false);
 
+  // Auto-open the New Assessment modal when navigated here with ?new=1
+  // (e.g. from the Dashboard "New Assessment" button)
+  useEffect(() => {
+    if (searchParams.get("new") === "1") {
+      setShowNewModal(true);
+      // Remove the param so refresh doesn't re-open it
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.delete("new");
+        return next;
+      });
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
@@ -255,7 +266,7 @@ export default function Assessments() {
       setAssessments(content.map((item) => ({
         id: item.id,
         date: item.createdAt,
-        patientName: getPatientName(item.assessmentData),
+        patientName: getPatientName(item),  // reads patientFirstName/patientLastName directly
         ailmentCode: item.ailmentCode,
         status: item.followupStatus,
         overdueDays: calculateOverdueDays(item.lastFollowupDate, item.followupStatus),

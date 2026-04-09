@@ -3,21 +3,25 @@ import { useNavigate } from "react-router-dom";
 import { Search, Clock, FileText, Pill, Calendar } from "lucide-react";
 import api from "../api/axios";
 
-const getPatientName = (data) => {
-  if (!data?.patient) return "Unknown";
-  const f = data.patient.firstName?.trim() || "";
-  const l = data.patient.lastName?.trim() || "";
+// AssessmentSummaryResponse returns patientFirstName/patientLastName as top-level fields
+// getPatientName accepts the whole item object (not assessmentData)
+const getPatientName = (item) => {
+  const f = item.patientFirstName?.trim() || "";
+  const l = item.patientLastName?.trim()  || "";
   return `${f} ${l}`.trim() || "Unknown";
 };
 
-const getPatientDetails = (data) => {
-  const p = data?.patient || {};
+// AssessmentSummaryResponse does not include patient contact details.
+// Full details are available in the AssessmentResponse (single assessment GET).
+// We populate what we can from the first assessment for this patient.
+const getPatientDetails = (item) => {
   return {
-    dob: p.dob || null,
-    gender: p.gender || null,
-    phone: p.phone || null,
-    healthCard: p.healthCardNo || null,
-    address: p.address || null,
+    dob: null,
+    gender: null,
+    phone: null,
+    healthCard: null,
+    address: null,
+    _note: "Full details available on individual assessment view",
   };
 };
 
@@ -83,11 +87,11 @@ export default function PatientHistory() {
         // Build unique patient list
         const seen = new Map();
         content.forEach((item) => {
-          const name = getPatientName(item.assessmentData);
+          const name = getPatientName(item);
           if (!seen.has(name)) {
             seen.set(name, {
               name,
-              details: getPatientDetails(item.assessmentData),
+              details: getPatientDetails(item),
               assessments: [],
             });
           }
@@ -116,12 +120,12 @@ export default function PatientHistory() {
     const name = patient.name;
     const source = allData || allAssessments;
     const timeline = source
-      .filter((item) => getPatientName(item.assessmentData) === name)
+      .filter((item) => getPatientName(item) === name)
       .map((item) => ({
         id: item.id,
         title: `${item.ailmentCode} Assessment`,
         date: item.createdAt,
-        details: item.assessmentData?.carePlan?.notes || item.assessmentData?.assessment?.notes || "",
+        details: "",  // details not available in summary — visible in individual assessment view
         ailmentCode: item.ailmentCode,
         status: item.followupStatus,
       }))
