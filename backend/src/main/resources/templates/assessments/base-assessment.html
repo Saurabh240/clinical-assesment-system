@@ -2,195 +2,133 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Pharmacy Assessment</title>
+    <title>Ontario Minor Ailment Assessment</title>
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         @page {
             size: A4;
-            margin: 10mm 12mm 10mm 12mm;
+            margin: 12mm 14mm 12mm 14mm;
         }
 
         body {
             font-family: Arial, sans-serif;
+            font-size: 10px;
             color: #000;
+            line-height: 1.35;
         }
 
         /* =====================================================
-           PAGE 1 — Spacious
+           PAGE 1 — Assessment (matches screenshot 1)
            ===================================================== */
-        .page1 {
-            width: 100%;
-            border: 2px solid #000;
-            font-size: 11px;
-            line-height: 1.4;
-        }
 
-        .page1 h1 {
+        .doc-title {
             text-align: center;
             font-size: 14px;
             font-weight: bold;
-            margin: 0;
-            padding: 7px 8px;
-            background-color: #e5e5e5;
-            border-bottom: 2px solid #000;
-        }
-
-        .page1 h2 {
-            font-size: 11px;
-            font-weight: bold;
-            margin: 0;
-            padding: 5px 7px;
-            border-top: 1.5px solid #000;
-            border-bottom: 1px solid #000;
-            border-left: none;
-            border-right: none;
-        }
-
-        .page1 .section-header {
-            background-color: #d9d9d9;
-            font-weight: bold;
-            padding: 5px 7px;
-            border-top: 1.5px solid #000;
-            border-bottom: 1px solid #000;
-            border-left: none;
-            border-right: none;
-        }
-
-        .page1 table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed;
-        }
-
-        .page1 td, .page1 th {
-            border: 1px solid #000;
-            padding: 4px 6px;
-            vertical-align: top;
-        }
-
-        .page1 tr td:first-child, .page1 tr th:first-child { border-left: none; }
-        .page1 tr td:last-child,  .page1 tr th:last-child  { border-right: none; }
-        .page1 tr:first-child td, .page1 tr:first-child th  { border-top: none; }
-
-        /* =====================================================
-           PAGE 2 — Compact
-           ===================================================== */
-        .page2 {
-            width: 100%;
-            border: 2px solid #000;
-            font-size: 9px;
-            line-height: 1.25;
-        }
-
-        .page2 h2 {
-            font-size: 9.5px;
-            font-weight: bold;
-            margin: 0;
-            padding: 2px 5px;
-            border-top: 1.5px solid #000;
-            border-bottom: 1px solid #000;
-            border-left: none;
-            border-right: none;
-        }
-
-        .page2 .section-header {
-            background-color: #d9d9d9;
-            font-weight: bold;
-            padding: 2px 5px;
-            border-top: 1.5px solid #000;
-            border-bottom: 1px solid #000;
-            border-left: none;
-            border-right: none;
-        }
-
-        .page2 table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed;
-        }
-
-        .page2 td, .page2 th {
-            border: 1px solid #000;
-            padding: 2px 4px;
-            vertical-align: top;
-        }
-
-        .page2 tr td:first-child, .page2 tr th:first-child { border-left: none; }
-        .page2 tr td:last-child,  .page2 tr th:last-child  { border-right: none; }
-        .page2 tr:first-child td, .page2 tr:first-child th  { border-top: none; }
-
-        /* =====================================================
-           SHARED
-           ===================================================== */
-        .field-label { font-weight: bold; }
-        .field-value { font-weight: normal; }
-
-        /* AILMENT styles — page 2 tight */
-        .ailment-title {
-            text-align: center;
-            font-weight: bold;
-            font-size: 10px;
-            margin: 2px 0 3px 0;
-        }
-
-        .section-table {
-            width: 100%;
-            border-collapse: collapse;
             margin-bottom: 2px;
         }
 
-        .section-table td {
-            border: 1px solid #000;
-            padding: 2px 5px;
-            font-size: 9px;
-            line-height: 1.25;
+        .doc-subtitle {
+            text-align: center;
+            font-size: 11px;
+            margin-bottom: 8px;
         }
 
-        .section-table tr td:first-child { border-left: none; }
-        .section-table tr td:last-child  { border-right: none; }
-        .section-table tr:first-child td { border-top: none; }
-
-        .header-row td {
-            background-color: #000;
+        /* Blue section headers like screenshot 1 */
+        .section-header {
+            background-color: #1e6fa8;
             color: #fff;
             font-weight: bold;
-            padding: 2px 5px;
-            border: 1px solid #000;
-            font-size: 9px;
+            font-size: 10px;
+            padding: 4px 8px;
         }
-        .header-row td:first-child { border-left: none; }
-        .header-row td:last-child  { border-right: none; }
 
-        .subheader-row td {
-            padding: 2px 5px;
-            border: 1px solid #000;
-            background-color: #fff;
-            font-size: 9px;
+        /* Bordered section wrapper */
+        .section-block {
+            border: 1px solid #555;
+            margin-bottom: 7px;
         }
-        .subheader-row td:first-child { border-left: none; }
-        .subheader-row td:last-child  { border-right: none; }
 
-        .content-row td {
-            padding: 2px 5px 2px 10px;
-            border: 1px solid #000;
-            line-height: 1.45;
-            font-size: 9px;
+        .section-block table {
+            width: 100%;
+            border-collapse: collapse;
         }
-        .content-row td:first-child { border-left: none; }
-        .content-row td:last-child  { border-right: none; }
 
-        .bold-subheader {
+        .section-block td, .section-block th {
+            border: 1px solid #555;
+            padding: 3px 6px;
+            vertical-align: middle;
+            font-size: 10px;
+        }
+
+        /* Remove outer border from cells at edges (the section-block border covers it) */
+        .section-block table tr:first-child td,
+        .section-block table tr:first-child th { border-top: none; }
+        .section-block table td:first-child,
+        .section-block table th:first-child { border-left: none; }
+        .section-block table td:last-child,
+        .section-block table th:last-child { border-right: none; }
+        .section-block table tr:last-child td,
+        .section-block table tr:last-child th { border-bottom: none; }
+
+        .label-cell {
             font-weight: bold;
-            padding: 2px 5px;
-            border-top: 1px solid #000;
-            border-bottom: 1px solid #000;
-            border-left: none;
-            border-right: none;
+            width: 18%;
+            color: #333;
         }
 
-        .indent { margin-left: 14px; }
+        .value-cell {
+            width: 15%;
+        }
+
+        /* Assessment Checklists grid — label | value | label | value */
+        .checklist-label {
+            font-size: 9.5px;
+            width: 22%;
+            color: #222;
+        }
+
+        .checklist-value {
+            font-size: 9.5px;
+            width: 28%;
+            color: #444;
+        }
+
+        /* Minor Ailment section */
+        .minor-ailment-body {
+            padding: 4px 8px;
+            font-size: 10px;
+        }
+
+        .minor-ailment-body p {
+            margin: 1px 0;
+        }
+
+        /* Care Plan section */
+        .care-plan-body {
+            padding: 5px 8px;
+            font-size: 9.5px;
+            line-height: 1.5;
+        }
+
+        .care-plan-body .row {
+            margin-bottom: 4px;
+        }
+
+        /* Monitoring section dashed box */
+        .monitoring-body {
+            padding: 5px 8px;
+            font-size: 9.5px;
+        }
+
+        .dashed-box {
+            border: 1px dashed #666;
+            padding: 5px 8px;
+            margin-top: 4px;
+            font-size: 9.5px;
+        }
 
         /* CSS Checkbox */
         .cb {
@@ -215,10 +153,103 @@
             font-weight: bold;
         }
 
-        /* Page break */
+        /* =====================================================
+           PAGE 2 — Prescription card (matches screenshot 2)
+           ===================================================== */
+
         .page-break {
             page-break-before: always;
             break-before: page;
+        }
+
+        .rx-page {
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            color: #000;
+        }
+
+        .rx-title {
+            text-align: center;
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 14px;
+            letter-spacing: 0.3px;
+        }
+
+        /* The outer bordered card */
+        .rx-card {
+            border: 2px solid #000;
+            padding: 28px 32px;
+            min-height: 200mm;
+        }
+
+        /* Pharmacy header block — centred bold */
+        .rx-pharmacy-header {
+            text-align: center;
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .rx-divider {
+            border: none;
+            border-top: 1px solid #555;
+            margin: 14px 0;
+        }
+
+        /* Patient info block */
+        .rx-field {
+            margin-bottom: 6px;
+            font-size: 11px;
+        }
+
+        .rx-field-label {
+            font-size: 11px;
+            color: #000;
+        }
+
+        .rx-field-value {
+            font-size: 11px;
+            font-weight: normal;
+        }
+
+        /* Medication block */
+        .rx-med-header {
+            font-size: 11px;
+            margin-bottom: 8px;
+        }
+
+        .rx-med-item {
+            font-size: 11px;
+            margin-bottom: 4px;
+            color: #222;
+        }
+
+        /* Prescriber block */
+        .rx-prescriber-section {
+            margin-top: 4px;
+        }
+
+        /* Signature line at bottom */
+        .rx-signature-row {
+            margin-top: 40px;
+            font-style: italic;
+            font-size: 11px;
+            display: flex;
+            gap: 40px;
+        }
+
+        .rx-sig-field {
+            display: inline-block;
+        }
+
+        .rx-sig-line {
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            width: 120px;
+            margin-left: 4px;
+            vertical-align: bottom;
         }
 
     </style>
@@ -226,108 +257,238 @@
 
 <body>
 
-<!-- ===================== PAGE 1 ===================== -->
-<div class="page1">
+<!-- ===================== PAGE 1 — ASSESSMENT ===================== -->
 
-    <h1>ON Minor Ailment Assessment and Prescription</h1>
+<div class="doc-title">Ontario Minor Ailment Assessment</div>
+<div class="doc-subtitle">Patient Information &amp; Assessment</div>
 
-    <!-- 1. Patient Information + Prescriber Information -->
-    <div th:replace="~{assessments/fragments/common/patient-info :: section(data=${data})}"></div>
-
-    <!-- 2. Informed Consent -->
-    <div th:replace="~{assessments/fragments/common/consent :: section(data=${data})}"></div>
-
-    <!-- 3. Eligibility -->
-    <div th:replace="~{assessments/fragments/common/eligibility-common :: section(data=${data})}"></div>
-
-    <!-- 4. Assessment -->
-    <div th:replace="~{assessments/fragments/common/assessment-common :: section(data=${data})}"></div>
-
+<!-- Patient Details -->
+<div class="section-block">
+    <div class="section-header">Patient Details</div>
+    <table>
+        <tr>
+            <td class="label-cell">Name</td>
+            <td class="value-cell" th:text="${data['patient'] != null ? data['patient']['firstName'] + ' ' + data['patient']['lastName'] : ''}"></td>
+            <td class="label-cell">Gender</td>
+            <td class="value-cell" th:text="${data['patient'] != null ? data['patient']['gender'] : ''}"></td>
+            <td class="label-cell">DOB</td>
+            <td class="value-cell" th:text="${data['patient'] != null ? data['patient']['dob'] : ''}"></td>
+            <td class="label-cell">Height</td>
+            <td class="value-cell" th:text="${data['patient'] != null ? data['patient']['height'] + ' cm' : ''}"></td>
+        </tr>
+        <tr>
+            <td class="label-cell">Weight</td>
+            <td class="value-cell" th:text="${data['patient'] != null ? data['patient']['weight'] + ' kg' : ''}"></td>
+            <td class="label-cell">Health Card</td>
+            <td class="value-cell" th:text="${data['patient'] != null ? data['patient']['healthCardNo'] : ''}"></td>
+            <td class="label-cell">Phone</td>
+            <td class="value-cell" th:text="${data['patient'] != null ? data['patient']['phone'] : ''}"></td>
+            <td class="label-cell">Consent</td>
+            <td class="value-cell"
+                th:text="${data['consent'] != null and data['consent']['verbalConsentIndividual'] == true ? 'patient' : (data['consent'] != null and data['consent']['verbalConsentSubstitute'] == true ? 'substitute' : '')}"></td>
+        </tr>
+    </table>
 </div>
 
-<!-- ===================== PAGE BREAK ===================== -->
+<!-- Assessment Checklists -->
+<div class="section-block">
+    <div class="section-header">Assessment Checklists</div>
+    <table>
+        <tr>
+            <td class="checklist-label">History of presenting complaint</td>
+            <td class="checklist-value"
+                th:text="${data['assessment'] != null and data['assessment']['historyOfPresentingComplaint'] == true ? 'Yes' : 'No'}"></td>
+            <td class="checklist-label">Medical Conditions</td>
+            <td class="checklist-value"
+                th:text="${data['assessment'] != null and data['assessment']['medicalConditions'] == true ? 'Yes' : 'No'}"></td>
+        </tr>
+        <tr>
+            <td class="checklist-label">Medications from another pharmacy</td>
+            <td class="checklist-value"
+                th:text="${data['assessment'] != null and data['assessment']['medicationsFromAnotherPharmacyYes'] == true ? 'Yes' : (data['assessment'] != null and data['assessment']['medicationsFromAnotherPharmacyNo'] == true ? 'No' : 'No response')}"></td>
+            <td class="checklist-label">Drug Interactions</td>
+            <td class="checklist-value"
+                th:text="${data['assessment'] != null and data['assessment']['none'] == true ? 'None' : (data['assessment'] != null and data['assessment']['drugInteractions'] == true ? data['assessment']['drugInteractionsDetail'] : 'No response')}"></td>
+        </tr>
+        <tr>
+            <td class="checklist-label">Allergies</td>
+            <td class="checklist-value"
+                th:text="${data['assessment'] != null and data['assessment']['nka'] == true ? 'NKA' : (data['assessment'] != null and data['assessment']['allergies'] == true ? data['assessment']['allergiesDetail'] : 'No response')}"></td>
+            <td class="checklist-label">Pregnant/breastfeeding</td>
+            <td class="checklist-value"
+                th:text="${data['assessment'] != null and data['assessment']['pregnantYes'] == true ? 'Yes' : (data['assessment'] != null and data['assessment']['pregnantNo'] == true ? 'No' : 'No response')}"></td>
+        </tr>
+        <tr>
+            <td class="checklist-label">Liver Impairment</td>
+            <td class="checklist-value"
+                th:text="${data['assessment'] != null and data['assessment']['liverImpairmentYes'] == true ? 'Yes' : (data['assessment'] != null and data['assessment']['liverImpairmentNo'] == true ? 'No' : 'No response')}"></td>
+            <td class="checklist-label">Renal Impairment</td>
+            <td class="checklist-value"
+                th:text="${data['assessment'] != null and data['assessment']['renalImpairmentYes'] == true ? 'Yes' : (data['assessment'] != null and data['assessment']['renalImpairmentNo'] == true ? 'No' : 'No response')}"></td>
+        </tr>
+        <tr>
+            <td class="checklist-label">SCr</td>
+            <td class="checklist-value"
+                th:text="${data['assessment'] != null and data['assessment']['scrProvided'] == true ? data['assessment']['scrValue'] : 'No'}"></td>
+            <td class="checklist-label">eGFR</td>
+            <td class="checklist-value"
+                th:text="${data['assessment'] != null and data['assessment']['egfrProvided'] == true ? data['assessment']['egfrValue'] : 'No'}"></td>
+        </tr>
+    </table>
+</div>
+
+<!-- Minor Ailment — Symptoms & Eligibility summary only -->
+<div class="section-block">
+    <div class="section-header">Minor Ailment:
+        <span th:text="${data['ailment'] != null ? data['ailment']['code'] : ''}"></span>
+    </div>
+    <div class="minor-ailment-body">
+        <!-- Ailment-specific symptoms summary pulled from the UTI fragment -->
+        <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'UTI'}">
+            <p><strong>Symptoms Checked:</strong></p>
+            <p th:if="${data['ailment']['clinicalBlock']['symptoms']['dysuria'] == true}">• Dysuria</p>
+            <p th:if="${data['ailment']['clinicalBlock']['symptoms']['frequency'] == true}">• Frequency/Urgency</p>
+            <p th:if="${data['ailment']['clinicalBlock']['symptoms']['suprapubicDiscomfort'] == true}">• Suprapubic discomfort</p>
+            <p th:if="${data['ailment']['clinicalBlock']['symptoms']['noVaginalDischarge'] == true}">• No vaginal discharge</p>
+            <p th:if="${data['ailment']['clinicalBlock']['symptoms']['dysuria'] != true
+                    and data['ailment']['clinicalBlock']['symptoms']['frequency'] != true
+                    and data['ailment']['clinicalBlock']['symptoms']['suprapubicDiscomfort'] != true
+                    and data['ailment']['clinicalBlock']['symptoms']['noVaginalDischarge'] != true}">• None</p>
+            <p style="margin-top:4px;"><strong>Eligibility Criteria Met:</strong></p>
+            <p th:if="${data['ailment']['clinicalBlock']['criteria']['previousDiagnosisUTI'] == true}">• Previous diagnosis of UTI</p>
+            <p th:if="${data['ailment']['clinicalBlock']['criteria']['ageAbove12'] == true}">• Age &gt; 12, not pregnant or breastfeeding</p>
+            <p th:if="${data['ailment']['clinicalBlock']['criteria']['noRecentUTI'] == true}">• No previous UTI within a month</p>
+            <p th:if="${data['ailment']['clinicalBlock']['criteria']['noRedFlags'] == true}">• No red flags present</p>
+            <p th:if="${data['ailment']['clinicalBlock']['criteria']['noRedFlagSymptoms'] == true}">• No red flag symptoms present</p>
+            <p th:if="${data['ailment']['clinicalBlock']['criteria']['notMale'] == true}">• Not male</p>
+            <p th:if="${data['ailment']['clinicalBlock']['criteria']['previousDiagnosisUTI'] != true
+                    and data['ailment']['clinicalBlock']['criteria']['ageAbove12'] != true
+                    and data['ailment']['clinicalBlock']['criteria']['noRecentUTI'] != true}">• None</p>
+        </th:block>
+        <!-- Other ailments: just show code if not UTI -->
+        <th:block th:if="${data['ailment'] == null or data['ailment']['code'] != 'UTI'}">
+            <p>• See assessment data</p>
+        </th:block>
+    </div>
+</div>
+
+<!-- Care Plan -->
+<div class="section-block">
+    <div class="section-header">Care Plan</div>
+    <div class="care-plan-body">
+        <div class="row">
+            Prescription Issued by pharmacist:
+            <span th:classappend="${data['carePlan'] != null and data['carePlan']['inPersonCareIssued'] == true ? 'checked' : ''}" class="cb"></span> In-person care
+            <span th:classappend="${data['carePlan'] != null and data['carePlan']['virtualCareIssued'] == true ? 'checked' : ''}" class="cb"></span> Virtual care/telephone<br>
+            <span th:classappend="${data['carePlan'] != null and data['carePlan']['primaryCareProviderNotified'] == true ? 'checked' : ''}" class="cb"></span> Primary care provider notified
+            <span th:classappend="${data['carePlan'] != null and data['carePlan']['phone'] == true ? 'checked' : ''}" class="cb"></span> Phone
+            <span th:classappend="${data['carePlan'] != null and data['carePlan']['fax'] == true ? 'checked' : ''}" class="cb"></span> Fax
+            <span th:classappend="${data['carePlan'] != null and data['carePlan']['noPrimaryCareProvider'] == true ? 'checked' : ''}" class="cb"></span> No primary care provider
+        </div>
+        <div class="row">
+            Prescription NOT Issued by pharmacist:
+            <span th:classappend="${data['carePlan'] != null and data['carePlan']['inPersonCareNotIssued'] == true ? 'checked' : ''}" class="cb"></span> In-person care
+            <span th:classappend="${data['carePlan'] != null and data['carePlan']['virtualCareNotIssued'] == true ? 'checked' : ''}" class="cb"></span> Virtual care/telephone<br>
+            <span th:classappend="${data['carePlan'] != null and data['carePlan']['referToMD'] == true ? 'checked' : ''}" class="cb"></span> Refer to MD/NP/Other
+            <span th:classappend="${data['carePlan'] != null and data['carePlan']['recommendOTC'] == true ? 'checked' : ''}" class="cb"></span> Recommend OTC
+            <span th:classappend="${data['carePlan'] != null and data['carePlan']['recommendNonPharm'] == true ? 'checked' : ''}" class="cb"></span> Recommend non-pharm
+        </div>
+    </div>
+</div>
+
+<!-- Monitoring and Follow Up -->
+<div class="section-block">
+    <div class="section-header">Monitoring and Follow Up</div>
+    <div class="monitoring-body">
+        <p>Monitoring Parameters/Next Steps:
+            <span th:text="${data['followUp'] != null ? data['followUp']['monitoringParameters'] : 'N/A'}"></span>
+        </p>
+        <div class="dashed-box">
+            Follow-up with patient/substitute decision maker completed (safety; efficacy):<br>
+            Date: <span th:text="${data['followUp'] != null and data['followUp']['date'] != null ? data['followUp']['date'] : ''}"></span><br>
+            Monitoring completed:
+            <span th:classappend="${data['followUp'] != null and data['followUp']['phone'] == true ? 'checked' : ''}" class="cb"></span> Phone
+            <span th:classappend="${data['followUp'] != null and data['followUp']['inPerson'] == true ? 'checked' : ''}" class="cb"></span> In-person
+        </div>
+    </div>
+</div>
+
+
+<!-- ===================== PAGE 2 — PRESCRIPTION CARD ===================== -->
 <div class="page-break"></div>
 
-<!-- ===================== PAGE 2 ===================== -->
-<div class="page2">
+<div class="rx-page">
+    <div class="rx-title">Pharmacy Prescription</div>
 
-    <!-- 5. Ailment-Specific Fragment -->
-    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'UTI'}">
-        <div th:replace="~{assessments/fragments/ailments/uti :: section(data=${data})}"></div>
-    </th:block>
+    <div class="rx-card">
 
-    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'DERMATITIS'}">
-        <div th:replace="~{assessments/fragments/ailments/dermatitis :: section(data=${data})}"></div>
-    </th:block>
+        <!-- Pharmacy header — name + address centred bold -->
+        <div class="rx-pharmacy-header"
+             th:text="${data['prescriber'] != null ? (data['prescriber']['pharmacyName'] != null ? data['prescriber']['pharmacyName'] : (data['prescriber']['firstName'] + ' ' + data['prescriber']['lastName'])) : 'Pharmacy'}">
+        </div>
+        <div style="text-align:center; font-size:11px; margin-top:-14px; margin-bottom:18px;"
+             th:text="${data['prescriber'] != null and data['prescriber']['address'] != null ? data['prescriber']['address'] : ''}">
+        </div>
 
-    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'DYSMENORRHEA'}">
-        <div th:replace="~{assessments/fragments/ailments/dysmenorrhea :: section(data=${data})}"></div>
-    </th:block>
-    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'INSECT_BITES'}">
-        <div th:replace="~{assessments/fragments/ailments/insect-bites :: section(data=${data})}"></div>
-    </th:block>
-    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'CONJUNCTIVITIS'}">
-        <div th:replace="~{assessments/fragments/ailments/conjunctivitis :: section(data=${data})}"></div>
-    </th:block>
-    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'HEMORRHOIDS'}">
-        <div th:replace="~{assessments/fragments/ailments/hemorrhoids :: section(data=${data})}"></div>
-    </th:block>
-    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'IMPETIGO'}">
-        <div th:replace="~{assessments/fragments/ailments/impetigo :: section(data=${data})}"></div>
-    </th:block>
-    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'TICK_BITES'}">
-        <div th:replace="~{assessments/fragments/ailments/tickbites :: section(data=${data})}"></div>
-    </th:block>
-    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'ALLERGIC_RHINITIS'}">
-        <div th:replace="~{assessments/fragments/ailments/allergic_rhinitis :: section(data=${data})}"></div>
-    </th:block>
-    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'COLD_SORE'}">
-    <div th:replace="~{assessments/fragments/ailments/cold_sore :: section(data=${data})}"></div>
-    </th:block>
-    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'GERD'}">
-        <div th:replace="~{assessments/fragments/ailments/gerd :: section(data=${data})}"></div>
-    </th:block>
-    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'MUSCULOSKELETAL_SPRAINS'}">
-        <div th:replace="~{assessments/fragments/ailments/musculoskeletal_sprains :: section(data=${data})}"></div>
-    </th:block>
-    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'CANDIDAL_STOMATITIS'}">
-        <div th:replace="~{assessments/fragments/ailments/candidal_stomatitis :: section(data=${data})}"></div>
-    </th:block>
-    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'ACNE'}">
-        <div th:replace="~{assessments/fragments/ailments/acne :: section(data=${data})}"></div>
-    </th:block>
-    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'APHTHOUS_ULCERS'}">
-        <div th:replace="~{assessments/fragments/ailments/aphthous_ulcers :: section(data=${data})}"></div>
-    </th:block>
-    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'NAUSEA_VOMITING_PREGNANCY'}">
-        <div th:replace="~{assessments/fragments/ailments/nausea_vomiting_pregnancy:: section(data=${data})}"></div>
-    </th:block>
-    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'PINWORMS'}">
-        <div th:replace="~{assessments/fragments/ailments/pinworms:: section(data=${data})}"></div>
-    </th:block>
-    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'VAGINAL_CANDIDIASIS'}">
-        <div th:replace="~{assessments/fragments/ailments/vaginal_candidiasis:: section(data=${data})}"></div>
-    </th:block>
-    <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'DIAPER_DERMATITIS'}">
-        <div th:replace="~{assessments/fragments/ailments/diaper_dermatitis:: section(data=${data})}"></div>
-    </th:block>
+        <hr class="rx-divider">
 
-    <!--        <th:block th:if="${data['ailment'] != null and data['ailment']['code'] == 'OSELTAMIVIR'}">-->
-    <!--            <div th:replace="~{assessments/fragments/ailments/tamiflu :: section(data=${data})}"></div>-->
-    <!--        </th:block>-->
+        <!-- Patient info -->
+        <div class="rx-field">
+            <span class="rx-field-label">Patient: </span>
+            <span class="rx-field-value"
+                  th:text="${data['patient'] != null ? data['patient']['firstName'] + ' ' + data['patient']['lastName'] : ''}"></span>
+        </div>
+        <div class="rx-field">
+            <span class="rx-field-label">DOB: </span>
+            <span class="rx-field-value" th:text="${data['patient'] != null ? data['patient']['dob'] : ''}"></span>
+        </div>
+        <div class="rx-field">
+            <span class="rx-field-label">Health Card #: </span>
+            <span class="rx-field-value" th:text="${data['patient'] != null ? data['patient']['healthCardNo'] : ''}"></span>
+        </div>
 
-    <!-- 6. Care Plan -->
-    <div th:replace="~{assessments/fragments/common/care-plan :: section(data=${data})}"></div>
+        <hr class="rx-divider">
 
-    <!-- 7. Medication Order -->
-    <div th:replace="~{assessments/fragments/common/medication-order :: section(data=${data})}"></div>
+        <!-- Medications -->
+        <div class="rx-med-header"><strong>Medication(s) Prescribed:</strong></div>
 
-    <!-- 8. Signature -->
-    <div th:replace="~{assessments/fragments/common/signature :: section(data=${data})}"></div>
+        <!-- Iterate medications if present -->
+        <th:block th:if="${data['medicationOrder'] != null and data['medicationOrder']['medications'] != null and data['medicationOrder']['medications'].size() > 0}">
+            <div class="rx-med-item"
+                 th:each="med : ${data['medicationOrder']['medications']}"
+                 th:text="${med['name'] + ' ' + med['strength'] + ' — ' + med['direction'] + ' (' + med['quantity'] + ')'}">
+            </div>
+        </th:block>
+        <th:block th:if="${data['medicationOrder'] == null or data['medicationOrder']['medications'] == null or data['medicationOrder']['medications'].size() == 0}">
+            <div class="rx-med-item" style="color:#888;">None selected</div>
+        </th:block>
 
-    <!-- 9. Monitoring and Follow Up -->
-    <div th:replace="~{assessments/fragments/common/followup :: section(data=${data})}"></div>
+        <hr class="rx-divider">
 
+        <!-- Prescriber info -->
+        <div class="rx-prescriber-section">
+            <div class="rx-field"><span class="rx-field-label">Prescriber:</span></div>
+            <div class="rx-field">
+                <span class="rx-field-label">Name: </span>
+                <span class="rx-field-value"
+                      th:text="${data['prescriber'] != null ? data['prescriber']['firstName'] + ' ' + data['prescriber']['lastName'] : ''}"></span>
+            </div>
+            <div class="rx-field">
+                <span class="rx-field-label">OCP License No: </span>
+                <span class="rx-field-value"
+                      th:text="${data['prescriber'] != null ? data['prescriber']['licenseNo'] : ''}"></span>
+            </div>
+        </div>
+
+        <hr class="rx-divider">
+
+        <!-- Signature line -->
+        <div class="rx-signature-row">
+            <span class="rx-sig-field"><em>Signature:</em><span class="rx-sig-line"></span></span>
+            <span class="rx-sig-field"><em>Date:</em><span class="rx-sig-line" style="width:80px;"></span></span>
+        </div>
+
+    </div>
 </div>
 
 </body>

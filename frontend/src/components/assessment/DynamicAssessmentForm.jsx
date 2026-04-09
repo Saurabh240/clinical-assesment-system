@@ -9,98 +9,137 @@ export default function DynamicAssessmentForm({ config, onSubmit, submitting = f
     console.error("Invalid config:", config);
     return null;
   }
-  
-  
 
-  // Extract the pure field key (after the dot if present)
-  const getPureKey = (key) => (key.includes(".") ? key.split(".")[1] : key);
+  // ─── Key helpers ────────────────────────────────────────────────────────────
+  //
+  // Field keys follow the pattern  "<sectionId>.<remainingPath>"
+  //   e.g.  "assessment.notes"                       → remainingPath = "notes"
+  //         "ailment.clinicalBlock.symptoms.dysuria" → remainingPath = "clinicalBlock.symptoms.dysuria"
+  //
+  // We keep state flat per section using the full remainingPath as the key so
+  // every field is uniquely addressable:
+  //
+  //   values["ailment"]["clinicalBlock.symptoms.dysuria"] = true
+  //   values["ailment"]["clinicalBlock.symptoms.frequency"] = false
+  //
+  // On submit we deep-build the nested object expected by Thymeleaf.
 
-  // ---------------- STATE INIT ----------------
+  /**
+   * Strip the leading section prefix from a field key.
+   * "ailment.clinicalBlock.symptoms.dysuria" → "clinicalBlock.symptoms.dysuria"
+   * "assessment.notes"                       → "notes"
+   */
+  const getFieldPath = (sectionId, fieldKey) => {
+    const prefix = sectionId + ".";
+    return fieldKey.startsWith(prefix) ? fieldKey.slice(prefix.length) : fieldKey;
+  };
+
+  /**
+   * Set a value at an arbitrary dotted path inside an object, creating
+   * intermediate objects as needed.
+   *
+   *   setNested({}, "clinicalBlock.symptoms.dysuria", true)
+   *   → { clinicalBlock: { symptoms: { dysuria: true } } }
+   */
+  const setNested = (obj, path, value) => {
+    const parts = path.split(".");
+    const result = { ...obj };
+    let cursor = result;
+    for (let i = 0; i < parts.length - 1; i++) {
+      const part = parts[i];
+      cursor[part] = cursor[part] ? { ...cursor[part] } : {};
+      cursor = cursor[part];
+    }
+    cursor[parts[parts.length - 1]] = value;
+    return result;
+  };
+
+  /**
+   * Build the deeply-nested output object from the flat state map for one section.
+   *
+   *   flatSection = { "clinicalBlock.symptoms.dysuria": true, "code": "UTI" }
+   *   → { clinicalBlock: { symptoms: { dysuria: true } }, code: "UTI" }
+   */
+  const buildNestedSection = (flatSection) => {
+    let result = {};
+    for (const [path, value] of Object.entries(flatSection)) {
+      result = setNested(result, path, value);
+    }
+    return result;
+  };
+
+  // ─── State initialisation ────────────────────────────────────────────────────
   const [values, setValues] = useState(() => {
     const initial = {};
-    
     config.sections.forEach((section) => {
-      // Use "id" property (backend standard) with fallback to "key" for compatibility
-      const sectionKey = section.id || section.key;
-      
-      if (!sectionKey) {
-        console.error("Section missing id/key:", section);
-        return;
-      }
-      
-      initial[sectionKey] = {};
-      
+      const sectionId = section.id || section.key;
+      if (!sectionId) { console.error("Section missing id/key:", section); return; }
+
+      initial[sectionId] = {};
       section.fields.forEach((field) => {
-        const pureKey = getPureKey(field.key);
-        initial[sectionKey][pureKey] =
-          field.defaultValue ?? 
-          field.default ?? 
+        const path = getFieldPath(sectionId, field.key);
+        initial[sectionId][path] =
+          field.defaultValue ??
+          field.default ??
           (field.type === "boolean" ? false : null);
       });
     });
-    
-    
     return initial;
   });
 
   const [errors, setErrors] = useState({});
 
-  // ---------------- CHANGE HANDLER ----------------
-  const handleChange = (sectionKey, fieldKey, value) => {
+  // ─── Change handler ──────────────────────────────────────────────────────────
+  const handleChange = (sectionId, fieldPath, value) => {
     setValues((prev) => ({
       ...prev,
-      [sectionKey]: { ...prev[sectionKey], [fieldKey]: value },
+      [sectionId]: { ...prev[sectionId], [fieldPath]: value },
     }));
-
-    const errKey = `${sectionKey}.${fieldKey}`;
+    const errKey = `${sectionId}.${fieldPath}`;
     if (errors[errKey]) {
-      setErrors((prev) => {
-        const next = { ...prev };
-        delete next[errKey];
-        return next;
-      });
+      setErrors((prev) => { const next = { ...prev }; delete next[errKey]; return next; });
     }
   };
 
-  // ---------------- VALIDATION ----------------
+  // ─── Validation ──────────────────────────────────────────────────────────────
   const validateForm = () => {
     const newErrors = {};
     config.sections.forEach((section) => {
-      const sectionKey = section.id || section.key;
-      
+      const sectionId = section.id || section.key;
       section.fields.forEach((field) => {
-        const pureKey = getPureKey(field.key);
-        const value = values[sectionKey]?.[pureKey];
-        const errorKey = `${sectionKey}.${pureKey}`;
-
+        const path = getFieldPath(sectionId, field.key);
+        const value = values[sectionId]?.[path];
         if (field.required && (value === null || value === "" || value === undefined)) {
-          newErrors[errorKey] = `${field.label || pureKey} is required`;
+          newErrors[`${sectionId}.${path}`] = `${field.label || path} is required`;
         }
       });
     });
     return newErrors;
   };
 
-  // ---------------- SUBMIT ----------------
+  // ─── Submit ──────────────────────────────────────────────────────────────────
   const handleSubmit = (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
-    
     if (Object.keys(validationErrors).length) {
-      
       return setErrors(validationErrors);
     }
-    
-    
-    onSubmit(values);
+
+    // Convert every section's flat map → properly nested object
+    const nestedOutput = {};
+    for (const [sectionId, flatSection] of Object.entries(values)) {
+      nestedOutput[sectionId] = buildNestedSection(flatSection);
+    }
+
+    onSubmit(nestedOutput);
   };
 
-  // ---------------- FIELD RENDER ----------------
-  const renderField = (sectionKey, field) => {
-    const pureKey = getPureKey(field.key);
-    const label = field.label || pureKey;
-    const value = values[sectionKey]?.[pureKey];
-    const error = errors[`${sectionKey}.${pureKey}`];
+  // ─── Field renderer ──────────────────────────────────────────────────────────
+  const renderField = (sectionId, field) => {
+    const path  = getFieldPath(sectionId, field.key);
+    const label = field.label || path;
+    const value = values[sectionId]?.[path];
+    const error = errors[`${sectionId}.${path}`];
 
     switch (field.type) {
       case "boolean":
@@ -109,7 +148,7 @@ export default function DynamicAssessmentForm({ config, onSubmit, submitting = f
             label={label}
             checked={!!value}
             required={field.required}
-            onChange={(v) => handleChange(sectionKey, pureKey, v)}
+            onChange={(v) => handleChange(sectionId, path, v)}
             error={error}
           />
         );
@@ -121,7 +160,7 @@ export default function DynamicAssessmentForm({ config, onSubmit, submitting = f
             label={label}
             required={field.required}
             value={value ?? ""}
-            onChange={(e) => handleChange(sectionKey, pureKey, e.target.value)}
+            onChange={(e) => handleChange(sectionId, path, e.target.value)}
             error={error}
           />
         );
@@ -137,7 +176,7 @@ export default function DynamicAssessmentForm({ config, onSubmit, submitting = f
               rows={4}
               value={value ?? ""}
               required={field.required}
-              onChange={(e) => handleChange(sectionKey, pureKey, e.target.value)}
+              onChange={(e) => handleChange(sectionId, path, e.target.value)}
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
             {error && <p className="text-red-600 text-xs">{error}</p>}
@@ -154,7 +193,7 @@ export default function DynamicAssessmentForm({ config, onSubmit, submitting = f
             <select
               value={value ?? ""}
               required={field.required}
-              onChange={(e) => handleChange(sectionKey, pureKey, e.target.value)}
+              onChange={(e) => handleChange(sectionId, path, e.target.value)}
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="">-- Select --</option>
@@ -163,13 +202,29 @@ export default function DynamicAssessmentForm({ config, onSubmit, submitting = f
                   const val = typeof opt === "object" ? opt.value : opt;
                   const lbl = typeof opt === "object" ? opt.label : opt;
                   return (
-                    <option key={`${pureKey}-${i}`} value={val ?? ""}>
+                    <option key={`${path}-${i}`} value={val ?? ""}>
                       {lbl}
                     </option>
                   );
                 })}
             </select>
             {error && <p className="text-red-600 text-xs">{error}</p>}
+          </div>
+        );
+
+      // medicationList type — rendered as a read-only note for now;
+      // replace with a proper repeating-row component when available
+      case "medicationList":
+        return (
+          <div className="space-y-1 col-span-2">
+            <label className="text-sm font-medium text-gray-700">{label}</label>
+            {field.description && (
+              <p className="text-xs text-gray-500">{field.description}</p>
+            )}
+            <MedicationListField
+              value={value ?? []}
+              onChange={(v) => handleChange(sectionId, path, v)}
+            />
           </div>
         );
 
@@ -180,30 +235,31 @@ export default function DynamicAssessmentForm({ config, onSubmit, submitting = f
             label={label}
             required={field.required}
             value={value ?? ""}
-            onChange={(e) => handleChange(sectionKey, pureKey, e.target.value)}
+            onChange={(e) => handleChange(sectionId, path, e.target.value)}
             error={error}
           />
         );
     }
   };
 
-  // ---------------- UI ----------------
+  // ─── UI ──────────────────────────────────────────────────────────────────────
   return (
     <Card shadow="md" className="bg-white">
       <form onSubmit={handleSubmit} className="space-y-6">
         {config.sections.map((section, idx) => {
-          // Use "id" property (backend standard) with fallback to "key"
-          const sectionKey = section.id || section.key;
-          
+          const sectionId = section.id || section.key;
           return (
-            <div key={sectionKey} className="border border-gray-200 p-5 rounded-lg bg-gray-50">
+            <div key={sectionId} className="border border-gray-200 p-5 rounded-lg bg-gray-50">
               <h3 className="font-semibold text-lg text-gray-800 mb-4">
                 {idx + 1}. {section.title}
               </h3>
               <div className="grid md:grid-cols-2 gap-4">
                 {section.fields.map((field) => (
-                  <div key={`${sectionKey}-${field.key}`}>
-                    {renderField(sectionKey, field)}
+                  <div
+                    key={`${sectionId}-${field.key}`}
+                    className={field.type === "medicationList" ? "col-span-2" : ""}
+                  >
+                    {renderField(sectionId, field)}
                   </div>
                 ))}
               </div>
@@ -215,5 +271,78 @@ export default function DynamicAssessmentForm({ config, onSubmit, submitting = f
         </Button>
       </form>
     </Card>
+  );
+}
+
+// ─── Inline medication list component ────────────────────────────────────────
+function MedicationListField({ value, onChange }) {
+  const empty = { name: "", strength: "", quantity: "", direction: "" };
+
+  const addRow = () => onChange([...value, { ...empty }]);
+
+  const updateRow = (i, field, val) => {
+    const next = value.map((row, idx) => idx === i ? { ...row, [field]: val } : row);
+    onChange(next);
+  };
+
+  const removeRow = (i) => onChange(value.filter((_, idx) => idx !== i));
+
+  return (
+    <div className="space-y-3">
+      {value.map((row, i) => (
+        <div key={i} className="grid grid-cols-4 gap-2 items-end border border-gray-200 rounded-lg p-3 bg-white">
+          <div>
+            <label className="text-xs font-medium text-gray-600">Name</label>
+            <input
+              className="w-full mt-1 p-2 border border-gray-300 rounded text-sm"
+              value={row.name}
+              onChange={(e) => updateRow(i, "name", e.target.value)}
+              placeholder="e.g. Nitrofurantoin"
+            />
+          </div>
+          <div>
+            <label className="text-xs font-medium text-gray-600">Strength</label>
+            <input
+              className="w-full mt-1 p-2 border border-gray-300 rounded text-sm"
+              value={row.strength}
+              onChange={(e) => updateRow(i, "strength", e.target.value)}
+              placeholder="e.g. 100mg"
+            />
+          </div>
+          <div>
+            <label className="text-xs font-medium text-gray-600">Quantity</label>
+            <input
+              className="w-full mt-1 p-2 border border-gray-300 rounded text-sm"
+              value={row.quantity}
+              onChange={(e) => updateRow(i, "quantity", e.target.value)}
+              placeholder="e.g. 10 capsules"
+            />
+          </div>
+          <div>
+            <label className="text-xs font-medium text-gray-600">Direction</label>
+            <input
+              className="w-full mt-1 p-2 border border-gray-300 rounded text-sm"
+              value={row.direction}
+              onChange={(e) => updateRow(i, "direction", e.target.value)}
+              placeholder="e.g. 1 cap BID x 5 days"
+            />
+          </div>
+          <button
+            type="button"
+            onClick={() => removeRow(i)}
+            className="col-span-4 text-xs text-red-500 hover:text-red-700 text-right mt-1"
+          >
+            Remove
+          </button>
+        </div>
+      ))}
+      <button
+        type="button"
+        onClick={addRow}
+        className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+      >
+        + Add Medication
+      </button>
+    </div>
   );
 }

@@ -45,9 +45,9 @@ public class SecurityConfig {
                                 "/auth/signIn",
                                 "/auth/signUp",
                                 "/auth/refresh",
-                                "/v3/api-docs/**", "/swagger-ui/**"
+                                "/v3/api-docs/**", "/pdfs/**", "/swagger-ui/**"
                         ).permitAll()
-                        .requestMatchers("/auth/logout", "/pdfs/**").authenticated()
+                        .requestMatchers("/auth/logout").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
