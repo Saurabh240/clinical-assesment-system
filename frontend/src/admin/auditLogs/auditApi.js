@@ -1,5 +1,3 @@
-
-
 import api from "../../api/axios";
 
 export const fetchAuditLogs = async ({
@@ -13,8 +11,8 @@ export const fetchAuditLogs = async ({
   try {
     const response = await api.get("/admin/audit-logs", {
       params: {
-        page,
-        pageSize,
+        page: page - 1,   // Backend uses 0-based (Spring PageRequest), frontend uses 1-based
+        size: pageSize,   // Backend @RequestParam is "size", not "pageSize"
         search,
         action,
         startDate,

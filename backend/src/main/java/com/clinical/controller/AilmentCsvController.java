@@ -25,10 +25,10 @@ public class AilmentCsvController {
 
     /**
      * GET /admin/ailments/csv/template
-     * Downloads the CSV template file.
+     * Downloads the CSV template with correct headers and two sample rows.
      */
     @GetMapping("/template")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")   // was hasRole('ADMIN') — wrong role
     public ResponseEntity<byte[]> downloadTemplate() {
         byte[] csv = templateService.generateTemplate();
         return ResponseEntity.ok()
@@ -44,7 +44,7 @@ public class AilmentCsvController {
      * Returns an import summary with per-row results.
      */
     @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")   // was hasRole('ADMIN') — wrong role
     public ResponseEntity<CsvImportSummary> importCsv(
             @RequestPart("file") MultipartFile file,
             Authentication auth,

@@ -1,60 +1,77 @@
 import React from "react";
-import { CheckCircle, XCircle, FileText } from "lucide-react";
+import { CheckCircle, XCircle, FileText, RefreshCw } from "lucide-react";
 
 const ImportResultSummary = ({ result }) => {
   if (!result) return null;
 
-  const { totalRows, successCount, failedCount, importedAt } = result;
+  // Backend CsvImportSummary record fields:
+  // totalRows, inserted, updated, skipped, failed, rows[]
+  const {
+    totalRows   = 0,
+    inserted    = 0,
+    updated     = 0,
+    skipped     = 0,
+    failed      = 0,
+  } = result;
+
+  const cards = [
+    {
+      label: "Total Rows",
+      value: totalRows,
+      className: "bg-gray-50 border-gray-200",
+      textClass: "text-gray-900",
+    },
+    {
+      label: "Inserted",
+      value: inserted,
+      className: "bg-green-50 border-green-200",
+      textClass: "text-green-700",
+      icon: <CheckCircle size={15} className="text-green-600" />,
+    },
+    {
+      label: "Updated",
+      value: updated,
+      className: "bg-blue-50 border-blue-200",
+      textClass: "text-blue-700",
+      icon: <RefreshCw size={15} className="text-blue-600" />,
+    },
+    {
+      label: "Skipped",
+      value: skipped,
+      className: "bg-amber-50 border-amber-200",
+      textClass: "text-amber-700",
+    },
+    {
+      label: "Failed",
+      value: failed,
+      className: "bg-red-50 border-red-200",
+      textClass: "text-red-700",
+      icon: <XCircle size={15} className="text-red-600" />,
+    },
+  ];
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-5 mt-6">
       <div className="flex items-center gap-2 mb-4">
         <FileText className="text-blue-600" size={20} />
-        <h3 className="text-lg font-semibold text-gray-900">
-          Import Summary
-        </h3>
+        <h3 className="text-lg font-semibold text-gray-900">Import Summary</h3>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        {/* Total Rows */}
-        <div className="bg-gray-50 rounded-lg p-4 border">
-          <p className="text-sm text-gray-500">Total Rows</p>
-          <p className="text-xl font-bold text-gray-900">
-            {totalRows}
-          </p>
-        </div>
-
-        {/* Success */}
-        <div className="bg-green-50 rounded-lg p-4 border border-green-200">
-          <div className="flex items-center gap-2">
-            <CheckCircle size={16} className="text-green-600" />
-            <p className="text-sm text-green-700">Successful</p>
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+        {cards.map(({ label, value, className, textClass, icon }) => (
+          <div key={label} className={`rounded-lg p-4 border ${className}`}>
+            {icon && (
+              <div className="flex items-center gap-1.5 mb-1">
+                {icon}
+                <p className={`text-xs font-medium ${textClass}`}>{label}</p>
+              </div>
+            )}
+            {!icon && (
+              <p className="text-xs text-gray-500 mb-1">{label}</p>
+            )}
+            <p className={`text-2xl font-bold ${textClass}`}>{value}</p>
           </div>
-          <p className="text-xl font-bold text-green-700 mt-1">
-            {successCount}
-          </p>
-        </div>
-
-        {/* Failed */}
-        <div className="bg-red-50 rounded-lg p-4 border border-red-200">
-          <div className="flex items-center gap-2">
-            <XCircle size={16} className="text-red-600" />
-            <p className="text-sm text-red-700">Failed</p>
-          </div>
-          <p className="text-xl font-bold text-red-700 mt-1">
-            {failedCount}
-          </p>
-        </div>
-
-        {/* Timestamp */}
-        <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-          <p className="text-sm text-blue-700">Imported At</p>
-          <p className="text-sm font-medium text-blue-800 mt-1">
-            {importedAt
-              ? new Date(importedAt).toLocaleString()
-              : "-"}
-          </p>
-        </div>
+        ))}
       </div>
     </div>
   );

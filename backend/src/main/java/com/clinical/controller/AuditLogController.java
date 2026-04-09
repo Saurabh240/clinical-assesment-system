@@ -6,6 +6,7 @@ import com.clinical.repository.AuditLogRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,14 @@ public class AuditLogController {
 
     /**
      * GET /admin/audit-logs
-     * Query params: search, action, entity, page (0-based), size
+     * Query params (all optional):
+     *   search    — full-text filter across updatedBy, entity, details, action
+     *   action    — exact action filter (CREATE, UPDATE, DELETE, LOGIN, etc.)
+     *   entity    — exact entity type filter (USER, ASSESSMENT, etc.)
+     *   page      — 0-based page index (default 0)
+     *   size      — page size (default 20, max 100)
+     *   startDate — ignored for now (future date-range filter)
+     *   endDate   — ignored for now
      */
     @GetMapping
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
@@ -28,12 +36,17 @@ public class AuditLogController {
             @RequestParam(required = false, defaultValue = "") String action,
             @RequestParam(required = false, defaultValue = "") String entity,
             @RequestParam(defaultValue = "0")  int page,
-            @RequestParam(defaultValue = "20") int size) {
+            @RequestParam(defaultValue = "20") int size,
+            // Accept but ignore startDate/endDate sent by the frontend
+            // (wire them into the query when date-range filtering is needed)
+            @RequestParam(required = false, defaultValue = "") String startDate,
+            @RequestParam(required = false, defaultValue = "") String endDate) {
 
         size = Math.min(size, 100);
 
         Page<AuditLogResponse> result = auditLogRepository
-                .search(search, action, entity, PageRequest.of(page, size))
+                .search(search, action, entity,
+                        PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updatedAt")))
                 .map(this::toResponse);
 
         return ResponseEntity.ok(result);
